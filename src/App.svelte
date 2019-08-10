@@ -1,0 +1,30 @@
+<script>
+	import ApolloClient 	from 'apollo-boost';
+	import { setClient } 	from 'svelte-apollo';
+
+	import { client } 		from './data';
+	import Quotidian 			from './Quotidian.svelte';
+
+	setClient(client);
+</script>
+
+<style>
+	.background {
+		background-color: #eee;
+		height: 100%;
+	}
+
+	.hero {
+		display: flex;
+		height: 100%;
+		width: 100%;
+		flex-direction: column;
+		justify-content: center;
+	}
+</style>
+
+<div class="background">
+	<div class="hero">
+		<Quotidian />
+	</div>
+</div>
