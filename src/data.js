@@ -11,7 +11,7 @@ const httpLink = new HttpLink({ uri: 'http://165.22.216.90' });
 const authMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext({
     headers: {
-      apikey1: config.apikey,
+      apikey: config.apikey,
     }
   });
 
