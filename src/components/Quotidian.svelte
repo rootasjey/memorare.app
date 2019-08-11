@@ -1,6 +1,6 @@
 <script>
   import { getClient, query } from 'svelte-apollo';
-  import { client, QUOTIDIAN } from './data';
+  import { client, QUOTIDIAN } from '../data';
 
   const quotidian = query(client, { query: QUOTIDIAN });
 </script>

@@ -1,13 +1,21 @@
 <script>
 	import ApolloClient 	from 'apollo-boost';
 	import { setClient } 	from 'svelte-apollo';
+	import {
+		Link,
+		Route,
+		Router
+	} from 'svelte-routing';
 
 	import { client } 		from './data';
-	import Footer					from './Footer.svelte';
-	import Header 				from './Header.svelte';
-	import Quotidian 			from './Quotidian.svelte';
+	import Footer					from './components/Footer.svelte';
+	import Header 				from './components/Header.svelte';
+	import Apps 					from './routes/Apps.svelte';
+	import Home 					from './routes/Home.svelte';
 
 	setClient(client);
+
+	export let url = '';
 </script>
 
 <style>
@@ -16,23 +24,20 @@
 		height: 100%;
 	}
 
-	.hero {
-		background-color: #eee;
-
-		display: flex;
+	.content {
 		height: 100%;
-		width: 100%;
-		flex-direction: column;
-		justify-content: center;
 	}
 </style>
 
-<div class="background">
-	<Header />
+<Router>
+	<div class="background">
+		<Header />
 
-	<div class="hero">
-		<Quotidian />
+		<div class="content">
+			<Route path="/" component="{Home}" />
+			<Route path="/apps" component="{Apps}" />
+		</div>
+
+		<Footer />
 	</div>
-
-	<Footer />
-</div>
+</Router>

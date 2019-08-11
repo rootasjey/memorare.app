@@ -1929,6 +1929,11 @@ svelte-observable@^0.4.0:
   resolved "https://registry.yarnpkg.com/svelte-observable/-/svelte-observable-0.4.0.tgz#74756e42fa3516c154d53f4244fa9cf691854224"
   integrity sha512-e8CfnkUfOZ/nAIpdFi+g63lS5oU+8J+KKhwkHpO0/reADeTBbIiVbcCqVrLsETp8+i+4ydQoawNCwMP/C8oMyA==
 
+svelte-routing@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/svelte-routing/-/svelte-routing-1.2.1.tgz#7dd1b1847df6a6bd674e3c4b84588e1ce5c189c5"
+  integrity sha512-2lm1EwCy8bXiShW9A6sH38oqbQ8q3sqK7mgXMVTRkGSrTdwnkDHyXVwCKIcCJdWdVcNdjQUFHXbDlaoxQHdd2g==
+
 svelte@3.7.0:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.7.0.tgz#242030f8862c7200264f8e67df611a101fa87727"

@@ -1,7 +1,9 @@
 <script>
-  // import memorareIcon from './memorare-icon-small.png';
+  import { Link, navigate } from 'svelte-routing';
 
-  // export const icon = memorareIcon;
+  function gotoHome() {
+    navigate('/')
+  }
 </script>
 
 <style>
@@ -13,7 +15,6 @@
 
   .header-title {
     display: flex;
-    /* align-items: center; */
 
     cursor: pointer;
     transition:.5s;
@@ -39,6 +40,8 @@
 
   nav > p {
     display: inline-block;
+    margin-top: 16px;
+    margin-bottom: 16px;
     margin-right: 25px;
 
     cursor: pointer;
@@ -50,18 +53,34 @@
     color: tomato;
     transition: .5s;
   }
+
+  nav :global(a) {
+    display: inline-block;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    margin-right: 25px;
+
+    cursor: pointer;
+
+    transition: .5s;
+  }
+
+  nav :global(a):hover {
+    color: tomato;
+    transition: .5s;
+  }
 </style>
 
 <header>
-  <div class="header-title">
+  <div class="header-title" on:click={gotoHome} >
     <img src="./icon.png" alt="memorare icon" width="64">
     <h3>memorare</h3>
   </div>
 
   <nav>
-    <p>Apps</p>
+    <Link to="apps">Apps</Link>
     <p>Developers</p>
-    <p>Pricing</p>
-    <p>Sign in</p>
+    <Link>Pricing</Link>
+    <Link>Sign in</Link>
   </nav>
 </header>
