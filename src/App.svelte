@@ -3,6 +3,7 @@
 	import { setClient } 	from 'svelte-apollo';
 
 	import { client } 		from './data';
+	import Footer					from './Footer.svelte';
 	import Header 				from './Header.svelte';
 	import Quotidian 			from './Quotidian.svelte';
 
@@ -16,6 +17,8 @@
 	}
 
 	.hero {
+		background-color: #eee;
+
 		display: flex;
 		height: 100%;
 		width: 100%;
@@ -30,4 +33,6 @@
 	<div class="hero">
 		<Quotidian />
 	</div>
+
+	<Footer />
 </div>

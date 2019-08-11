@@ -1,5 +1,7 @@
 <script>
-  // your script goes here
+  // import memorareIcon from './memorare-icon-small.png';
+
+  // export const icon = memorareIcon;
 </script>
 
 <style>
@@ -10,8 +12,16 @@
   }
 
   .header-title {
+    display: flex;
+    /* align-items: center; */
+
     cursor: pointer;
     transition:.5s;
+  }
+
+  .header-title img {
+    position: relative;
+    top: -10px;
   }
 
   .header-title:hover {
@@ -22,6 +32,9 @@
   nav {
     display: flex;
     justify-content: space-between;
+
+    position: relative;
+    top: 5px;
   }
 
   nav > p {
@@ -41,6 +54,7 @@
 
 <header>
   <div class="header-title">
+    <img src="./memorare-icon-small.png" alt="memorare icon" width="64">
     <h3>memorare</h3>
   </div>
 
