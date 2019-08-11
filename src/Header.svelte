@@ -54,7 +54,7 @@
 
 <header>
   <div class="header-title">
-    <img src="./memorare-icon-small.png" alt="memorare icon" width="64">
+    <img src="./icon.png" alt="memorare icon" width="64">
     <h3>memorare</h3>
   </div>
 
