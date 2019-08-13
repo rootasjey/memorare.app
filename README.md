@@ -4,7 +4,7 @@
 
 <h1 align="middle">memorare.app</h1>
 
-<span align="middle">Read the quote of the day.</span>
+<p align="middle">Read the quote of the day.</p>
 
 <p align="middle">
   <img src="./screenshot.png" title="memorare screenshot" />
