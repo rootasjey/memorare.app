@@ -1,12 +1,14 @@
 <p align="middle">
-<img src="./public/icon.png" width="254"/>
+  <img src="./public/icon.png" title="memorare icon" width="254"/>
 </p>
 
-<h1 align="middle"> memorare.app </h1>
+<h1 align="middle">memorare.app</h1>
 
-Read the quote of the day.
+<span align="middle">Read the quote of the day.</span>
 
-![img](./screenshot.png)
+<p align="middle">
+  <img src="./screenshot.png" title="memorare screenshot" />
+</p>
 
 ## Quickstart
 

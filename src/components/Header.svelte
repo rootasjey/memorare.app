@@ -22,11 +22,18 @@
 
   .header-title img {
     position: relative;
-    top: -10px;
+    top: 5px;
+    margin-right: 10px;
+    transition: .5s;
+  }
+
+  .header-title img:hover {
+    transition: .5s;
+    transform: scale(1.1);
   }
 
   .header-title:hover {
-    color: tomato;
+    color: #706fd3;
     transition: .5s;
   }
 
@@ -50,7 +57,7 @@
   }
 
   nav > p:hover {
-    color: tomato;
+    color: #720fd3;
     transition: .5s;
   }
 
@@ -66,14 +73,14 @@
   }
 
   nav :global(a):hover {
-    color: tomato;
+    color: #720fd3;
     transition: .5s;
   }
 </style>
 
 <header>
   <div class="header-title" on:click={gotoHome} >
-    <img src="./icon.png" alt="memorare icon" width="64">
+    <img src="./icon.png" alt="memorare icon" width="48" height="48">
     <h3>memorare</h3>
   </div>
 

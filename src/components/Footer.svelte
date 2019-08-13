@@ -4,11 +4,20 @@
     border-top: 1px solid;
     border-top-color: rgba(80, 71, 71, 0.151);
 
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
     min-height: 200px;
     padding: 30px;
 
-    display: flex;
-    justify-content: space-around;
+    position: relative;
+  }
+
+  .footer-section {
+    color: rgba(0, 0, 0, 0.5);
+    margin: 10px;
+    padding: 10px;
   }
 
   .footer-section ul {
@@ -25,13 +34,6 @@
   .footer-section ul > li:hover {
     color: rgba(0, 0, 0, 0.8);
     transition: .5s;
-  }
-
-  .footer-section {
-    padding: 10px;
-    margin: 10px;
-
-    color: rgba(0, 0, 0, 0.5);
   }
 
   .footer-title {
@@ -57,6 +59,7 @@
       <li>Documentation</li>
       <li>API References</li>
       <li>API Status</li>
+      <li>GitHub</li>
     </ul>
   </div>
 

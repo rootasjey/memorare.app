@@ -7,7 +7,7 @@
 
 <style>
   .quote-container {
-		background: #2ecc71;
+		background: #706fd3;
 		border-radius: 5px;
     color: white;
     cursor: pointer;
@@ -16,23 +16,16 @@
 		padding: 50px;
     width: 50%;
 
+    top: -100px;
     position: relative;
-    top: 0px;
 
-		-webkit-box-shadow: 6px 10px 14px 0px rgba(0,0,0,0.75);
-		-moz-box-shadow: 6px 10px 14px 0px rgba(0,0,0,0.75);
-    box-shadow: 6px 10px 14px 0px rgba(0,0,0,0.75);
-
+    box-shadow: 3px 5px 7px 0px rgba(0,0,0,0.55);
     transition: .5s;
   }
 
   .quote-container:hover {
-    top: -10px;
-
-    -webkit-box-shadow: 6px 10px 24px 0px rgba(0,0,0,0.75);
-		-moz-box-shadow: 6px 10px 24px 0px rgba(0,0,0,0.75);
-    box-shadow: 6px 10px 24px 0px rgba(0,0,0,0.75);
-
+    transform: translateY(-10px);
+    box-shadow: 6px 10px 24px 0px rgba(0,0,0,0.55);
     transition: .5s;
   }
 

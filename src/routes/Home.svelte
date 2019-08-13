@@ -1,19 +1,34 @@
 <script>
-  import Quotidian from '../components/Quotidian.svelte';
+	import Presentation from '../components/Presentation.svelte'
+	import Quotidian 		from '../components/Quotidian.svelte';
 </script>
 
 <style>
+	.home {
+		position: relative;
+		min-height: 100%;
+
+		display: flex;
+		flex-direction: column;
+	}
+
 	.hero {
 		background-color: #eee;
 
-		display: flex;
-		height: 100%;
+		position: relative;
+		min-height: 100vh;
 		width: 100%;
+
+		display: flex;
 		flex-direction: column;
 		justify-content: center;
 	}
 </style>
 
-<div class="hero">
-  <Quotidian />
+<div class="home">
+	<div class="hero">
+		<Quotidian />
+	</div>
+
+	<Presentation />
 </div>
