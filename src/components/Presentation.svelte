@@ -1,3 +1,10 @@
+<script>
+  import { getClient, query }     from 'svelte-apollo';
+  import { client, LIST_AUTHORS } from '../data';
+
+  const listAuthors = query(client, { query: LIST_AUTHORS });
+</script>
+
 <style>
   .accent-color-button {
     background: white;
@@ -19,31 +26,96 @@
     transform: translateY(-5px);
   }
 
-  .illustrations-list {
+  .authors-wall {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     flex-wrap: wrap;
+    justify-content: center;
+    background-color: #303952;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 
-    margin: 70px 0;
+    margin-top: 40px;
   }
 
-  .moon {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
+  .author-square {
+    height: 150px;
+    width: 150px;
+    margin: 5px;
+    padding: 5px;
 
     position: relative;
-    top: 10px;
+    overflow: hidden;
 
-    background-color: #2c2c54;
-    box-shadow: inset -40px 30px 10px -20px rgba(0,0,0,0.48);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+    background-color: #303952;
+
+    cursor: pointer;
+
+    transition: .5s;
+  }
+
+  .author-square:hover {
+    background-color: #706fd3;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  }
+
+  .author-square:hover .author-square__name {
+    background-color: #706fd3;
+    opacity: .5;
+    transition: .5s;
+  }
+
+  .author-square:hover .author-square__img {
+    background-color: #706fd3;
+    opacity: 1;
+    transform: scale(1.1);
+    transition: .5s;
+  }
+
+  .author-square__name {
+    font-size: 1.2em;
+    font-weight: bold;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 1;
+    background-color: #303952;
+
+    height: 100%;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    position: absolute;
+    top: 0;
+
     z-index: 2;
+    transition: .5s;
+  }
 
-    animation-name: rotate;
-    animation-duration: 3s;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+  .author-square__img {
+    height: 100%;
+    width: 100%;
+
+    opacity: 0;
+
+    position: absolute;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    -moz-filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+    -o-filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+    -webkit-filter: grayscale(100%);
+    filter: gray;
+    filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+
+    transition: .5s;
   }
 
   .device-item {
@@ -63,10 +135,6 @@
     transition: .5s;
   }
 
-  .text-accent-color {
-    color: #706fd3;
-  }
-
   .icon-title {
     color: #706fd3;
     display: flex;
@@ -81,15 +149,9 @@
     fill: #706fd3;
   }
 
-  .text-icon {
-    font-size: 3em;
-    font-weight: bold;
-    margin-right: 10px;
-  }
-
   .presentation {
     background-color: #eee;
-    padding: 60px;
+    /* padding: 60px; */
     text-align: center;
 
     position: relative;
@@ -104,15 +166,6 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-  }
-
-  .pres-illustration {
-    margin: 10px;
-    padding: 10px;
-
-    position: relative;
-
-    display: flex;
   }
 
   .pres-section {
@@ -141,90 +194,20 @@
     font-size: 2.2em;
   }
 
-  .quote-card {
-    background-color: white;
-    border-radius: 2px;
-
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-
-    max-width: 300px;
-    min-height: 110px;
-    padding: 30px;
-    margin: 0 40px;
-
-    top: -80px;
-    left: 40px;
-  }
-
-  .quote-card.day {
-    color: black;
-    background-color: #fed330;
-  }
-
-  .quote-card.night {
-    color: white;
-    background-color: #2c2c54;
-  }
-
-  .quote-footer {
-    text-align: right;
-  }
-
-  .quote-name {
-    font-weight: bold;
-    font-size: 1.1em;
-  }
-
-  .sun {
-    width: 120px;
-    height: 120px;
-    background-color: #fed330;
-    border-radius: 100px;
-
-    position: relative;
-    top: 20px;
-
-    animation-name: grow;
-    animation-duration: 2s;
-    animation-direction: alternate;
-    animation-iteration-count: infinite;
-  }
-
-  .sun-nucleus {
-    width: 80px;
-    height: 80px;
-    background-color: #f7b731;
-    border-radius: 50px;
-
-    position: relative;
-    top: 20px;
-    left: 20px;
-  }
-
   .svg-icon {
     margin-right: 10px;
   }
 
-  @keyframes grow {
-    from {
-      transform: scale(1);
-    }
-
-    to {
-      transform: scale(1.2);
-    }
+  .text-accent-color {
+    color: #706fd3;
   }
 
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-
-    to {
-      transform: rotate(90deg);
-    }
+  .text-icon {
+    font-size: 3em;
+    font-weight: bold;
+    margin-right: 10px;
   }
+
 </style>
 
 <div class="presentation">
@@ -232,43 +215,24 @@
     <h1 class="pres-title">Get <span class="text-accent-color">inspired</span></h1>
     <div class="pres-desc">
       <p>
-        You may have a project but lack a tiny bit of inspiration.
-        Start your day with the best minds. Or go to sleep with a nice thought.
+        Motivation is contagious. Let visionary people inspire you.
       </p>
     </div>
 
-    <div class="illustrations-list">
-      <div class="pres-illustration">
-        <div class="pres-animation">
-          <div class="sun">
-            <div class="sun-nucleus"></div>
+    <div class="authors-wall">
+      {#await $listAuthors}
+        <!-- $listAuthors is pending -->
+        ...
+      {:then result}
+        <!-- $listAuthors was fulfilled -->
+        {#each result.data.listAuthors.entries as author}
+          <div class="author-square">
+            <div class="author-square__img" style="background-image: url('{author.imgUrl}');"></div>
+            <div class="author-square__name"> {author.name} </div>
           </div>
-        </div>
-
-        <div class="quote-card day">
-          <p class="quote-name">Computer science can break the cycle of inequality.</p>
-
-          <div class="quote-footer">
-            <p class="quote-author">Jane Margolis & Yasmin Kafai</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="pres-illustration">
-        <div class="quote-card night">
-          <p class="quote-name">A goal without a plan is just a wish.</p>
-
-          <div class="quote-footer">
-            <p class="quote-author">Antoine de Saint-Exupéry</p>
-          </div>
-        </div>
-
-        <div class="pres-animation">
-          <div class="moon"></div>
-        </div>
-      </div>
+        {/each}
+      {/await}
     </div>
-
   </div>
 
   <div class="pres-section">

@@ -32,3 +32,14 @@ export const QUOTIDIAN = gql`
     }
   }
 `;
+
+export const LIST_AUTHORS = gql`
+  {
+    listAuthors(limit: 10) {
+      entries {
+        name
+        imgUrl
+      }
+    }
+  }
+`;
