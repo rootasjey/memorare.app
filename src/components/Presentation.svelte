@@ -3,18 +3,20 @@
     background: white;
     padding: 15px;
     margin: auto;
-    border-radius: 5px;
+    border-radius: 2px;
     cursor: pointer;
     position: relative;
-    transition: .5s;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
   }
 
   .accent-color-button:hover {
     color: white;
     background: #706fd3;
-    box-shadow: 3px 5px 7px 0px rgba(0,0,0,0.25);
+
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+
     transform: translateY(-5px);
-    transition: .5s;
   }
 
   .illustrations-list {
@@ -141,8 +143,10 @@
 
   .quote-card {
     background-color: white;
-    border-radius: 5px;
-    box-shadow: 3px 5px 7px 0px rgba(0,0,0,0.35);
+    border-radius: 2px;
+
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 
     max-width: 300px;
     min-height: 110px;

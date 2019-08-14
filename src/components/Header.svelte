@@ -46,6 +46,7 @@
   }
 
   nav > p {
+    color: #000;
     display: inline-block;
     margin-top: 16px;
     margin-bottom: 16px;
@@ -87,7 +88,7 @@
   <nav>
     <Link to="apps">Apps</Link>
     <p>Developers</p>
-    <Link>Pricing</Link>
-    <Link>Sign in</Link>
+    <Link to="pricing">Pricing</Link>
+    <Link to="signin">Sign in</Link>
   </nav>
 </header>

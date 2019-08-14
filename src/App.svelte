@@ -12,6 +12,7 @@
 	import Header 				from './components/Header.svelte';
 	import Apps 					from './routes/Apps.svelte';
 	import Home 					from './routes/Home.svelte';
+	import Pricing 				from './routes/Pricing.svelte';
 
 	setClient(client);
 
@@ -36,6 +37,7 @@
 		<div class="content">
 			<Route path="/" component="{Home}" />
 			<Route path="/apps" component="{Apps}" />
+			<Route path="/pricing" component="{Pricing}" />
 		</div>
 
 		<Footer />

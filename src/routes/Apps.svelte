@@ -16,9 +16,11 @@
   }
 
   .app-store {
+    background-color: #706fd3;
+    border-radius: 2px;
     color: #eee;
-    background-color: #353b48;
-    border-radius: 5px;
+    cursor: pointer;
+
     margin: 20px;
     padding: 20px;
 
@@ -27,24 +29,20 @@
     position: relative;
     top: 0;
 
-    border: 1px solid #706fd3;
-    box-shadow: 3px 2px 9px 0px rgba(0,0,0,0.45);
-
-    cursor: pointer;
-    transition: .5s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
   }
 
   .app-store:hover:not(.soon) {
-    top: -10px;
-    box-shadow: 3px 2px 14px 0px rgba(0,0,0,0.45);
-
-    transition: .5s;
+    top: -5px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
   }
 
   .app-store.soon {
     cursor: default;
-    background-color: #596275;
-    border: 0;
+    background-color: #3d3d3d;
+    border: 1px solid #706fd3;
     box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.45);
   }
 
