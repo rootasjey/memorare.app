@@ -13,6 +13,12 @@
     border-radius: 2px;
     cursor: pointer;
     position: relative;
+
+    display: flex;
+    align-items: center;
+
+    text-transform: uppercase;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
   }
 
@@ -20,27 +26,56 @@
     color: white;
     background: #706fd3;
 
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 
     transform: translateY(-5px);
+  }
+
+  .accent-color-button > svg {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+
+  .accent-color-button > svg:first-child {
+    margin-right: 10px;
+  }
+
+  .accent-color-button > svg:last-child {
+    margin-left: 10px;
+  }
+
+  .accent-color-button:hover > svg {
+    fill: white;
   }
 
   .authors-wall {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    background-color: #303952;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 
     margin-top: 40px;
+    padding: 40px 0px;
+    z-index: 3;
+  }
+
+  .authors-wall-background {
+    height: 700px;
+    width: 140%;
+    background: linear-gradient(90deg, #3F2B96 0%, #A8C0FF 100%);
+    transform: rotate(-15deg);
+
+    position: absolute;
+    top: 210px;
+    left: -124px;
   }
 
   .author-square {
     height: 150px;
     width: 150px;
-    margin: 5px;
-    padding: 5px;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 50%;
 
     position: relative;
     overflow: hidden;
@@ -50,10 +85,10 @@
     align-items: center;
 
     color: white;
-    background-color: #303952;
 
     cursor: pointer;
 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     transition: .5s;
   }
 
@@ -84,7 +119,9 @@
     align-items: center;
 
     opacity: 1;
-    background-color: #303952;
+    color: rgba(0,0,0,.5);
+
+    background-color: #eee;
 
     height: 100%;
     width: 100%;
@@ -102,7 +139,7 @@
     height: 100%;
     width: 100%;
 
-    opacity: 0;
+    opacity: 1;
 
     position: absolute;
 
@@ -149,9 +186,68 @@
     fill: #706fd3;
   }
 
+  .lightning-container {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    top: -70px;
+  }
+
+  .lightning-0 {
+    position: absolute;
+    left: -42px;
+    transform: scale(-1,1);
+    top: -49px;
+
+    animation-name: glow;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-delay: 0s;
+  }
+
+  .lightning-1 {
+    position: absolute;
+    left: 28px;
+    top: -80px;
+
+    animation-name: glow;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-delay: .25s;
+  }
+
+  .lightning-2 {
+    position: absolute;
+    right: -42px;
+    transform: rotate(20deg);
+    top: -49px;
+
+    animation-name: glow;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-delay: .5s;
+  }
+
+  @keyframes glow {
+    0% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    75% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
   .presentation {
     background-color: #eee;
-    /* padding: 60px; */
     text-align: center;
 
     position: relative;
@@ -160,6 +256,18 @@
   .pres-desc {
     font-size: 1.3em;
     margin: 0 10%;
+    color: rgba(0,0,0,0.5);
+
+    position: relative;
+    z-index: 2;
+  }
+
+  .pres-desc > span {
+    color: white;
+    background-color: #f56498;
+    padding: 5px;
+    line-height: 1.6em;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   }
 
   .pres__devices-list {
@@ -168,10 +276,23 @@
     align-items: flex-end;
   }
 
+  .pres-icon-title {
+    position: relative;
+  }
+
   .pres-section {
     margin-bottom: 200px;
     display: flex;
     flex-direction: column;
+  }
+
+  .pres-section__icon-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-bottom: -100px;
   }
 
   .pres-subsection {
@@ -211,12 +332,24 @@
 </style>
 
 <div class="presentation">
-  <div class="pres-section">
+  <div class="pres-section inspiration">
+
+    <div class="pres-section__icon-container">
+      <img class="pres-icon-title" src="./img/idea.png" alt="idea icon" height="80" width="80" />
+
+      <div class="lightning-container">
+        <img class="lightning-0" src="./img/lightning.png" alt="idea icon" width="50" />
+        <img class="lightning-1" src="./img/lightning.png" alt="idea icon" width="50" />
+        <img class="lightning-2" src="./img/lightning.png" alt="idea icon" width="50" />
+      </div>
+    </div>
+
     <h1 class="pres-title">Get <span class="text-accent-color">inspired</span></h1>
     <div class="pres-desc">
-      <p>
+      <span>
+        Ever wanted to do something ambitious ? <br>
         Motivation is contagious. Let visionary people inspire you.
-      </p>
+      </span>
     </div>
 
     <div class="authors-wall">
@@ -233,14 +366,15 @@
         {/each}
       {/await}
     </div>
+
+    <div class="authors-wall-background"></div>
   </div>
 
   <div class="pres-section">
     <h1 class="pres-title">Delivered <span class="text-accent-color">where</span> you are</h1>
     <div class="pres-desc">
       <p>
-        What ever platform you use, you will have multiple ways to get your quote of the day.
-        Your app will not let you down.
+        From your TV to your watch, your quotes will follow you through your journey.
       </p>
     </div>
 
@@ -276,13 +410,18 @@
       </div>
     </div>
 
-    <div class="accent-color-button" style="top: 80px;">Learn More</div>
+    <div class="accent-color-button" style="top: 80px;">
+      <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
+        <path d="M6 16h-5v6h22v-6h-5v-1h6v8h-24v-8h6v1zm14 2c.552 0 1 .448 1 1s-.448 1-1 1-1-.448-1-1 .448-1 1-1zm-7.5-17v14.884l4.736-5.724.764.645-5.979 7.195-6.021-7.205.765-.644 4.735 5.732v-14.883h1z"/>
+      </svg>
+      <span>Download Now</span>
+    </div>
   </div>
 
   <div class="pres-section">
     <h1 class="pres-title">All you <span class="text-accent-color">need</span></h1>
     <div class="pres-desc">
-      <p>Don't wait to try out the cool features.</p>
+      <p>Don't wait to try out the cool features. They will make your life easier.</p>
     </div>
 
     <div class="pres-subsection-list">
@@ -386,6 +525,11 @@
       </svg>
     </div>
 
-    <div class="accent-color-button" style="top: 80px;">Learn More</div>
+    <div class="accent-color-button" style="top: 80px;">
+      <span>Get Your API key</span>
+      <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
+        <path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z"/>
+      </svg>
+    </div>
   </div>
 </div>

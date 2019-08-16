@@ -29,11 +29,11 @@
 
   .header-title img:hover {
     transition: .5s;
-    transform: scale(1.1);
+    transform: rotate(360deg);
   }
 
   .header-title:hover {
-    color: #706fd3;
+    color: #f56498;
     transition: .5s;
   }
 
@@ -81,7 +81,7 @@
 
 <header>
   <div class="header-title" on:click={gotoHome} >
-    <img src="./icon.png" alt="memorare icon" width="48" height="48">
+    <img src="./img/icon.png" alt="memorare icon" width="48" height="48">
     <h3>memorare</h3>
   </div>
 

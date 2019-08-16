@@ -1,5 +1,5 @@
 <p align="middle">
-  <img src="./public/icon.png" title="memorare icon" width="254"/>
+  <img src="./public/img/icon.png" title="memorare icon" width="254"/>
 </p>
 
 <h1 align="middle">memorare.app</h1>
