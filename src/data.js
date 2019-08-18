@@ -6,7 +6,7 @@ import gql                    from 'graphql-tag';
 
 import config                 from './config.json';
 
-const httpLink = new HttpLink({ uri: 'http://165.22.216.90' });
+const httpLink = new HttpLink({ uri: config.url });
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext({
