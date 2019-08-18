@@ -10,6 +10,7 @@
 
     min-height: 200px;
     padding: 30px;
+    padding: 100px;
 
     position: relative;
   }

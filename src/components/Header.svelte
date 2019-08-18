@@ -1,8 +1,20 @@
 <script>
+  import { fly } from 'svelte/transition';
   import { Link, navigate } from 'svelte-routing';
 
-  function gotoHome() {
-    navigate('/')
+  let isTinyNavVisible = false;
+
+  function gotoTop() {
+    window.scrollTo(0, 0);
+  }
+
+  function goTo(route) {
+    navigate(route);
+    isTinyNavVisible = false;
+  }
+
+  function toggleNav() {
+    isTinyNavVisible = !isTinyNavVisible;
   }
 </script>
 
@@ -45,7 +57,7 @@
     top: 5px;
   }
 
-  nav > p {
+  nav > div {
     color: #000;
     display: inline-block;
     margin-top: 16px;
@@ -57,9 +69,27 @@
     transition: .5s;
   }
 
-  nav > p:hover {
+  nav > div:hover {
     color: #720fd3;
     transition: .5s;
+  }
+
+  nav > div.button-pink-round {
+    color: white;
+    background: #f56498;
+
+    padding: 10px 15px;
+    border-radius: 30px;
+
+    position: relative;
+    top: -10px;
+    left: 5px;
+    transition: .3s;
+  }
+
+  nav > div.button-pink-round:hover {
+    padding: 10px 20px;
+    transition: .3s;
   }
 
   nav :global(a) {
@@ -77,18 +107,113 @@
     color: #720fd3;
     transition: .5s;
   }
+
+  .amburger-menu {
+    position: fixed;
+    bottom: 30px;
+    right: 20px;
+    display: none;
+
+    height: 30px;
+    width: 30px;
+
+    cursor: pointer;
+    opacity: .6;
+    transition: .3s;
+  }
+
+  .amburger-menu:hover {
+    opacity: 1;
+    transition: .3s;
+  }
+
+  .amburger-menu__line {
+    height: 5px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+    margin: 5px;
+  }
+
+  .tinyNav {
+    display: none;
+  }
+
+  @media (max-width: 670px) {
+    header {
+      position: fixed;
+      bottom: 0;
+
+      background: #eee;
+
+      padding: 20px 0;
+      padding-left: 20px;
+      width: 100%;
+
+      justify-content: flex-start;
+
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
+      z-index: 4;
+    }
+
+    .header-title > h3 {
+      display: none;
+    }
+  }
+
+  @media (max-width: 410px) {
+    nav {
+      display: none;
+    }
+
+    .tinyNav {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      width: 100%;
+      height: 300%;
+
+      position: absolute;
+      top: -300%;
+      left: 0;
+
+      background-color: #f5f6fa;
+    }
+
+    .amburger-menu {
+      display: block;
+    }
+  }
+
 </style>
 
 <header>
-  <div class="header-title" on:click={gotoHome} >
-    <img src="./img/icon.png" alt="memorare icon" width="48" height="48">
+  <div class="header-title" on:click={() => goTo('/')} >
+    <img src="./img/icon.png" alt="memorare icon" width="48" height="48" on:click={gotoTop}>
     <h3>memorare</h3>
   </div>
 
   <nav>
-    <Link to="apps">Apps</Link>
-    <p>Developers</p>
-    <Link to="pricing">Pricing</Link>
-    <Link to="signin">Sign in</Link>
+    <div on:click={() => goTo('/apps')}> Apps </div>
+    <div on:click={() => goTo('/developers')}> Developers </div>
+    <div on:click={() => goTo('/pricing')}> Pricing </div>
+    <div on:click={() => goTo('/signin')} class="button-pink-round"> Sign  in</div>
   </nav>
+
+  {#if isTinyNavVisible}
+    <nav class="tinyNav" transition:fly="{{ y: 200, duration: 1000 }}">
+      <div on:click={() => goTo('/apps')}> Apps </div>
+      <div on:click={() => goTo('/developers')}> Developers </div>
+      <div on:click={() => goTo('/pricing')}> Pricing </div>
+      <div on:click={() => goTo('/signin')} class="button-pink-round"> Sign  in</div>
+    </nav>
+  {/if}
+
+  <div class="amburger-menu" on:click={toggleNav}>
+    <div class="amburger-menu__line line-1"></div>
+    <div class="amburger-menu__line line-2"></div>
+    <div class="amburger-menu__line line-3"></div>
+  </div>
 </header>
