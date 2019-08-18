@@ -86,7 +86,7 @@
     .authors-wall-background {
       height: 900px;
       top: 280px;
-      left: -130px;
+      left: -140px;
     }
   }
 
