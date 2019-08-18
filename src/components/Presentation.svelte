@@ -54,7 +54,7 @@
     flex-wrap: wrap;
     justify-content: center;
 
-    margin-top: 40px;
+    margin-top: 120px;
     padding: 40px 0px;
     z-index: 3;
   }
@@ -66,8 +66,60 @@
     transform: rotate(-15deg);
 
     position: absolute;
-    top: 210px;
+    top: 190px;
     left: -124px;
+  }
+
+  @media (max-width: 1080px) {
+    .authors-wall-background {
+      top: 280px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .authors-wall-background {
+      height: 800px;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .authors-wall-background {
+      height: 900px;
+      top: 280px;
+      left: -130px;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .authors-wall-background {
+      left: -140px;
+      width: 160%;
+    }
+  }
+
+  @media (max-width: 570px) {
+    .authors-wall-background {
+      height: 1050px;
+      top: 380px;
+      left: -160px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .authors-wall-background {
+      width: 200%;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .authors-wall-background {
+      height: 600px;
+      top: 500px;
+    }
+
+    .author-square:nth-of-type(1n+4) {
+      display: none;
+    }
   }
 
   .author-square {
@@ -155,21 +207,14 @@
     transition: .5s;
   }
 
-  .device-item {
-    margin-right: 10px;
-    cursor: pointer;
-    position: relative;
-    transition: .5s;
-  }
+  .code-card {
+    height: 300px;
+    width: 600px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    border-radius: 10px;
 
-  .device-item:hover {
-    transform: translateY(-10px);
-    transition: .5s;
-  }
-
-  .device-item:hover svg {
-    fill: #706fd3;
-    transition: .5s;
+    margin: auto;
+    margin-top: 100px;
   }
 
   .icon-title {
@@ -251,12 +296,46 @@
     text-align: center;
 
     position: relative;
+
+    overflow-x: hidden;
+  }
+
+  .pres__app-screenshots-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+
+  .pres__app-screenshot-1 {
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
+    background-color: #eee;
+    height: 400px;
+    width: 500px;
+    margin: 10px;
+    margin-top: 50px;
+  }
+
+  .pres__app-screenshot-2 {
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
+    background-color: #eee;
+    height: 300px;
+    width: 200px;
+    margin: 10px;
+    margin-top: 50px;
   }
 
   .pres-desc {
     font-size: 1.3em;
-    margin: 0 10%;
+    margin: auto;
     color: rgba(0,0,0,0.5);
+
+    max-width: 600px;
 
     position: relative;
     z-index: 2;
@@ -270,20 +349,47 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   }
 
-  .pres__devices-list {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-  }
-
   .pres-icon-title {
     position: relative;
+  }
+
+  .heart-container {
+    position: relative;
+    height: 83px;
+    width: 200px;
+    margin: auto;
+  }
+
+  .pres-icon-title.cupid {
+    position: absolute;
+    left: 72px;
+    top: -56px;
+
+    animation-name: growAndShrink;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  @keyframes growAndShrink {
+    0% {
+      transform: scale(1);
+    }
+
+    100% {
+      transform: scale(.8);
+    }
   }
 
   .pres-section {
     margin-bottom: 200px;
     display: flex;
     flex-direction: column;
+  }
+
+  .pres-section.all-you-need {
+    padding-top: 100px;
   }
 
   .pres-section__icon-container {
@@ -297,6 +403,7 @@
 
   .pres-subsection {
     margin-top: 50px;
+    padding: 10px;
     text-align: initial;
     max-width: 400px;
   }
@@ -313,6 +420,34 @@
 
   .pres-title {
     font-size: 2.2em;
+  }
+
+  .rocket-container {
+    display: flex;
+    position: relative;
+    margin: auto;
+  }
+
+  .rocket-container__star {
+    position: absolute;
+    top: 20px;
+    left: 100px;
+
+    animation-name: glow2;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+
+  @keyframes glow2 {
+    0% {
+      opacity: 1;
+      transform: rotate(0deg);
+    }
+    100% {
+      opacity: 0.2;
+      transform: rotate(180deg);
+    }
   }
 
   .svg-icon {
@@ -332,8 +467,7 @@
 </style>
 
 <div class="presentation">
-  <div class="pres-section inspiration">
-
+  <div class="pres-section">
     <div class="pres-section__icon-container">
       <img class="pres-icon-title" src="./img/idea.png" alt="idea icon" height="80" width="80" />
 
@@ -344,7 +478,8 @@
       </div>
     </div>
 
-    <h1 class="pres-title">Get <span class="text-accent-color">inspired</span></h1>
+    <h1 class="pres-title"><span class="text-accent-color">Inspiration</span> comes from observation</h1>
+
     <div class="pres-desc">
       <span>
         Ever wanted to do something ambitious ? <br>
@@ -371,43 +506,20 @@
   </div>
 
   <div class="pres-section">
-    <h1 class="pres-title">Delivered <span class="text-accent-color">where</span> you are</h1>
-    <div class="pres-desc">
-      <p>
-        From your TV to your watch, your quotes will follow you through your journey.
-      </p>
+    <div>
+      <img class="pres-icon-title" src="./img/responsive.png" alt="responsive icon" height="80" width="80" />
     </div>
 
-    <div class="pres__devices-list">
-      <div class="device-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="65" height="65" viewBox="0 0 24 24">
-          <path d="M18 24h-12c-1.104 0-2-.896-2-2v-20c0-1.104.896-2 2-2h12c1.104 0 2 .896 2 2v20c0 1.104-.896 2-2 2zm1-5.083h-14v3.083c0 .552.449 1 1 1h12c.552 0 1-.448 1-1v-3.083zm-7 3c-.553 0-1-.448-1-1s.447-1 1-1c.552 0 .999.448.999 1s-.447 1-.999 1zm7-17h-14v13h14v-13zm-1-3.917h-12c-.551 0-1 .449-1 1v1.917h14v-1.917c0-.551-.448-1-1-1zm-4.5 1.917h-3c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h3c.276 0 .5.224.5.5s-.224.5-.5.5z"/>
-        </svg>
-      </div>
+    <h1 class="pres-title">Nice designs look good. <br>Great designs <span class="text-accent-color">adapt</span> to you</h1>
+    <div class="pres-desc">
+      <span>
+        From your TV to your watch, your quotes will follow you through your journey.
+      </span>
+    </div>
 
-      <div class="device-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24">
-          <path d="M19 24c1.104 0 2-.896 2-2v-20c0-1.104-.896-2-2-2h-14c-1.104 0-2 .896-2 2v20c0 1.104.896 2 2 2h14zm-14-3v-18h14v18h-14zm6.5 1.5c0-.276.224-.5.5-.5s.5.224.5.5-.224.5-.5.5-.5-.224-.5-.5z"/>
-        </svg>
-      </div>
-
-      <div class="device-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24" fill-rule="evenodd" clip-rule="evenodd">
-          <path d="M5 22h4v-3h-9v-18h24v18h-10v3h4v1h-13v-1zm5-3v3h3v-3h-3zm13-17h-22v16h22v-16z"/>
-        </svg>
-      </div>
-
-      <div class="device-item" style="bottom: -20px;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 24 24">
-          <path d="M22 17v-11.8c0-.663-.537-1.2-1.2-1.2h-17.6c-.663 0-1.2.537-1.2 1.2v11.8h20zm-18-11h16v9h-16v-9zm20 12v.8c0 .663-.537 1.2-1.2 1.2h-21.6c-.663 0-1.2-.537-1.2-1.2v-.8h10c0 .276.224.5.5.5h3c.276 0 .5-.224.5-.5h10z"/>
-        </svg>
-      </div>
-
-      <div class="device-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24">
-          <path d="M12 12h3v2h-5v-6h2v4zm9-1h-1.07c-.251-2.006-1.218-3.792-2.647-5.093-1.283-1.166-1.228-2.247-1.856-5.907h-7.854c-.628 3.66-.573 4.741-1.856 5.907-1.67 1.52-2.717 3.701-2.717 6.124 0 2.424 1.048 4.606 2.72 6.126 1.28 1.164 1.232 2.267 1.853 5.843h7.854c.622-3.576.573-4.679 1.854-5.843 1.445-1.314 2.421-3.124 2.66-5.157h1.059v-2zm-9.5 7.5c-3.589 0-6.5-2.911-6.5-6.5s2.911-6.5 6.5-6.5 6.5 2.911 6.5 6.5-2.911 6.5-6.5 6.5z"/>
-        </svg>
-      </div>
+    <div class="pres__app-screenshots-list">
+      <div class="pres__app-screenshot-1"></div>
+      <div class="pres__app-screenshot-2"></div>
     </div>
 
     <div class="accent-color-button" style="top: 80px;">
@@ -418,10 +530,15 @@
     </div>
   </div>
 
-  <div class="pres-section">
+  <div class="pres-section all-you-need">
+    <div class="heart-container">
+      <img class="pres-icon-title" src="./img/order.png" alt="donation icon" height="80" width="80" />
+      <img class="pres-icon-title cupid" src="./img/cupid.png" alt="cupid icon" height="60" width="60" />
+    </div>
+
     <h1 class="pres-title">All you <span class="text-accent-color">need</span></h1>
     <div class="pres-desc">
-      <p>Don't wait to try out the cool features. They will make your life easier.</p>
+      <span>Don't wait to try out the cool features. They will make your life easier.</span>
     </div>
 
     <div class="pres-subsection-list">
@@ -438,9 +555,7 @@
       <div class="pres-subsection">
         <div class="icon-title">
           <div class="svg-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill-rule="evenodd" clip-rule="evenodd">
-              <path d="M1.886 14.826l2.534 4.24-.669.155c-.67.154-1.152.529-1.356 1.052-.161.416-.124.875.099 1.199.24.352.64.553 1.097.553.808 0 1.6-.635 1.835-1.424.102-.339.148-.865-.206-1.441l-2.803-4.656-.531.322zm1.705 8.199c-.792 0-1.493-.359-1.921-.984-.407-.596-.486-1.41-.206-2.129.25-.643.755-1.15 1.427-1.453l-2.374-3.972 2.239-1.359 3.317 5.512c.426.69.537 1.491.311 2.248-.276.926-1.288 2.137-2.793 2.137m14.433.975c.275-.01.491-.24.482-.518-.057-1.629.359-1.939 1.376-2.052 1.502-.17 1.71-1.084 1.86-1.752.161-.707.267-1.176 1.78-1.256.275-.014.487-.248.471-.526-.012-.275-.243-.49-.524-.472-2.095.109-2.473 1.025-2.701 2.033-.139.609-.201.889-.997.978-2.075.233-2.315 1.62-2.265 3.082.01.27.232.483.5.483h.018zm2.665-11.032l.811.388-.118-.893.62-.653-.886-.164-.427-.792-.429.792-.885.164.62.653-.119.893.813-.388zm2.046 2.087l-2.046-.978-2.047.978.299-2.25-1.564-1.644 2.231-.412 1.081-1.996 1.08 1.996 2.23.412-1.562 1.644.298 2.25zm-9.622-14.054c-.291 0-.573.062-.839.185-1.008.464-1.451 1.663-.988 2.672.449.977 1.685 1.441 2.671.989.489-.226.86-.627 1.046-1.132.187-.505.165-1.052-.059-1.541-.328-.712-1.046-1.173-1.831-1.173m.004 5.031c-1.173 0-2.249-.689-2.739-1.755-.693-1.511-.031-3.305 1.478-4 .398-.183.821-.276 1.257-.276 1.174 0 2.25.689 2.739 1.755.336.731.367 1.55.089 2.305-.279.757-.835 1.358-1.566 1.694-.398.184-.821.277-1.258.277m-7.384-2.536c.911 1.47 3.573 5.365 3.573 5.365l-.785 3.399c-.237.886-.13 1.453.047 2.159l2.076 8.591.386-7.645 4.354 1.984s-.602 3.082-.804 4.135c0 0 1.429-3.385 1.772-4.228.138-.342.074-.547-.301-.961-.704-.783-2.549-2.706-2.549-2.706l.791-3.449s4.197-2.938 5.469-3.912c.064-.048.063-.085.053-.114l-.09-.066c-.888.334-2.443 1.008-3.63 1.522l-1.165.504c-.366.156-.775.189-1.16.09l-3.325-.836c-.368-.092-.712-.273-.996-.526l-3.716-3.306zm4.921 20.492c-.401-.002-.891-.248-1.059-.937-.498-2.034-1.999-8.395-1.999-8.395-.197-.791-.338-1.54-.045-2.638l.682-2.955c-.521-.763-2.542-3.727-3.339-4.938-.223-.34-.249-.742-.069-1.077.297-.551 1.101-.719 1.571-.3l3.717 3.306c.164.145.363.251.575.304l3.326.836c.173.045.358.03.523-.041l1.162-.501c1.196-.518 2.765-1.198 3.573-1.516.616-.244 1.291.068 1.491.657.151.449-.003.932-.394 1.231-1.159.886-4.42 3.177-5.187 3.716l-.584 2.546c.456.477 1.63 1.71 2.194 2.337.445.49.85 1.113.486 2.012-.343.845-.958 2.298-1.416 3.384l-.366.866c-.284.675-1.263.837-1.698.31-.195-.236-.266-.557-.2-.898.155-.809.5-2.578.653-3.364l-2.284-1.041c-.067 1.557-.22 5.104-.274 6.075-.033.591-.47 1.021-1.039 1.021m-7.72-17.988l-2.934 2.937 2.934 2.937 2.935-2.937-2.935-2.937zm0 1.415l1.521 1.522-1.521 1.522-1.52-1.522 1.52-1.522z"/>
-            </svg>
+            <img src="./img/team-2.png" alt="community driven icon" height="48" width="48">
           </div>
           <h3>Community-driven</h3>
         </div>
@@ -510,19 +625,21 @@
   </div>
 
   <div class="pres-section">
-    <h1 class="pres-title">For <span class="text-accent-color">developers</span></h1>
-
-    <div class="pres-desc">
-      <p>
-        Quotes as a service. A complete and easy solution to integrate with other services.
-        Use either the GraphQL API or the available SDK.
-      </p>
+    <div class="rocket-container">
+      <img class="rocket-container__rocket" src="./img/product-launch.png" alt="product launch icon" height="128" width="128" />
+      <img class="rocket-container__star" src="./img/star.png" alt="star icon" height="24" width="24" />
     </div>
 
-    <div style="position: relative; top: 40px;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24">
-        <path d="M23 17h-22v7h22v-7zm-20 5l.863-3h1.275l-.863 3h-1.275zm2.066 0l.863-3h1.275l-.863 3h-1.275zm2.067 0l.863-3h1.275l-.864 3h-1.274zm2.066 0l.863-3h1.274l-.863 3h-1.274zm3.341 0h-1.274l.863-3h1.275l-.864 3zm7.46-.5c-.552 0-1-.448-1-1s.448-1 1-1c.553 0 1 .448 1 1s-.447 1-1 1zm1-19.5v11h-18v-11h18zm2-2h-22v15h22v-15zm-13 7.5l-2.563-2.5-.771.751 1.794 1.749-1.794 1.749.771.751 2.563-2.5zm7 1.5h-5v1h5v-1z"/>
-      </svg>
+    <h1 class="pres-title">The <span class="text-accent-color">power</span> to build great things</h1>
+
+    <div class="pres-desc">
+      <span>
+        Quotes as a service. A complete and easy solution to integrate with other services.
+        Use either the GraphQL API or the available SDK.
+      </span>
+    </div>
+
+    <div class="code-card">
     </div>
 
     <div class="accent-color-button" style="top: 80px;">
