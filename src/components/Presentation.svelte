@@ -66,13 +66,13 @@
     transform: rotate(-15deg);
 
     position: absolute;
-    top: 190px;
+    top: 310px;
     left: -124px;
   }
 
   @media (max-width: 1080px) {
     .authors-wall-background {
-      top: 280px;
+      top: 350px;
     }
   }
 
@@ -85,7 +85,6 @@
   @media (max-width: 760px) {
     .authors-wall-background {
       height: 900px;
-      top: 280px;
       left: -140px;
     }
   }
@@ -100,7 +99,7 @@
   @media (max-width: 570px) {
     .authors-wall-background {
       height: 1050px;
-      top: 380px;
+      top: 450px;
       left: -160px;
     }
   }
@@ -296,6 +295,7 @@
     text-align: center;
 
     position: relative;
+    padding-top: 70px;
 
     overflow-x: hidden;
   }
@@ -634,8 +634,8 @@
 
     <div class="pres-desc">
       <span>
-        Quotes as a service. A complete and easy solution to integrate with other services.
-        Use either the GraphQL API or the available SDK.
+        Elegant ways to integrate quotes into your application.
+        Use either the GraphQL API or the available SDKs.
       </span>
     </div>
 
