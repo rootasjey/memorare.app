@@ -25,6 +25,10 @@ a:visited {
 	color: rgb(0,0,0);
 }
 
+textarea, select, input, button {
+	outline: none;
+}
+
 label {
 	display: block;
 }

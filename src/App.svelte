@@ -13,6 +13,7 @@
 	import Apps 					from './routes/Apps.svelte';
 	import Home 					from './routes/Home.svelte';
 	import Pricing 				from './routes/Pricing.svelte';
+	import Signin 				from './routes/Signin.svelte';
 
 	setClient(client);
 
@@ -27,6 +28,7 @@
 
 	.content {
 		min-height: 100%;
+		background-color: #eee;
 	}
 </style>
 
@@ -38,6 +40,7 @@
 			<Route path="/" component="{Home}" />
 			<Route path="/apps" component="{Apps}" />
 			<Route path="/pricing" component="{Pricing}" />
+			<Route path="/signin" component="{Signin}" />
 		</div>
 
 		<Footer />
