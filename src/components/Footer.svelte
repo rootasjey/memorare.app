@@ -1,3 +1,9 @@
+<script>
+  function goToExternal(link) {
+    window.open(link);
+  }
+</script>
+
 <style>
   footer {
     background-color: #eee;
@@ -60,7 +66,7 @@
       <li>Documentation</li>
       <li>API References</li>
       <li>API Status</li>
-      <li>GitHub</li>
+      <li on:click={() => goToExternal('https://github.com/memorare') }>GitHub</li>
     </ul>
   </div>
 
