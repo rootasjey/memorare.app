@@ -1,9 +1,11 @@
 <script>
-  import { onDestroy } from 'svelte';
-  import { query }  from 'svelte-apollo';
-  import { fly }    from 'svelte/transition';
+  import { onDestroy }  from 'svelte';
+  import { query }      from 'svelte-apollo';
+  import { fly }        from 'svelte/transition';
 
-  import Checkbox   from '../components/Checkbox.svelte';
+  import Checkbox       from '../components/Checkbox.svelte';
+  import TextLink       from '../components/TextLink.svelte';
+
   import {
     client,
     TINY_LIST_AUTHORS
@@ -36,7 +38,6 @@
   let timeoutId = 0;
 
   const intervalId = window.setInterval(() => {
-    console.log('interval');
     index = (index + 1) % authors.length;
 
     colorBackgroundStyle = 'opacity: 1';
@@ -77,11 +78,12 @@
 </script>
 
 <style>
-  .button-pink-round {
+  .action-button {
     color: white;
-    background-color: #f56498;
+    background-color: #706fd3;
 
     margin-top: 20px;
+    margin-bottom: 20px;
     padding: 10px 15px;
 
     border: 0;
@@ -97,8 +99,8 @@
     transition: .3s;
   }
 
-  .button-pink-round:hover {
-    background-color: #706fd3;
+  .action-button:hover {
+    background-color: #f56498;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 
     position: relative;
@@ -131,6 +133,7 @@
     min-height: 100%;
     background-color: #eee;
     padding-top: 50px;
+    padding-bottom: 50px;
   }
 
   .signin__card {
@@ -148,6 +151,8 @@
 
     background-color: #706fd3;
     border-radius: 5px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 
     background-repeat: no-repeat;
@@ -158,6 +163,15 @@
     animation-duration: 10s;
     animation-direction: alternate;
     animation-iteration-count: infinite;
+  }
+
+  @media (max-width: 880px) {
+    .signin__card-left {
+      height: 200px;
+      border-radius: 5px;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
   }
 
   .signin__card-left__bg-color {
@@ -206,6 +220,8 @@
 
     background-color: #eee;
     border-radius: 5px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   }
 
@@ -320,7 +336,9 @@
 
             <Checkbox label={"Remember me"} bind:checked={rememberMe} />
 
-            <button class="button-pink-round">Sign In</button>
+            <button class="action-button">Sign In</button>
+
+            <TextLink text="I don't have an account ?" onClick={toggleFormType} />
           </div>
         {:else}
            <div class="form form-signup" transition:fly="{{ y: 20, duration: 500 }}">
@@ -333,7 +351,9 @@
             <label for="password">Login</label>
             <input bind:value={login} type="text" name="login" placeholder="socrate">
 
-            <button class="button-pink-round">Sign Up</button>
+            <button class="action-button">Sign Up</button>
+
+            <TextLink text="I already have an account ?" onClick={toggleFormType} />
            </div>
         {/if}
       </div>
