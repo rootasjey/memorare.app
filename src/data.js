@@ -43,3 +43,17 @@ export const LIST_AUTHORS = gql`
     }
   }
 `;
+
+export const TINY_LIST_AUTHORS = gql`
+  {
+    listAuthors(limit: 3) {
+      entries {
+        name
+        imgUrl
+        quotes(limit: 1) {
+          name
+        }
+      }
+    }
+  }
+`;

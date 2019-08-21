@@ -1,6 +1,7 @@
 <script>
   import { getClient, query }     from 'svelte-apollo';
   import { navigate }             from 'svelte-routing';
+
   import { client, LIST_AUTHORS } from '../data';
 
   const listAuthors = query(client, { query: LIST_AUTHORS });
