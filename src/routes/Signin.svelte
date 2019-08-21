@@ -228,7 +228,7 @@
   .form {
     display: flex;
     flex-direction: column;
-    max-width: 300px;
+    width: 200px;
     min-height: 200px;
     padding: 40px;
 
@@ -271,7 +271,7 @@
     padding: 20px 30px;
     padding-bottom: 25px;
     margin-bottom: -5px;
-    width: 199px;
+    width: 219px;
 
     position: relative;
     top: 10px;
@@ -329,10 +329,10 @@
         {#if isSigninActive}
           <div class="form form-signin" transition:fly="{{ y: -20, duration: 500 }}">
             <label for="email" >Email</label>
-            <input bind:value={email} type="text" name="email" placeholder="socrate@philo.com">
+            <input bind:value={email} type="email" name="email" placeholder="socrate@philo.com" required>
 
             <label for="password">Password</label>
-            <input bind:value={password} type="password" name="password" placeholder="********">
+            <input bind:value={password} type="password" name="password" placeholder="********" required>
 
             <Checkbox label={"Remember me"} bind:checked={rememberMe} />
 
@@ -343,10 +343,10 @@
         {:else}
            <div class="form form-signup" transition:fly="{{ y: 20, duration: 500 }}">
             <label for="email" >Email</label>
-            <input bind:value={email} type="text" name="email" placeholder="socrate@philo.com">
+            <input bind:value={email} type="email" name="email" placeholder="socrate@philo.com" required>
 
             <label for="password">Password</label>
-            <input bind:value={password} type="text" name="password" placeholder="********">
+            <input bind:value={password} type="text" name="password" placeholder="********" required>
 
             <label for="password">Login</label>
             <input bind:value={login} type="text" name="login" placeholder="socrate">
