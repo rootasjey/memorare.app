@@ -1,17 +1,17 @@
 <script>
   export let color = '#f56498';
   export let fontSize = '.8em';
+  export let margin = 'auto';
   export let onClick = () => {}
   export let text = '';
 
-  let styles = `color: ${color}; font-size: ${fontSize};`;
+  let styles = `color: ${color}; font-size: ${fontSize}; margin: ${margin}`;
 </script>
 
 <style>
   .text-link {
     font-size: .8em;
     color: #f56498;
-    margin: auto;
 
     cursor: pointer;
     position:relative;

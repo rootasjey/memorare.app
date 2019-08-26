@@ -1,8 +1,8 @@
 <script>
   export let color      = '#706fd3';
-  export let height     = '20px';
+  export let height     = '10px';
   export let visibility = 'visible';
-  export let width      = '20px';
+  export let width      = '10px';
 
   $: heightPx = height.indexOf('px')  > -1 ? height : `${height}px`;
   $: widthPx  = width.indexOf('px')   > -1 ? width  : `${width}px`;
@@ -19,11 +19,8 @@
 <style>
   .spinner {
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255,255,255,.3);
+    border: 3px solid #716fd39c;
     border-radius: 50%;
-    border-top-color: #fff;
     animation: spin 1s ease-in-out infinite;
     -webkit-animation: spin 1s ease-in-out infinite;
   }

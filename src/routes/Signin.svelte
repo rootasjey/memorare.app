@@ -4,6 +4,8 @@
   import { fly }        from 'svelte/transition';
 
   import Checkbox       from '../components/Checkbox.svelte';
+  import ConfirmPass    from '../components/ConfirmPass.svelte';
+  import Input          from '../components/Input.svelte';
   import TextLink       from '../components/TextLink.svelte';
 
   import {
@@ -67,18 +69,25 @@
     window.clearTimeout(timeoutId);
   });
 
+  const onSubmit = () => {
+    console.log('submit form...')
+    console.log(email);
+  }
+
   // Form variables
-  let email               = '';
-  let password            = '';
-  let login               = '';
-  let isSigninActive      = true;
-  let rememberMe          = false;
+  let confirmPassword = '';
+  let email           = '';
+  let isSigninActive  = true;
+  let name            = '';
+  let password        = '';
+  let rememberMe      = false;
 
   const toggleFormType = () => isSigninActive = !isSigninActive;
 </script>
 
 <style>
   .action-button {
+    align-self: stretch;
     color: white;
     background-color: #706fd3;
 
@@ -145,7 +154,7 @@
   }
 
   .signin__card-left {
-    height: 450px;
+    height: 510px;
     width: 400px;
     padding: 20px;
 
@@ -210,7 +219,7 @@
   }
 
   .signin__card-right {
-    height: 450px;
+    height: 510px;
     width: 400px;
     padding: 20px;
 
@@ -228,6 +237,7 @@
   .form {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     width: 200px;
     min-height: 200px;
     padding: 40px;
@@ -240,27 +250,6 @@
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 
     z-index: 2;
-  }
-
-  .form > label {
-    color: #706fd3;
-  }
-
-  .form > input {
-    margin-bottom: 20px;
-
-    border: 0;
-    border-bottom: 2px solid #706fd3;
-
-    opacity: .3;
-    transition: .3s;
-  }
-
-  .form > input:focus {
-    opacity: 1;
-    border: 0;
-    border-bottom: 2px solid #706fd3;
-    transition: .3s;
   }
 
   .form-container > nav {
@@ -328,28 +317,30 @@
 
         {#if isSigninActive}
           <div class="form form-signin" transition:fly="{{ y: -20, duration: 500 }}">
-            <label for="email" >Email</label>
-            <input bind:value={email} type="email" name="email" placeholder="socrate@philo.com" required>
+            <Input label="Email" type="email" placeholder="socrate@philo.com" bind:inputValue={email} />
+            <Input label="Password" type="password" placeholder="********" />
 
-            <label for="password">Password</label>
-            <input bind:value={password} type="password" name="password" placeholder="********" required>
+            <TextLink text="I forgot my password ?" margin="-10px 0 20px 0" />
 
             <Checkbox label={"Remember me"} bind:checked={rememberMe} />
 
-            <button class="action-button">Sign In</button>
+            <button class="action-button" on:click={onSubmit}>Sign In</button>
 
             <TextLink text="I don't have an account ?" onClick={toggleFormType} />
           </div>
         {:else}
            <div class="form form-signup" transition:fly="{{ y: 20, duration: 500 }}">
-            <label for="email" >Email</label>
-            <input bind:value={email} type="email" name="email" placeholder="socrate@philo.com" required>
+            <Input label="Name" type="name" placeholder="Socrates"
+              bind:inputValue={name} checkValue={true} />
 
-            <label for="password">Password</label>
-            <input bind:value={password} type="text" name="password" placeholder="********" required>
+            <Input label="Email" type="email" placeholder="socrate@philo.com"
+              bind:inputValue={email} checkValue={true} />
 
-            <label for="password">Login</label>
-            <input bind:value={login} type="text" name="login" placeholder="socrate">
+            <Input label="Password" type="password" placeholder="********"
+              bind:inputValue={password} checkValue={true} />
+
+            <ConfirmPass label="Confirm Password" placeholder="********"
+              bind:inputValue={confirmPassword} valueToCheck={password} />
 
             <button class="action-button">Sign Up</button>
 

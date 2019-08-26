@@ -23,18 +23,26 @@ export const client = new ApolloClient({
   link: concat(authMiddleware, httpLink),
 });
 
-export const QUOTIDIAN = gql`
-  {
-    quotidian {
-      name
-      author
-      references
-    }
+export const IS_EMAIL_VALID = gql`
+  query ($email: String!) {
+    isEmailValid(email: $email)
+  }
+`;
+
+export const IS_NAME_VALID = gql`
+  query ($name: String!) {
+    isNameValid(name: $name)
+  }
+`;
+
+export const IS_PASSWORD_VALID = gql`
+  query ($password: String!) {
+    isPasswordValid(password: $password)
   }
 `;
 
 export const LIST_AUTHORS = gql`
-  {
+  query {
     listAuthors(limit: 10) {
       entries {
         name
@@ -44,8 +52,18 @@ export const LIST_AUTHORS = gql`
   }
 `;
 
+export const QUOTIDIAN = gql`
+  query {
+    quotidian {
+      name
+      author
+      references
+    }
+  }
+`;
+
 export const TINY_LIST_AUTHORS = gql`
-  {
+  query {
     listAuthors(limit: 3) {
       entries {
         name
