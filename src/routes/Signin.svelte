@@ -1,16 +1,23 @@
 <script>
   import { onDestroy }  from 'svelte';
-  import { query }      from 'svelte-apollo';
+  import {
+    query,
+    mutate,
+  } from 'svelte-apollo';
+
   import { fly }        from 'svelte/transition';
+  import { navigate }   from 'svelte-routing';
 
   import Checkbox       from '../components/Checkbox.svelte';
   import ConfirmPass    from '../components/ConfirmPass.svelte';
   import Input          from '../components/Input.svelte';
   import TextLink       from '../components/TextLink.svelte';
+  import { store }      from '../store';
 
   import {
     client,
-    TINY_LIST_AUTHORS
+    SIGNUP,
+    TINY_LIST_AUTHORS,
   } from '../data';
 
   const listAuthors = query(client, { query: TINY_LIST_AUTHORS });
@@ -22,6 +29,16 @@
   let authorQuote = '';
   let authorQuoteFontStyle = 'font-size: 2em;';
   let showAuthorQuote = true;
+
+  // Form variables
+  let confirmPassword = '';
+  let email           = '';
+  let isSigninActive  = true;
+  let name            = '';
+  let password        = '';
+  let rememberMe      = false;
+
+  const toggleFormType = () => isSigninActive = !isSigninActive;
 
   // Authors request
   (async function () {
@@ -69,20 +86,29 @@
     window.clearTimeout(timeoutId);
   });
 
-  const onSubmit = () => {
-    console.log('submit form...')
-    console.log(email);
+  const onSignin = () => {
+    console.log('signin...')
   }
 
-  // Form variables
-  let confirmPassword = '';
-  let email           = '';
-  let isSigninActive  = true;
-  let name            = '';
-  let password        = '';
-  let rememberMe      = false;
+  const onSignup = async () => {
+    try {
+      const response = await mutate(client, {
+        mutation: SIGNUP,
+        variables: { email, name, password },
+      });
 
-  const toggleFormType = () => isSigninActive = !isSigninActive;
+      const { _id, email: userEmail, name: userName, token } = response.data.signup;
+
+      store.saveData({ _id, email: userEmail, name: userName, token });
+
+      // Redirect
+      navigate(`/verifyemail/id=${_id}`);
+
+    } catch (error) {
+      // TODO: Redirect to a page.
+      console.error(error);
+    }
+  }
 </script>
 
 <style>
@@ -324,7 +350,7 @@
 
             <Checkbox label={"Remember me"} bind:checked={rememberMe} />
 
-            <button class="action-button" on:click={onSubmit}>Sign In</button>
+            <button class="action-button" on:click={onSignin}>Sign In</button>
 
             <TextLink text="I don't have an account ?" onClick={toggleFormType} />
           </div>
@@ -342,7 +368,7 @@
             <ConfirmPass label="Confirm Password" placeholder="********"
               bind:inputValue={confirmPassword} valueToCheck={password} />
 
-            <button class="action-button">Sign Up</button>
+            <button class="action-button" on:click={onSignup}>Sign Up</button>
 
             <TextLink text="I already have an account ?" onClick={toggleFormType} />
            </div>

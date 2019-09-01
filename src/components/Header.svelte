@@ -191,7 +191,7 @@
 
 <header>
   <div class="header-title" on:click={() => goTo('/')} >
-    <img src="./img/icon.png" alt="memorare icon" width="48" height="48" on:click={gotoTop}>
+    <img src="/img/icon.png" alt="memorare icon" width="48" height="48" on:click={gotoTop}>
     <h3>memorare</h3>
   </div>
 

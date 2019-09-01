@@ -19,6 +19,7 @@
     "apollo-link-http": "1.5.15",
     "graphql": "14.4.2",
     "graphql-tag": "2.10.1",
+    "query-string": "6.8.2",
     "sirv-cli": "0.4.4",
     "svelte-apollo": "0.3.0",
     "svelte-routing": "1.3.0"

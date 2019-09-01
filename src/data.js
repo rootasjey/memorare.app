@@ -12,6 +12,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext({
     headers: {
       apikey: config.apikey,
+      token: localStorage.getItem('token'),
     }
   });
 
@@ -58,6 +59,23 @@ export const QUOTIDIAN = gql`
       name
       author
       references
+    }
+  }
+`;
+
+export const SEND_EMAIL_VERIFICATION = gql`
+  query ($userId: String!) {
+    sendEmailVerification(userId: $userId)
+  }
+`;
+
+export const SIGNUP = gql`
+  mutation ($email: String!, $password: String!, $name: String!) {
+    signup(email: $email, password: $password, name: $name) {
+      _id
+      email
+      name
+      token
     }
   }
 `;

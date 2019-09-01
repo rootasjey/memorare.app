@@ -1,21 +1,30 @@
 <script>
-  export let color = '#f56498';
+  export let color    = '#f56498';
+  export let disabled = false;
   export let fontSize = '.8em';
-  export let margin = 'auto';
-  export let onClick = () => {}
-  export let text = '';
+  export let margin   = 'auto';
+  export let onClick  = () => {}
+  export let text     = '';
 
-  let styles = `color: ${color}; font-size: ${fontSize}; margin: ${margin}`;
+  let classes = 'text-link';
+
+  $: styles = `color: ${color}; font-size: ${fontSize}; margin: ${margin}`;
+
+  $: if (disabled) {
+    classes = 'text-link disabled';
+    color = '#535c68';
+
+  } else { classes = 'text-link'; color = '#f56498'; }
+
 </script>
 
 <style>
   .text-link {
     font-size: .8em;
-    color: #f56498;
 
     cursor: pointer;
     position:relative;
-    transition:0.5s color ease;
+    transition: 0.5s color ease;
   }
 
   .text-link:after {
@@ -40,8 +49,16 @@
     transition: .3s;
   }
 
+  .text-link.disabled {
+    cursor: default;
+  }
+
+  .text-link.disabled:after {
+    background: transparent;
+  }
+
 </style>
 
-<div class="text-link" style="{styles}" on:click={onClick}>
+<div class="{classes}" style="{styles}" on:click={onClick}>
   <span>{text}</span>
 </div>

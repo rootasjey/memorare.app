@@ -14,6 +14,7 @@
 	import Home 					from './routes/Home.svelte';
 	import Pricing 				from './routes/Pricing.svelte';
 	import Signin 				from './routes/Signin.svelte';
+	import VerifyEmail 		from './routes/VerifyEmail.svelte';
 
 	setClient(client);
 
@@ -41,6 +42,9 @@
 			<Route path="/apps" component="{Apps}" />
 			<Route path="/pricing" component="{Pricing}" />
 			<Route path="/signin" component="{Signin}" />
+			<Route path="/verifyemail/:tokenid" let:params>
+				<VerifyEmail tokenid="{params.tokenid}"/>
+			</Route>
 		</div>
 
 		<Footer />

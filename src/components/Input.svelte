@@ -97,6 +97,10 @@
         const responseOk = response.data[getResponseKey()];
 
         isValid = isFormatValid && responseOk;
+      })
+      .catch((reason) => {
+        isChecking = false;
+        isValid = false;
       });
   }
 </script>
