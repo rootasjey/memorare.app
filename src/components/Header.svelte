@@ -70,7 +70,7 @@
   }
 
   nav > div:hover {
-    color: #720fd3;
+    color: #706fd3;
     transition: .5s;
   }
 

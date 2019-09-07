@@ -24,6 +24,16 @@ export const client = new ApolloClient({
   link: concat(authMiddleware, httpLink),
 });
 
+export const CHECK_EMAIL = gql`
+  mutation ($userId: String!, $token: String!) {
+    checkEmail(userId: $userId, token: $token) {
+      _id
+      name
+      emailConfig { isVerified }
+    }
+  }
+`;
+
 export const IS_EMAIL_VALID = gql`
   query ($email: String!) {
     isEmailValid(email: $email)
