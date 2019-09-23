@@ -7,6 +7,7 @@
   const username = store.getValue('name');
 
   let isTinyNavVisible = false;
+  let isUserMenuOpened = false;
 
   function gotoTop() {
     window.scrollTo(0, 0);
@@ -20,6 +21,8 @@
   function toggleNav() {
     isTinyNavVisible = !isTinyNavVisible;
   }
+
+  const toggleUserMenu = () => isUserMenuOpened = !isUserMenuOpened;
 </script>
 
 <style>
@@ -160,6 +163,40 @@
     transition: .3s;
   }
 
+  .user-nav {
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+    right: 70px;
+    top: 80px;
+
+    color: white;
+    background-color: #f56498;
+    padding: 20px;
+
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
+    z-index: 4;
+  }
+
+  .user-nav > ul {
+    padding: 0;
+  }
+
+  .user-nav li {
+    list-style-type: none;
+    padding: 5px 0;
+    cursor: pointer;
+
+    transition: .3s;
+  }
+
+  .user-nav li:hover {
+    color: #706fd3;
+    transition: .3s;
+  }
+
   @media (max-width: 670px) {
     header {
       position: fixed;
@@ -222,13 +259,24 @@
     <div on:click={() => goTo('/pricing')}> Pricing </div>
 
     {#if username}
-      <div class="user-avatar">
+      <div class="user-avatar" on:click={toggleUserMenu}>
         <img src="" alt="" height="40" width="40">
       </div>
     {:else}
       <div on:click={() => goTo('/signin')} class="button-pink-round">Sign  in</div>
     {/if}
   </nav>
+
+  {#if isUserMenuOpened}
+    <nav class="user-nav" transition:fly={{ y: 10 }}>
+      <ul>
+        <li>Welcome</li>
+        <li>Add quote</li>
+        <li>Favorites</li>
+        <li>Lists</li>
+      </ul>
+    </nav>
+  {/if}
 
   {#if isTinyNavVisible}
     <nav class="tinyNav" transition:fly="{{ y: 200, duration: 1000 }}">
