@@ -27,7 +27,7 @@
 
 <div class="home">
 	<div class="hero">
-		<Quotidian />
+		<Quotidian top="-100px" />
 	</div>
 
 	<Presentation />

@@ -3,6 +3,12 @@
   import { client, QUOTIDIAN } from '../data';
 
   const quotidian = query(client, { query: QUOTIDIAN });
+
+  export let top = '0';
+
+  let style = `
+    top: ${top};
+  `;
 </script>
 
 <style>
@@ -16,7 +22,6 @@
 		padding: 50px;
     width: 50%;
 
-    top: -100px;
     position: relative;
 
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -34,7 +39,7 @@
   }
 </style>
 
-<div class="quote-container">
+<div class="quote-container" style="{style}">
   {#await $quotidian}
     <!-- $quotidian is pending -->
     <div class="quote-loading">
@@ -55,6 +60,8 @@
     </div>
   {:catch error}
     <!-- $quotidian was rejected -->
-    <h1>An error occurred while loading. Please contact...</h1>
+    <div class="quote-error">
+      <h1>An error occurred while loading. Please contact...</h1>
+    </div>
   {/await}
 </div>

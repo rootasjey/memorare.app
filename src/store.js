@@ -4,6 +4,10 @@ class Store {
     localStorage.clear();
   }
 
+  getValue(name = '') {
+    return localStorage.getItem(name);
+  }
+
   saveData({ _id, email, name, token }) {
     localStorage.setItem('id', _id);
     localStorage.setItem('email', email);

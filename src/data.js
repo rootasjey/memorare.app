@@ -103,3 +103,11 @@ export const TINY_LIST_AUTHORS = gql`
     }
   }
 `;
+
+export const TIP = gql`
+  query {
+    tip {
+      name
+    }
+  }
+`;

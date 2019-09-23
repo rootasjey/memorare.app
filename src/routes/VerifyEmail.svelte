@@ -1,6 +1,7 @@
 <script>
   import queryString        from 'query-string';
   import { query, mutate }  from 'svelte-apollo';
+  import { navigate }       from 'svelte-routing';
   import { fly }            from 'svelte/transition';
 
   import {
@@ -40,10 +41,10 @@
     isEmailVerified = true;
 
     // Redirect after 2 sec.
+    window.setTimeout(() => navigate('/welcome'), 2000);
   }
 
   if (id && token) { // If token is defined, auto-send request and redirect.
-    console.log('auto-send request for email verification...');
     onCheckEmail(id, token).catch((reason) => console.error(reason));
   }
 
@@ -51,6 +52,8 @@
     query: SEND_EMAIL_VERIFICATION,
     variables: { userId: id },
   });
+
+  const onGotoWelcomePage = () => navigate('/welcome');
 
   const onResendEmail = () => {
     if (emailSent || isSendingEmail) { return; }

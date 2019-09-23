@@ -2,6 +2,10 @@
   import { fly } from 'svelte/transition';
   import { Link, navigate } from 'svelte-routing';
 
+  import { store } from '../store';
+
+  const username = store.getValue('name');
+
   let isTinyNavVisible = false;
 
   function gotoTop() {
@@ -41,7 +45,7 @@
 
   .header-title img:hover {
     transition: .5s;
-    transform: rotate(360deg);
+    transform: scale(1.1);
   }
 
   .header-title:hover {
@@ -139,6 +143,23 @@
     display: none;
   }
 
+  .user-avatar {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background-color: #f56498;
+
+    position: relative;
+    top: -10px;
+
+    transition: .3s;
+  }
+
+  .user-avatar:hover {
+    transform: scale(1.1);
+    transition: .3s;
+  }
+
   @media (max-width: 670px) {
     header {
       position: fixed;
@@ -199,7 +220,14 @@
     <div on:click={() => goTo('/apps')}> Apps </div>
     <div on:click={() => goTo('/developers')}> Developers </div>
     <div on:click={() => goTo('/pricing')}> Pricing </div>
-    <div on:click={() => goTo('/signin')} class="button-pink-round"> Sign  in</div>
+
+    {#if username}
+      <div class="user-avatar">
+        <img src="" alt="" height="40" width="40">
+      </div>
+    {:else}
+      <div on:click={() => goTo('/signin')} class="button-pink-round">Sign  in</div>
+    {/if}
   </nav>
 
   {#if isTinyNavVisible}
