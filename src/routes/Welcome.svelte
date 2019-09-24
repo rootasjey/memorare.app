@@ -1,13 +1,12 @@
 <script>
   import { navigate } from 'svelte-routing';
 
-  import { store } from '../store';
+  import { settings } from '../settings';
   import Quotidian from '../components/Quotidian.svelte';
 
-  const savedName = store.getValue('name');
-  let username = savedName ? savedName : 'Anonymous';
+  let username = settings.getValue('name');
 
-  if (!username) {
+  if (typeof username !== 'string' || username.length === 0) {
     navigate('/signin');
   }
 </script>

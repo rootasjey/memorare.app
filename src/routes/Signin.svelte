@@ -12,10 +12,14 @@
   import ConfirmPass    from '../components/ConfirmPass.svelte';
   import Input          from '../components/Input.svelte';
   import TextLink       from '../components/TextLink.svelte';
-  import { store }      from '../store';
+  import {
+    isUserAuthenticated,
+    settings
+    } from '../settings';
 
   import {
     client,
+    SIGNIN,
     SIGNUP,
     TINY_LIST_AUTHORS,
   } from '../data';
@@ -86,8 +90,24 @@
     window.clearTimeout(timeoutId);
   });
 
-  const onSignin = () => {
-    console.log('signin...')
+  const onSignin = async () => {
+    try {
+      const response = await mutate(client, {
+        mutation: SIGNIN,
+        variables: { login: email, pass: password },
+      });
+
+      const { _id, email: userEmail, name: userName, token } = response.data.signin;
+
+      settings.saveData({ _id, email: userEmail, name: userName, token });
+
+      isUserAuthenticated.set(true);
+
+      navigate('/welcome');
+
+    } catch(error) {
+      console.error(error);
+    }
   }
 
   const onSignup = async () => {
@@ -99,9 +119,8 @@
 
       const { _id, email: userEmail, name: userName, token } = response.data.signup;
 
-      store.saveData({ _id, email: userEmail, name: userName, token });
+      settings.saveData({ _id, email: userEmail, name: userName, token });
 
-      // Redirect
       navigate(`/verifyemail/id=${_id}`);
 
     } catch (error) {
@@ -344,7 +363,7 @@
         {#if isSigninActive}
           <div class="form form-signin" transition:fly="{{ y: -20, duration: 500 }}">
             <Input label="Email" type="email" placeholder="socrate@philo.com" bind:inputValue={email} />
-            <Input label="Password" type="password" placeholder="********" />
+            <Input label="Password" type="password" placeholder="********" bind:inputValue={password} />
 
             <TextLink text="I forgot my password ?" margin="-10px 0 20px 0" />
 

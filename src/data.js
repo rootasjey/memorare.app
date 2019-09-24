@@ -90,6 +90,17 @@ export const SIGNUP = gql`
   }
 `;
 
+export const SIGNIN = gql`
+  mutation ($login: String!, $pass: String!) {
+    signin(login: $login, pass: $pass) {
+      _id
+      email
+      name
+      token
+    }
+  }
+`;
+
 export const TINY_LIST_AUTHORS = gql`
   query {
     listAuthors(limit: 3) {

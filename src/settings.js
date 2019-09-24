@@ -1,5 +1,7 @@
+import { writable } from 'svelte/store';
+
 /** Application's data store. */
-class Store {
+class Settings {
   clearData() {
     localStorage.clear();
   }
@@ -17,4 +19,10 @@ class Store {
 }
 
 /** Application's data store. */
-export const store = new Store();
+export const settings = new Settings();
+
+export const isUserAuthenticated = writable(false);
+
+if (settings.getValue('name')) {
+  isUserAuthenticated.set(true);
+}

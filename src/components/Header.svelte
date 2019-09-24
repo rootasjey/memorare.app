@@ -2,9 +2,11 @@
   import { fly } from 'svelte/transition';
   import { Link, navigate } from 'svelte-routing';
 
-  import { store } from '../store';
+  import { isUserAuthenticated, settings } from '../settings';
 
-  const username = store.getValue('name');
+  let username = settings.getValue('name');
+
+  $: if ($isUserAuthenticated) { username = settings.getValue('name'); }
 
   let isTinyNavVisible = false;
   let isUserMenuOpened = false;
@@ -20,6 +22,18 @@
 
   function toggleNav() {
     isTinyNavVisible = !isTinyNavVisible;
+  }
+
+  function goAndClose(route) {
+    goTo(route);
+    isUserMenuOpened = false;
+  }
+
+  function signOut() {
+    settings.clearData();
+
+    isUserAuthenticated.set(false);
+    goAndClose('/');
   }
 
   const toggleUserMenu = () => isUserMenuOpened = !isUserMenuOpened;
@@ -142,6 +156,23 @@
     margin: 5px;
   }
 
+  .item-multiline {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .item-multiline > span:first-child {
+    max-width: 100px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-weight: 700;
+  }
+
+  .item-multiline > span:last-child {
+    font-size: .8em;
+    font-weight: lighter;
+  }
+
   .tinyNav {
     display: none;
   }
@@ -168,12 +199,14 @@
     flex-direction: column;
 
     position: absolute;
-    right: 70px;
+    right: 60px;
     top: 80px;
 
     color: white;
     background-color: #f56498;
-    padding: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
 
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 
@@ -258,7 +291,7 @@
     <div on:click={() => goTo('/developers')}> Developers </div>
     <div on:click={() => goTo('/pricing')}> Pricing </div>
 
-    {#if username}
+    {#if $isUserAuthenticated}
       <div class="user-avatar" on:click={toggleUserMenu}>
         <img src="" alt="" height="40" width="40">
       </div>
@@ -270,10 +303,15 @@
   {#if isUserMenuOpened}
     <nav class="user-nav" transition:fly={{ y: 10 }}>
       <ul>
-        <li>Welcome</li>
+        <li class="item-multiline">
+          <span class="header">{username}</span>
+          <span class="subheader">Account settings</span>
+        </li>
+        <li on:click={() => goAndClose('/welcome')}>Welcome</li>
         <li>Add quote</li>
         <li>Favorites</li>
         <li>Lists</li>
+        <li on:click={signOut}>Sign out</li>
       </ul>
     </nav>
   {/if}
