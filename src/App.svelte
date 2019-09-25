@@ -8,6 +8,7 @@
 	} from 'svelte-routing';
 
 	import { client } 		from './data';
+	import AddQuote				from './routes/AddQuote.svelte';
 	import Footer					from './components/Footer.svelte';
 	import Header 				from './components/Header.svelte';
 	import Apps 					from './routes/Apps.svelte';
@@ -47,6 +48,7 @@
 				<VerifyEmail tokenid="{params.tokenid}"/>
 			</Route>
 			<Route path="/welcome" component="{Welcome}" />
+			<Route path="/addquote" component="{AddQuote}" />
 		</div>
 
 		<Footer />

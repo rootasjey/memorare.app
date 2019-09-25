@@ -24,6 +24,45 @@ export const client = new ApolloClient({
   link: concat(authMiddleware, httpLink),
 });
 
+export const PROPOSE_QUOTE = gql`
+  mutation (
+    $authorName: String,
+    $authorSummary: String,
+    $authorUrl: String,
+    $comment: String,
+    $lang: String,
+    $name: String!
+    $origin: String,
+    $refName: String,
+    $refLang: String,
+    $refUrl: String,
+    $topics: [String],
+  ) {
+
+    createTempQuote(
+      authorName: $authorName
+      authorSummary: $authorSummary
+      authorUrl: $authorUrl
+      comment: $comment
+      lang: $lang
+      name: $name
+      origin: $origin
+      refName: $refName
+      refLang: $refLang
+      refUrl: $refUrl
+      topics: $topics
+    ) {
+      _id
+      date
+      name
+      validation {
+        date
+        status
+      }
+    }
+  }
+`;
+
 export const CHECK_EMAIL = gql`
   mutation ($userId: String!, $token: String!) {
     checkEmail(userId: $userId, token: $token) {

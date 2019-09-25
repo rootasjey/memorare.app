@@ -308,7 +308,7 @@
           <span class="subheader">Account settings</span>
         </li>
         <li on:click={() => goAndClose('/welcome')}>Welcome</li>
-        <li>Add quote</li>
+        <li on:click={() => goAndClose('/addquote')}>Add quote</li>
         <li>Favorites</li>
         <li>Lists</li>
         <li on:click={signOut}>Sign out</li>
