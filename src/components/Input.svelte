@@ -112,6 +112,7 @@
 
   input {
     margin-bottom: 20px;
+    width: 180px;
 
     border: 0;
     border-bottom: 2px solid #706fd3;
@@ -127,41 +128,53 @@
     transition: .3s;
   }
 
+  input:required {
+    box-shadow: none;
+  }
+
+  .input-container {
+    display: flex;
+  }
+
   .check-icon {
     color: #a3cb38;
+    font-size: 1.5em;
   }
 
   .cross-icon {
     color: #f56498;
+    font-size: 1.5em;
   }
 </style>
 
 <div>
   <label for="input" >{label}</label>
 
-  {#if type.toLowerCase() === 'email'}
-    <input bind:value={inputValue} bind:this={input}
-            type="email" name="input" placeholder="{placeholder}" required
-            pattern="{pattern}" on:change={onChange}>
+  <div class="input-container">
+    {#if type.toLowerCase() === 'email'}
+      <input bind:value={inputValue} bind:this={input}
+              type="email" name="input" placeholder="{placeholder}" required
+              pattern="{pattern}" on:change={onChange}>
 
-  {:else if type.toLowerCase() === 'password'}
-    <input bind:value={inputValue} bind:this={input}
-            type="password" name="input" placeholder="{placeholder}" required
-            pattern="{pattern}" on:change={onChange}>
-  {:else}
-     <!-- else type === 'text' -->
-    <input bind:value={inputValue} bind:this={input}
-            type="text" name="input" placeholder="{placeholder}" required
-            pattern="{pattern}" on:change={onChange}>
-  {/if}
-
-  {#if checkValue}
-    {#if isChecking}
-      <Spinner />
-    {:else if isValid}
-      <span class="check-icon">&#10003;</span>
+    {:else if type.toLowerCase() === 'password'}
+      <input bind:value={inputValue} bind:this={input}
+              type="password" name="input" placeholder="{placeholder}" required
+              pattern="{pattern}" on:change={onChange}>
     {:else}
-      <span class="cross-icon">&#10539;</span>
+      <!-- else type === 'text' -->
+      <input bind:value={inputValue} bind:this={input}
+              type="text" name="input" placeholder="{placeholder}" required
+              pattern="{pattern}" on:change={onChange}>
     {/if}
-  {/if}
+
+    {#if checkValue}
+      {#if isChecking}
+        <Spinner />
+      {:else if isValid}
+        <span class="check-icon">&#10003;</span>
+      {:else}
+        <span class="cross-icon">&#215;</span>
+      {/if}
+    {/if}
+  </div>
 </div>
