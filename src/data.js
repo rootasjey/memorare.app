@@ -36,7 +36,7 @@ export const PROPOSE_QUOTE = gql`
     $refName: String,
     $refLang: String,
     $refUrl: String,
-    $topics: [String],
+    $topics: [String!],
   ) {
 
     createTempQuote(

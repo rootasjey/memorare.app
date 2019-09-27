@@ -1,6 +1,6 @@
 <script>
   import { fly } from 'svelte/transition';
-  import { Link, navigate } from 'svelte-routing';
+  import { navigate } from 'svelte-routing';
 
   import { isUserAuthenticated, settings } from '../settings';
 
