@@ -118,6 +118,16 @@ export const SEND_EMAIL_VERIFICATION = gql`
   }
 `;
 
+export const SET_VALIDATION_STATUS = gql`
+  mutation ($id: String!, $status: String!) {
+    setValidationStatus(id: $id, status: $status) {
+      validation {
+        status
+      }
+    }
+  }
+`;
+
 export const SIGNUP = gql`
   mutation ($email: String!, $password: String!, $name: String!) {
     signup(email: $email, password: $password, name: $name) {
@@ -136,6 +146,28 @@ export const SIGNIN = gql`
       email
       name
       token
+    }
+  }
+`;
+
+export const TEMP_QUOTES = gql`
+  query ($limit: Float, $skip: Float) {
+    tempQuotes(limit: $limit, skip: $skip) {
+      entries {
+        _id
+        name
+        author {
+          name
+        }
+        validation {
+          status
+        }
+      }
+      pagination {
+        limit
+        skip
+        nextSkip
+      }
     }
   }
 `;

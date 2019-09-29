@@ -8,13 +8,14 @@
 	} from 'svelte-routing';
 
 	import { client } 		from './data';
-	import AddQuote				from './routes/AddQuote.svelte';
 	import Footer					from './components/Footer.svelte';
 	import Header 				from './components/Header.svelte';
+	import AddQuote				from './routes/AddQuote.svelte';
 	import Apps 					from './routes/Apps.svelte';
 	import Home 					from './routes/Home.svelte';
 	import Pricing 				from './routes/Pricing.svelte';
 	import Signin 				from './routes/Signin.svelte';
+	import TempQuotes 		from './routes/TempQuotes.svelte';
 	import VerifyEmail 		from './routes/VerifyEmail.svelte';
 	import Welcome				from './routes/Welcome.svelte';
 
@@ -49,6 +50,7 @@
 			</Route>
 			<Route path="/welcome" component="{Welcome}" />
 			<Route path="/addquote" component="{AddQuote}" />
+			<Route path="/admin/tempquotes" component="{TempQuotes}" />
 		</div>
 
 		<Footer />
