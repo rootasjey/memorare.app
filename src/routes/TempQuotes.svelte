@@ -12,12 +12,13 @@
 
   import {
     client,
+    DELETE_TEMP_QUOTE_ADMIN,
     SET_VALIDATION_STATUS,
     TEMP_QUOTES,
     VALIDATE_TEMP_QUOTE,
   } from '../data';
 
-  let limit       = 2;
+  let limit       = 10;
   let queryStatus = 'loading'; // loading || completed || error
   let skip        = 0;
   let tempQuotes  = [];
@@ -122,8 +123,22 @@
 
   }
 
-  async function onDelete() {
+  async function onDelete(quote) {
+    const { _id: id } = quote;
 
+    try {
+      const response = await mutate(client, {
+        mutation: DELETE_TEMP_QUOTE_ADMIN,
+        variables: { id },
+      });
+
+      const deleteTempQuote = response.data.deleteTempQuoteAdmin;
+
+      tempQuotes = tempQuotes.filter((tempQuote) => tempQuote._id !== id);
+
+    } catch (error) {
+      console.log(error);
+    }
   }
 </script>
 

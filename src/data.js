@@ -73,6 +73,14 @@ export const CHECK_EMAIL = gql`
   }
 `;
 
+export const DELETE_TEMP_QUOTE_ADMIN = gql`
+  mutation ($id: String!) {
+    deleteTempQuoteAdmin(id: $id) {
+      _id
+    }
+  }
+`;
+
 export const IS_EMAIL_VALID = gql`
   query ($email: String!) {
     isEmailValid(email: $email)
