@@ -6,31 +6,50 @@
 
   import { fly } from 'svelte/transition';
 
+  import Button   from '../components/Button.svelte';
+  import Spinner  from '../components/Spinner.svelte';
   import {
     client,
     SET_VALIDATION_STATUS,
-    TEMP_QUOTES
+    TEMP_QUOTES,
+    VALIDATE_TEMP_QUOTE,
   } from '../data';
 
-  import Button from '../components/Button.svelte';
+  let limit       = 5;
+  let queryStatus = 'loading';
+  let skip        = 0;
+  let tempQuotes  = [];
 
-  let limit = 5;
-  let skip = 0;
-  const tempQuotes = [];
-  let listTempQuotes;
+  $: spinnerVisibility = queryStatus === 'loading' ? 'visible' : 'hidden';
 
-  const tempQuotesQuery = query(client, {
+  const queryTempQuotes = query(client, {
     query: TEMP_QUOTES,
     variables: { limit, skip },
   });
 
-  async function onSwitchStatus(quote, domIndex) {
+  async function fetchTempQuotes() {
+    try {
+      const response = await queryTempQuotes.result();
+      tempQuotes = response.data.tempQuotes.entries;
+
+      const { pagination } = response.data.tempQuotes;
+      limit = pagination.limit;
+      skip = pagination.nextSkip;
+
+      queryStatus = 'completed';
+
+    } catch (error) {
+      console.error(error);
+      queryStatus = 'error';
+    }
+  }
+
+  fetchTempQuotes();
+
+  async function onSwitchStatus(quote) {
     const { _id: id, validation: { status: currentStatus } } = quote;
 
-    const button = listTempQuotes.querySelector(`.status-button[data-index="${domIndex}"]`);
-    if (!button) { return; }
-
-    const status = button.dataset.value === 'ko' ? 'ok' : 'ko';
+    const status = currentStatus === 'ko' ? 'ok' : 'ko';
 
     try {
       const response = await mutate(client, {
@@ -40,12 +59,27 @@
 
       const { validation } = response.data.setValidationStatus;
 
-      button.textContent = `status: ${validation.status}`;
-      button.dataset.value = validation.status;
+      quote.validation.status = validation.status;
+
+      tempQuotes = tempQuotes;
 
     } catch (error) {
       console.error(error);
     }
+  }
+
+  async function onValidate(quote) {
+    const { _id: id, validation: { status: currentStatus } } = quote;
+
+    try {
+      const response = await mutate(client, {
+        mutation: VALIDATE_TEMP_QUOTE,
+        variables: { id },
+      });
+
+      tempQuotes = tempQuotes.filter((tempQuote) => tempQuote._id !== id);
+
+    } catch (error) { console.error(error); }
   }
 
 </script>
@@ -109,36 +143,34 @@
   </div>
 
   <div class="content">
-    {#await $tempQuotesQuery}
-      <!-- $tempQuotesQuery is pending -->
-    {:then result}
-      <!-- $tempQuotesQuery was fulfilled -->
-      <div class="list-temp-quote" bind:this={listTempQuotes}>
-        {#each result.data.tempQuotes.entries as quote, index}
-          <div class="temp-quote" transition:fly="{{ y: 10, duration: 200 * index }}">
-            <div class="temp-quote__content">
-              {quote.name}
-            </div>
+      {#if queryStatus === 'loading'}
+        <div>
+          <Spinner visibility={spinnerVisibility} />
+          <span>Loading temporary quotes...</span>
+        </div>
+      {:else if queryStatus === 'completed' }
+         <div class="list-temp-quote">
+          {#each tempQuotes as quote, index}
+            <div class="temp-quote" transition:fly="{{ y: 10, duration: 200 * index }}">
+              <div class="temp-quote__content">
+                {quote.name}
+              </div>
 
-            <div class="temp-quote__footer">
-              <Button value={`Status: ${quote.validation.status}`}
-                margin="5px"
-                additionalClass="status-button"
-                dataIndex={index}
-                dataValue={quote.validation.status}
-                onClick={() => onSwitchStatus(quote, index) } />
+              <div class="temp-quote__footer">
+                <Button value={`Status: ${quote.validation.status}`}
+                  margin="5px"
+                  onClick={() => onSwitchStatus(quote) } />
 
-              <Button value="Validate" margin="5px" dataIndex={index}
-                additionalClass="validation-button" />
+                <Button value="Validate" margin="5px"
+                  onClick={() => onValidate(quote) } />
+              </div>
             </div>
-          </div>
-        {:else}
-          <div>There's currently no temporary quotes. You're all clean!</div>
-        {/each}
-      </div>
-    {:catch error}
-      <!-- $tempQuotesQuery was rejected -->
-      <div>Hu ho...The fetch query (to retrieve temporary quotes) could not be fulfilled.</div>
-    {/await}
+          {:else}
+            <div>There's currently no temporary quotes. You're all clean!</div>
+          {/each}
+        </div>
+      {:else}
+        <div>Hu ho...The fetch query (to retrieve temporary quotes) could not be fulfilled.</div>
+      {/if}
   </div>
 </div>

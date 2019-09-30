@@ -113,7 +113,6 @@
       });
 
       const result = response.data.createTempQuote;
-      console.log(result)
 
       pageState = 'success';
 

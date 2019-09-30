@@ -1,7 +1,5 @@
 <script>
   export let additionalClass  = '';
-  export let dataIndex        = 0;
-  export let dataValue        = '';
   export let margin           = 0;
   export let onClick          = () => {};
   export let value            = '';
@@ -56,8 +54,7 @@
 
 </style>
 
-<div class={classes} style="{styles}"
-  data-index={dataIndex} data-value={dataValue} on:click={onClick}>
+<div class={classes} style="{styles}" on:click={onClick}>
   <slot></slot>
   <span>{value}</span>
 </div>

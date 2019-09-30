@@ -128,6 +128,14 @@ export const SET_VALIDATION_STATUS = gql`
   }
 `;
 
+export const VALIDATE_TEMP_QUOTE = gql`
+  mutation ($id: String!) {
+    validateTempQuote(id: $id) {
+      _id
+    }
+  }
+`;
+
 export const SIGNUP = gql`
   mutation ($email: String!, $password: String!, $name: String!) {
     signup(email: $email, password: $password, name: $name) {
