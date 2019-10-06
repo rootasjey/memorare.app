@@ -18,6 +18,8 @@
     VALIDATE_TEMP_QUOTE,
   } from '../data';
 
+  import { handle } from '../errors';
+
   let limit       = 10;
   let queryStatus = 'loading'; // loading || completed || error
   let skip        = 0;
@@ -44,8 +46,8 @@
       queryStatus = 'completed';
 
     } catch (error) {
-      console.error(error);
       queryStatus = 'error';
+      handle(error);
     }
   }
 
@@ -69,7 +71,7 @@
       tempQuotes = tempQuotes;
 
     } catch (error) {
-      console.error(error);
+      handle(error);
     }
   }
 
@@ -84,7 +86,9 @@
 
       tempQuotes = tempQuotes.filter((tempQuote) => tempQuote._id !== id);
 
-    } catch (error) { console.error(error); }
+    } catch (error) {
+      handle(error);
+    }
   }
 
   async function onRefresh() {
@@ -117,8 +121,8 @@
       }, 100);
 
     } catch (error) {
-      console.error(error);
       queryStatus = 'error';
+      handle(error);
     }
 
   }
@@ -137,7 +141,7 @@
       tempQuotes = tempQuotes.filter((tempQuote) => tempQuote._id !== id);
 
     } catch (error) {
-      console.log(error);
+      handle(error);
     }
   }
 </script>
@@ -233,7 +237,7 @@
         </div>
       {:else if queryStatus === 'completed' }
         <div class="content__buttons-container">
-          <IconButton onClick={() => onRefresh()} backgroundColor="#f56498">
+          <IconButton onClick={() => onRefresh()} backgroundColor="#8395a7">
             <span class="icon-button__icon">&#8634;</span>
           </IconButton>
         </div>
@@ -257,7 +261,7 @@
                   </svg>
                 </IconButton>
 
-                <IconButton margin="5px" onClick={() => onDelete(quote) } >
+                <IconButton margin="5px" onClick={() => onDelete(quote) } backgroundColor="#ff6b6b" >
                   <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="white" fill-rule="evenodd" clip-rule="evenodd"><path d="M19 24h-14c-1.104 0-2-.896-2-2v-17h-1v-2h6v-1.5c0-.827.673-1.5 1.5-1.5h5c.825 0 1.5.671 1.5 1.5v1.5h6v2h-1v17c0 1.104-.896 2-2 2zm0-19h-14v16.5c0 .276.224.5.5.5h13c.276 0 .5-.224.5-.5v-16.5zm-7 7.586l3.293-3.293 1.414 1.414-3.293 3.293 3.293 3.293-1.414 1.414-3.293-3.293-3.293 3.293-1.414-1.414 3.293-3.293-3.293-3.293 1.414-1.414 3.293 3.293zm2-10.586h-4v1h4v-1z"/>
                   </svg>
                 </IconButton>
