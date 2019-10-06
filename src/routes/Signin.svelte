@@ -37,6 +37,7 @@
   // Form variables
   let confirmPassword = '';
   let email           = '';
+  let formContainer;
   let isSigninActive  = true;
   let name            = '';
   let password        = '';
@@ -89,6 +90,40 @@
     window.clearInterval(intervalId);
     window.clearTimeout(timeoutId);
   });
+
+  const onEnterNextInput = (event) => {
+    const { target } = event;
+    const inputs = formContainer.querySelectorAll('input');
+
+    let indexMatch;
+
+    Array
+      .from(inputs)
+      .some((input, index) => {
+        if (input === target) {
+          indexMatch = index;
+          return true;
+        }
+
+        return false;
+    });
+
+    if (indexMatch >= inputs.length) { return; }
+
+    const nextInput = inputs[indexMatch + 1];
+    if (!nextInput || !nextInput.focus) { return; }
+
+    nextInput.focus();
+  }
+
+  const onEnterValidate = () => {
+    if (isSigninActive) {
+      onSignin();
+      return;
+    }
+
+    onSignup();
+  }
 
   const onSignin = async () => {
     try {
@@ -349,7 +384,7 @@
     </div>
 
     <div class="signin__card-right">
-      <div class="form-container">
+      <div class="form-container" bind:this={formContainer}>
         <nav>
           <span class:active="{isSigninActive}" on:click={toggleFormType}>Sign In</span>
           <span class:active="{!isSigninActive}" on:click={toggleFormType}>Sign Up</span>
@@ -362,8 +397,13 @@
 
         {#if isSigninActive}
           <div class="form form-signin" transition:fly="{{ y: -20, duration: 500 }}">
-            <Input label="Email" type="email" placeholder="socrate@philo.com" bind:inputValue={email} />
-            <Input label="Password" type="password" placeholder="********" bind:inputValue={password} />
+            <Input label="Email" type="email"
+              placeholder="socrate@philo.com"
+              bind:inputValue={email} onEnter={onEnterNextInput} />
+
+            <Input label="Password" type="password"
+              placeholder="********"
+              bind:inputValue={password} onEnter={onEnterValidate} />
 
             <TextLink text="I forgot my password ?" margin="-10px 0 20px 0" />
 
@@ -376,16 +416,20 @@
         {:else}
            <div class="form form-signup" transition:fly="{{ y: 20, duration: 500 }}">
             <Input label="Name" type="name" placeholder="Socrates"
-              bind:inputValue={name} checkValue={true} />
+              bind:inputValue={name} checkValue={true}
+              onEnter={onEnterNextInput} />
 
             <Input label="Email" type="email" placeholder="socrate@philo.com"
-              bind:inputValue={email} checkValue={true} />
+              bind:inputValue={email} checkValue={true}
+              onEnter={onEnterNextInput} />
 
             <Input label="Password" type="password" placeholder="********"
-              bind:inputValue={password} checkValue={true} />
+              bind:inputValue={password} checkValue={true}
+              onEnter={onEnterNextInput} />
 
             <ConfirmPass label="Confirm Password" placeholder="********"
-              bind:inputValue={confirmPassword} valueToCheck={password} />
+              bind:inputValue={confirmPassword} valueToCheck={password}
+              onEnter={onEnterValidate} />
 
             <button class="action-button" on:click={onSignup}>Sign Up</button>
 

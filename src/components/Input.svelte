@@ -12,13 +12,14 @@
   } from '../data';
 
   // Props
+  export let checkValue   = false;  // activate front + back checks
   export let inputValue   = '';     // actual value
+  export let isValid      = false;  // frontend + backend checks
   export let label        = '';     // text displayed on top
+  export let onEnter      = () => {};
   export let pattern      = '';     // regex for frontend check
   export let placeholder  = '';     // when value is empty
   export let type         = 'text';
-  export let isValid      = false;  // frontend + backend checks
-  export let checkValue   = false;  // activate front + back checks
 
   let isChecking = false;           // checking data to backend
   let isFormatValid = false;        // value matches regex (frontend)
@@ -103,6 +104,14 @@
         isValid = false;
       });
   }
+
+  const onKeyUp = (event) => {
+    const reEnter = /Enter/ig;
+
+    if (reEnter.test(event.code)) {
+      onEnter(event);
+    }
+  }
 </script>
 
 <style>
@@ -154,17 +163,17 @@
     {#if type.toLowerCase() === 'email'}
       <input bind:value={inputValue} bind:this={input}
               type="email" name="input" placeholder="{placeholder}" required
-              pattern="{pattern}" on:change={onChange}>
+              pattern="{pattern}" on:change={onChange} on:keyup={onKeyUp}>
 
     {:else if type.toLowerCase() === 'password'}
       <input bind:value={inputValue} bind:this={input}
               type="password" name="input" placeholder="{placeholder}" required
-              pattern="{pattern}" on:change={onChange}>
+              pattern="{pattern}" on:change={onChange} on:keyup={onKeyUp}>
     {:else}
       <!-- else type === 'text' -->
       <input bind:value={inputValue} bind:this={input}
               type="text" name="input" placeholder="{placeholder}" required
-              pattern="{pattern}" on:change={onChange}>
+              pattern="{pattern}" on:change={onChange} on:keyup={onKeyUp}>
     {/if}
 
     {#if checkValue}
