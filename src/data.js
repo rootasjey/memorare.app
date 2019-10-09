@@ -110,6 +110,24 @@ export const LIST_AUTHORS = gql`
   }
 `;
 
+export const TEMP_QUOTE_ADMIN = gql`
+  query($id: String!) {
+    tempQuoteAdmin(id: $id) {
+      _id
+      author {
+        name
+        summary
+        url
+      }
+      date
+      lang
+      name
+      origin
+      topics
+    }
+  }
+`;
+
 export const QUOTIDIAN = gql`
   query {
     quotidian {
@@ -206,6 +224,46 @@ export const TIP = gql`
   query {
     tip {
       name
+    }
+  }
+`;
+
+export const UPDATE_TEMP_QUOTE_ADMIN = gql`
+  mutation (
+    $id: String!,
+    $authorName: String,
+    $authorSummary: String,
+    $authorUrl: String,
+    $comment: String,
+    $lang: String,
+    $name: String!
+    $origin: String,
+    $refName: String,
+    $refLang: String,
+    $refUrl: String,
+    $topics: [String!],
+  ) {
+    updateTempQuoteAdmin(
+      id: $id
+      authorName: $authorName
+      authorSummary: $authorSummary
+      authorUrl: $authorUrl
+      comment: $comment
+      lang: $lang
+      name: $name
+      origin: $origin
+      refName: $refName
+      refLang: $refLang
+      refUrl: $refUrl
+      topics: $topics
+    ) {
+      _id
+      date
+      name
+      validation {
+        date
+        status
+      }
     }
   }
 `;

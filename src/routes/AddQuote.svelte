@@ -11,13 +11,21 @@
   import {
     client,
     PROPOSE_QUOTE,
+    TEMP_QUOTE_ADMIN,
+    UPDATE_TEMP_QUOTE_ADMIN,
   } from '../data';
 
   import Checkbox         from '../components/Checkbox.svelte';
   import SpinnerCheckmark from '../components/SpinnerCheckmark.svelte';
   import Tags             from '../components/Tags.svelte';
 
+  import { handle }       from '../errors';
+
+  // Props
+  export let id = ''; // Quote's id to edit
+
   let pageState = 'waiting'; // waiting || loading || success || failure
+  let submitButtonValue = 'Add quote';
 
   $: loadingSpinnerCompleted = pageState !== 'loading';
 
@@ -69,8 +77,71 @@
 
   const toggleAddFieldMenu = () => isAddFieldMenuOpenned = !isAddFieldMenuOpenned;
 
+  // Reactive binding
+  // ----------------
   $: addButtonClass = isAddFieldMenuOpenned ? 'square-add-icon rotated' : 'square-add-icon';
 
+
+  // If this is an edit
+  // ------------------
+  if (id) {
+    submitButtonValue = 'Save quote';
+
+    const queryTempQuoteAdmin = query(client, {
+      query: TEMP_QUOTE_ADMIN,
+      variables: { id },
+    });
+
+    (async function () {
+      const response = await queryTempQuoteAdmin.result();
+      const { tempQuoteAdmin } = response.data;
+      console.log(tempQuoteAdmin);
+
+      const { author: tqAuthor } = tempQuoteAdmin;
+
+      // Fill available data
+      if (tempQuoteAdmin.name) {
+        fieldsValue.name = tempQuoteAdmin.name;
+      }
+
+      if (tempQuoteAdmin.lang) {
+        fieldsId.lang = true;
+        fieldsValue.lang = tempQuoteAdmin.lang;
+      }
+
+      if (tempQuoteAdmin.origin) {
+        fieldsId.origin = true;
+        fieldsValue.origin = tempQuoteAdmin.origin;
+      }
+
+      if (tqAuthor && tqAuthor.name) {
+        fieldsId.authorname = true;
+        fieldsValue.authorName = tqAuthor.name;
+      }
+
+      if (tqAuthor && tqAuthor.summary) {
+        fieldsId.authorsummary = true;
+        fieldsValue.authorSummary = tqAuthor.summary;
+      }
+
+      if (tqAuthor && tqAuthor.summaryLang) {
+        fieldsId.authorsummarylanguage = true;
+        fieldsValue.authorSummaryLanguage = tqAuthor.summaryLang;
+      }
+
+      if (tqAuthor && tqAuthor.url) {
+        fieldsId.authorurl = true;
+        fieldsValue.authorUrl = tqAuthor.url;
+      }
+
+      if (tempQuoteAdmin.topics && tempQuoteAdmin.topics.length > 0) {
+        fieldsId.topics = true;
+        fieldsValue.topics = tempQuoteAdmin.topics;
+      }
+    })();
+  }
+
+  // Functions def
   function cboxOnChange(fieldId, input) {
     fieldsId[fieldId] = input.checked;
   }
@@ -95,13 +166,14 @@
       } = fieldsValue;
 
       const response = await mutate(client, {
-        mutation: PROPOSE_QUOTE,
+        mutation: id && id.length > 0 ? UPDATE_TEMP_QUOTE_ADMIN : PROPOSE_QUOTE,
         variables: {
           authorName,
           authorSummary,
           authorSummaryLanguage,
           authorUrl,
           comment,
+          id,
           lang,
           name,
           origin,
@@ -117,7 +189,7 @@
       pageState = 'success';
 
     } catch (error) {
-      // TODO: handle error
+      handle(error);
       pageState = 'failure';
     }
   }
@@ -541,7 +613,7 @@
       </div>
 
       <div class="accent-color-button" on:click={onAddQuote}>
-        <span>Add Quote</span>
+        <span>{submitButtonValue}</span>
       </div>
 
     </div>

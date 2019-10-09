@@ -4,7 +4,8 @@
     mutate,
   } from 'svelte-apollo';
 
-  import { fly } from 'svelte/transition';
+  import { fly }      from 'svelte/transition';
+  import { navigate } from 'svelte-routing';
 
   import Button     from '../components/Button.svelte';
   import IconButton from '../components/IconButton.svelte';
@@ -144,6 +145,10 @@
       handle(error);
     }
   }
+
+  async function onSelectTempQuote(quote) {
+    navigate(`/addquote/${quote._id}`);
+  }
 </script>
 
 <style>
@@ -244,7 +249,8 @@
 
         <div class="list-temp-quote">
           {#each tempQuotes as quote, index}
-            <div class="temp-quote" transition:fly="{{ y: 10, duration: 200 * index }}">
+            <div class="temp-quote" transition:fly="{{ y: 10, duration: 200 * index }}"
+              on:click={() => onSelectTempQuote(quote)} >
               <div class="temp-quote__content">
                 {quote.name}
               </div>

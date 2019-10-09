@@ -49,7 +49,9 @@
 				<VerifyEmail tokenid="{params.tokenid}"/>
 			</Route>
 			<Route path="/welcome" component="{Welcome}" />
-			<Route path="/addquote" component="{AddQuote}" />
+			<Route path="/addquote/:id" let:params>
+				<AddQuote id="{params.id}" />
+			</Route>
 			<Route path="/admin/tempquotes" component="{TempQuotes}" />
 		</div>
 
