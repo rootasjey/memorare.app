@@ -14,9 +14,9 @@
   import {
     client,
     DELETE_TEMP_QUOTE_ADMIN,
-    SET_VALIDATION_STATUS,
-    TEMP_QUOTES,
-    VALIDATE_TEMP_QUOTE,
+    SET_VALIDATION_STATUS_ADMIN,
+    TEMP_QUOTES_ADMIN,
+    VALIDATE_TEMP_QUOTE_ADMIN,
   } from '../data';
 
   import { handle } from '../errors';
@@ -29,7 +29,7 @@
   $: spinnerVisibility = queryStatus === 'loading' ? 'visible' : 'hidden';
 
   const queryTempQuotes = query(client, {
-    query: TEMP_QUOTES,
+    query: TEMP_QUOTES_ADMIN,
     variables: { limit, skip },
   });
 
@@ -38,9 +38,9 @@
       queryStatus = 'loading';
 
       const response = await queryTempQuotes.result();
-      tempQuotes = response.data.tempQuotes.entries;
+      tempQuotes = response.data.tempQuotesAdmin.entries;
 
-      const { pagination } = response.data.tempQuotes;
+      const { pagination } = response.data.tempQuotesAdmin;
       limit = pagination.limit;
       skip = pagination.nextSkip;
 
@@ -61,11 +61,11 @@
 
     try {
       const response = await mutate(client, {
-        mutation: SET_VALIDATION_STATUS,
+        mutation: SET_VALIDATION_STATUS_ADMIN,
         variables: { id, status },
       });
 
-      const { validation } = response.data.setValidationStatus;
+      const { validation } = response.data.setValidationStatusAdmin;
 
       quote.validation.status = validation.status;
 
@@ -81,7 +81,7 @@
 
     try {
       const response = await mutate(client, {
-        mutation: VALIDATE_TEMP_QUOTE,
+        mutation: VALIDATE_TEMP_QUOTE_ADMIN,
         variables: { id },
       });
 
@@ -106,15 +106,15 @@
       // 2.svele-apollo returns different data with the same query
       setTimeout(async () => {
         const queryTempQuotes2 = query(client, {
-          query: TEMP_QUOTES,
+          query: TEMP_QUOTES_ADMIN,
           variables: { limit, skip },
         });
 
         const resp = await queryTempQuotes2.refetch({ limit, skip: 2 });
 
-        tempQuotes = resp.data.tempQuotes.entries;
+        tempQuotes = resp.data.tempQuotesAdmin.entries;
 
-        const { pagination } = resp.data.tempQuotes;
+        const { pagination } = resp.data.tempQuotesAdmin;
         limit = pagination.limit;
         skip = pagination.nextSkip;
 
@@ -249,9 +249,9 @@
 
         <div class="list-temp-quote">
           {#each tempQuotes as quote, index}
-            <div class="temp-quote" transition:fly="{{ y: 10, duration: 200 * index }}"
-              on:click={() => onSelectTempQuote(quote)} >
-              <div class="temp-quote__content">
+            <div class="temp-quote" transition:fly="{{ y: 10, duration: 200 * index }}">
+              <div class="temp-quote__content"
+                on:click={() => onSelectTempQuote(quote)} >
                 {quote.name}
               </div>
 

@@ -24,7 +24,17 @@ export const client = new ApolloClient({
   link: concat(authMiddleware, httpLink),
 });
 
-export const PROPOSE_QUOTE = gql`
+export const CHECK_EMAIL = gql`
+  mutation ($userId: String!, $token: String!) {
+    checkEmail(userId: $userId, token: $token) {
+      _id
+      name
+      emailConfig { isVerified }
+    }
+  }
+`;
+
+export const CREATE_TEMP_QUOTE = gql`
   mutation (
     $authorName: String,
     $authorSummary: String,
@@ -59,16 +69,6 @@ export const PROPOSE_QUOTE = gql`
         date
         status
       }
-    }
-  }
-`;
-
-export const CHECK_EMAIL = gql`
-  mutation ($userId: String!, $token: String!) {
-    checkEmail(userId: $userId, token: $token) {
-      _id
-      name
-      emailConfig { isVerified }
     }
   }
 `;
@@ -144,9 +144,9 @@ export const SEND_EMAIL_VERIFICATION = gql`
   }
 `;
 
-export const SET_VALIDATION_STATUS = gql`
+export const SET_VALIDATION_STATUS_ADMIN = gql`
   mutation ($id: String!, $status: String!) {
-    setValidationStatus(id: $id, status: $status) {
+    setValidationStatusAdmin(id: $id, status: $status) {
       validation {
         status
       }
@@ -154,9 +154,9 @@ export const SET_VALIDATION_STATUS = gql`
   }
 `;
 
-export const VALIDATE_TEMP_QUOTE = gql`
+export const VALIDATE_TEMP_QUOTE_ADMIN = gql`
   mutation ($id: String!) {
-    validateTempQuote(id: $id) {
+    validateTempQuoteAdmin(id: $id) {
       _id
     }
   }
@@ -184,9 +184,9 @@ export const SIGNIN = gql`
   }
 `;
 
-export const TEMP_QUOTES = gql`
+export const TEMP_QUOTES_ADMIN = gql`
   query ($limit: Float, $skip: Float) {
-    tempQuotes(limit: $limit, skip: $skip) {
+    tempQuotesAdmin(limit: $limit, skip: $skip) {
       entries {
         _id
         name

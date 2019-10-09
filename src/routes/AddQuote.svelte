@@ -10,7 +10,7 @@
 
   import {
     client,
-    PROPOSE_QUOTE,
+    CREATE_TEMP_QUOTE,
     TEMP_QUOTE_ADMIN,
     UPDATE_TEMP_QUOTE_ADMIN,
   } from '../data';
@@ -166,7 +166,7 @@
       } = fieldsValue;
 
       const response = await mutate(client, {
-        mutation: id && id.length > 0 ? UPDATE_TEMP_QUOTE_ADMIN : PROPOSE_QUOTE,
+        mutation: id && id.length > 0 ? UPDATE_TEMP_QUOTE_ADMIN : CREATE_TEMP_QUOTE,
         variables: {
           authorName,
           authorSummary,
