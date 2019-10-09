@@ -154,14 +154,6 @@ export const SET_VALIDATION_STATUS_ADMIN = gql`
   }
 `;
 
-export const VALIDATE_TEMP_QUOTE_ADMIN = gql`
-  mutation ($id: String!) {
-    validateTempQuoteAdmin(id: $id) {
-      _id
-    }
-  }
-`;
-
 export const SIGNUP = gql`
   mutation ($email: String!, $password: String!, $name: String!) {
     signup(email: $email, password: $password, name: $name) {
@@ -220,14 +212,6 @@ export const TINY_LIST_AUTHORS = gql`
   }
 `;
 
-export const TIP = gql`
-  query {
-    tip {
-      name
-    }
-  }
-`;
-
 export const UPDATE_TEMP_QUOTE_ADMIN = gql`
   mutation (
     $id: String!,
@@ -264,6 +248,14 @@ export const UPDATE_TEMP_QUOTE_ADMIN = gql`
         date
         status
       }
+    }
+  }
+`;
+
+export const VALIDATE_TEMP_QUOTE_ADMIN = gql`
+  mutation ($id: String!) {
+    validateTempQuoteAdmin(id: $id) {
+      _id
     }
   }
 `;
