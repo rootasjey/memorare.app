@@ -34,6 +34,16 @@ export const CHECK_EMAIL = gql`
   }
 `;
 
+export const CREATE_QUOTIDIAN = gql`
+  mutation ($quoteId: String!, $targetDate: String) {
+    createQuotidian(quoteId: $quoteId, targetDate: $targetDate) {
+      _id
+      date
+      quoteId
+    }
+  }
+`;
+
 export const CREATE_TEMP_QUOTE = gql`
   mutation (
     $authorName: String,
@@ -69,6 +79,16 @@ export const CREATE_TEMP_QUOTE = gql`
         date
         status
       }
+    }
+  }
+`;
+
+export const DELETE_QUOTIDIAN = gql`
+  mutation ($id: String!) {
+    deleteQuotidian(id: $id) {
+      _id
+      date
+      quoteId
     }
   }
 `;
@@ -110,20 +130,19 @@ export const LIST_AUTHORS = gql`
   }
 `;
 
-export const TEMP_QUOTE_ADMIN = gql`
-  query($id: String!) {
-    tempQuoteAdmin(id: $id) {
-      _id
-      author {
+export const PUBLISHED_QUOTES_ADMIN = gql`
+  query ($limit: Float, $skip: Float) {
+    publishedQuotesAdmin(limit: $limit, skip: $skip) {
+      entries {
+        _id
         name
-        summary
-        url
+        author
       }
-      date
-      lang
-      name
-      origin
-      topics
+      pagination {
+        limit
+        skip
+        nextSkip
+      }
     }
   }
 `;
@@ -176,6 +195,24 @@ export const SIGNIN = gql`
   }
 `;
 
+export const TEMP_QUOTE_ADMIN = gql`
+  query($id: String!) {
+    tempQuoteAdmin(id: $id) {
+      _id
+      author {
+        name
+        summary
+        url
+      }
+      date
+      lang
+      name
+      origin
+      topics
+    }
+  }
+`;
+
 export const TEMP_QUOTES_ADMIN = gql`
   query ($limit: Float, $skip: Float) {
     tempQuotesAdmin(limit: $limit, skip: $skip) {
@@ -208,6 +245,16 @@ export const TINY_LIST_AUTHORS = gql`
           name
         }
       }
+    }
+  }
+`;
+
+export const UPDATE_QUOTIDIAN = gql`
+  mutation($id: String!, $quoteId: String, $targetDate: String) {
+    updateQuotidian(id: $id, quoteId: $quoteId, targetDate: $targetDate) {
+      _id
+      quoteId
+      targetDate
     }
   }
 `;

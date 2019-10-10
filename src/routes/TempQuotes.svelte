@@ -33,7 +33,7 @@
     variables: { limit, skip },
   });
 
-  async function fetchTempQuotes() {
+  (async function fetchTempQuotes() {
     try {
       queryStatus = 'loading';
 
@@ -50,9 +50,7 @@
       queryStatus = 'error';
       handle(error);
     }
-  }
-
-  fetchTempQuotes();
+  })();
 
   async function onSwitchStatus(quote) {
     const { _id: id, validation: { status: currentStatus } } = quote;
@@ -125,7 +123,6 @@
       queryStatus = 'error';
       handle(error);
     }
-
   }
 
   async function onDelete(quote) {
@@ -157,6 +154,11 @@
     flex-direction: column;
   }
 
+  .content__buttons-container {
+    margin-top: 20px;
+    align-self: flex-end;
+  }
+
   .header {
     display: flex;
     flex-direction: column;
@@ -172,7 +174,15 @@
     margin-top: -10px;
   }
 
-  .proposed-quotes-container {
+  .icon-button__icon {
+    font-size: 2em;
+    color: white;
+
+    position: relative;
+    top: 5px;
+  }
+
+  .temp-quotes-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -207,19 +217,6 @@
     justify-content: flex-end;
   }
 
-  .content__buttons-container {
-    margin-top: 20px;
-    align-self: flex-end;
-  }
-
-  .icon-button__icon {
-    font-size: 2em;
-    color: white;
-
-    position: relative;
-    top: 5px;
-  }
-
   .temp-quote__footer svg {
     position: relative;
     top: 10px;
@@ -228,7 +225,7 @@
 
 </style>
 
-<div class="proposed-quotes-container">
+<div class="temp-quotes-container">
   <div class="header">
     <h1>Proposed Quotes</h1>
     <span class="header__subtext">Quotes waiting for approval</span>
@@ -240,7 +237,7 @@
           <Spinner visibility={spinnerVisibility} />
           <span>Loading temporary quotes...</span>
         </div>
-      {:else if queryStatus === 'completed' }
+      {:else if queryStatus === 'completed'}
         <div class="content__buttons-container">
           <IconButton onClick={() => onRefresh()} backgroundColor="#8395a7">
             <span class="icon-button__icon">&#8634;</span>
@@ -278,7 +275,7 @@
           {/each}
         </div>
       {:else}
-        <div>Hu ho...The fetch query (to retrieve temporary quotes) could not be fulfilled.</div>
+        <div>There was an error when retrieving temporary quotes.</div>
       {/if}
   </div>
 </div>
