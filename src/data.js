@@ -157,6 +157,26 @@ export const QUOTIDIAN = gql`
   }
 `;
 
+export const QUOTIDIANS = gql`
+  query ($limit: Float, $skip: Float) {
+    quotidians(limit: $limit, skip: $skip) {
+      entries {
+        _id
+        date
+        quote {
+          _id
+          name
+        }
+      }
+      pagination {
+        limit
+        skip
+        nextSkip
+      }
+    }
+  }
+`;
+
 export const SEND_EMAIL_VERIFICATION = gql`
   query ($userId: String!) {
     sendEmailVerification(userId: $userId)
@@ -253,8 +273,8 @@ export const UPDATE_QUOTIDIAN = gql`
   mutation($id: String!, $quoteId: String, $targetDate: String) {
     updateQuotidian(id: $id, quoteId: $quoteId, targetDate: $targetDate) {
       _id
+      date
       quoteId
-      targetDate
     }
   }
 `;

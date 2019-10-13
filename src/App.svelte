@@ -15,6 +15,7 @@
 	import Home 						from './routes/Home.svelte';
 	import Pricing 					from './routes/Pricing.svelte';
 	import PublishedQuotes 	from './routes/PublishedQuotes.svelte';
+	import Quotidians 			from './routes/Quotidians.svelte';
 	import Signin 					from './routes/Signin.svelte';
 	import TempQuotes 			from './routes/TempQuotes.svelte';
 	import VerifyEmail 			from './routes/VerifyEmail.svelte';
@@ -55,6 +56,7 @@
 			</Route>
 			<Route path="/admin/tempquotes" component="{TempQuotes}" />
 			<Route path="/admin/publishedquotes" component="{PublishedQuotes}" />
+			<Route path="/admin/quotidians" component="{Quotidians}" />
 		</div>
 
 		<Footer />

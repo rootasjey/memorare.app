@@ -86,7 +86,7 @@
   }
 
   async function onDelete() {
-    console.log('select delete');
+    console.log('delete published quote');
   }
 
   async function onCreateQuotidian(quote) {
@@ -95,8 +95,6 @@
         mutation: CREATE_QUOTIDIAN,
         variables: { quoteId: quote._id },
       });
-
-      console.log(response);
 
     } catch (error) {
       handle(error);
