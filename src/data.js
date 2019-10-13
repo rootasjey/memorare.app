@@ -35,8 +35,8 @@ export const CHECK_EMAIL = gql`
 `;
 
 export const CREATE_QUOTIDIAN = gql`
-  mutation ($quoteId: String!, $targetDate: String) {
-    createQuotidian(quoteId: $quoteId, targetDate: $targetDate) {
+  mutation ($lang: String!, $quoteId: String!, $targetDate: String) {
+    createQuotidian(lang: $lang, quoteId: $quoteId, targetDate: $targetDate) {
       _id
       date
       quoteId
@@ -135,6 +135,7 @@ export const PUBLISHED_QUOTES_ADMIN = gql`
     publishedQuotesAdmin(limit: $limit, skip: $skip) {
       entries {
         _id
+        lang
         name
         author
       }

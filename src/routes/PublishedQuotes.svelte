@@ -93,7 +93,7 @@
     try {
       const response = await mutate(client, {
         mutation: CREATE_QUOTIDIAN,
-        variables: { quoteId: quote._id },
+        variables: { lang: quote.lang, quoteId: quote._id },
       });
 
     } catch (error) {
