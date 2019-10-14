@@ -11,6 +11,7 @@
   import IconButton from '../components/IconButton.svelte';
   import Input      from '../components/Input.svelte';
   import Spinner    from '../components/Spinner.svelte';
+  import TextLink   from '../components/TextLink.svelte';
 
   import {
     client,
@@ -21,11 +22,12 @@
 
   import { handle } from '../errors';
 
-  let limit       = 10;
-  let queryStatus = 'loading'; // loading || completed || error
-  let skip        = 0;
-  let quotidians  = [];
   let domListQuotidians;
+  let hasMoreData = true;
+  let limit       = 5;
+  let queryStatus = 'loading'; // loading || completed || error
+  let quotidians  = [];
+  let skip        = 0;
 
   $: spinnerVisibility = queryStatus === 'loading' ? 'visible' : 'hidden';
 
@@ -104,7 +106,6 @@
   }
 
   async function onValidateNewDate(id, index) {
-
     const dateInput = domListQuotidians.querySelector(`.quotidian[data-index="${index}"] .date-input`);
 
     if (!dateInput) { return; }
@@ -130,6 +131,28 @@
     if (!dateInput) { return; }
 
     dateInput.value = quotidian.date;
+  }
+
+  async function onLoadMore() {
+    try {
+      const response = await queryQuotidians.fetchMore({
+        variables: { limit, skip },
+        updateQuery: (prev, result) => {
+          const { fetchMoreResult: { quotidians: { entries, pagination } } } = result;
+
+          hasMoreData = pagination.hasNext;
+          limit = pagination.limit;
+          skip = pagination.nextSkip;
+
+          const concatened = [...prev.quotidians.entries, ...entries];
+
+          quotidians = concatened;
+        }
+      });
+
+    } catch (error) {
+      handle(error);
+    }
   }
 </script>
 
@@ -206,6 +229,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    padding-bottom: 80px;
   }
 
   .quotidian {
@@ -260,13 +285,13 @@
   </header>
 
   <div class="quotidians-page__content">
-    {#if queryStatus === 'loading'}
-       <div>
+    {#await $queryQuotidians}
+      <div>
         <Spinner visibility={spinnerVisibility} />
         <span>Loading published quotes...</span>
       </div>
-    {:else if queryStatus === 'completed'}
-       <div class="content__buttons-container">
+    {:then quotidiansResult}
+      <div class="content__buttons-container">
         <IconButton onClick={() => onRefresh()} backgroundColor="#8395a7">
           <span class="icon-button__icon">&#8634;</span>
         </IconButton>
@@ -306,9 +331,13 @@
         {:else}
           <div>There's currently no quotidians.</div>
         {/each}
+
+        {#if hasMoreData}
+          <TextLink text="Load more..." onClick={onLoadMore} />
+        {/if}
       </div>
-    {:else}
+    {:catch error}
       <div>There was an error when retreiving quotidians.</div>
-    {/if}
+    {/await}
   </div>
 </div>

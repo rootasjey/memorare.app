@@ -170,6 +170,7 @@ export const QUOTIDIANS = gql`
         }
       }
       pagination {
+        hasNext
         limit
         skip
         nextSkip
