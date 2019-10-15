@@ -7,8 +7,8 @@
   import { fly }      from 'svelte/transition';
   import { navigate } from 'svelte-routing';
 
-  import Button     from '../components/Button.svelte';
   import IconButton from '../components/IconButton.svelte';
+  import { show }   from '../components/Snackbar.svelte';
   import Spinner    from '../components/Spinner.svelte';
 
   import {
@@ -85,8 +85,20 @@
     }
   }
 
-  async function onDelete() {
-    console.log('delete published quote');
+  async function onDelete(quote) {
+    // Code to directly add to published quotes
+
+    show({
+      text: 'Delete published quote',
+      actions: [
+        {
+          text: 'UNDO',
+          handler: () => {
+
+          }
+        }
+      ]
+    });
   }
 
   async function onCreateQuotidian(quote) {
@@ -94,6 +106,11 @@
       const response = await mutate(client, {
         mutation: CREATE_QUOTIDIAN,
         variables: { lang: quote.lang, quoteId: quote._id },
+      });
+
+      show({
+        text: 'The quote has successfully been added to quotidian',
+        actions: [ { text: 'OK' }]
       });
 
     } catch (error) {

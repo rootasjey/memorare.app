@@ -10,6 +10,7 @@
 	import { client } 			from './data';
 	import Footer						from './components/Footer.svelte';
 	import Header 					from './components/Header.svelte';
+	import Snackbar 				from './components/Snackbar.svelte';
 	import AddQuote					from './routes/AddQuote.svelte';
 	import Apps 						from './routes/Apps.svelte';
 	import Home 						from './routes/Home.svelte';
@@ -41,6 +42,7 @@
 <Router>
 	<div class="background">
 		<Header />
+		<Snackbar />
 
 		<div class="content">
 			<Route path="/" component="{Home}" />
