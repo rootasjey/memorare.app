@@ -7,11 +7,12 @@
   import { fly }      from 'svelte/transition';
   import { navigate } from 'svelte-routing';
 
-  import Button     from '../components/Button.svelte';
-  import IconButton from '../components/IconButton.svelte';
-  import Input      from '../components/Input.svelte';
-  import Spinner    from '../components/Spinner.svelte';
-  import TextLink   from '../components/TextLink.svelte';
+  import Button       from '../components/Button.svelte';
+  import IconButton   from '../components/IconButton.svelte';
+  import Input        from '../components/Input.svelte';
+  import { show }     from '../components/Snackbar.svelte';
+  import Spinner      from '../components/Spinner.svelte';
+  import TextLink     from '../components/TextLink.svelte';
 
   import {
     client,
@@ -23,11 +24,11 @@
   import { handle } from '../errors';
 
   let domListQuotidians;
-  let hasMoreData = true;
-  let limit       = 5;
-  let queryStatus = 'loading'; // loading || completed || error
-  let quotidians  = [];
-  let skip        = 0;
+  let hasMoreData         = true;
+  let limit               = 5;
+  let queryStatus         = 'loading'; // loading || completed || error
+  let quotidians          = [];
+  let skip                = 0;
 
   $: spinnerVisibility = queryStatus === 'loading' ? 'visible' : 'hidden';
 
@@ -49,6 +50,12 @@
       queryStatus = 'completed';
 
     } catch (error) {
+      show({
+        actions: [ {text: 'retry'} ],
+        text: `Couldn't fetch quotidians.`,
+        type: 'error',
+      });
+
       queryStatus = 'error';
       handle(error);
     }
@@ -63,16 +70,15 @@
       // 2 issues:
       // ~~~~~~~~~
       // 1.Svelte does not want to update properly the array with a async func &
-      // if the re-assignment is fired immediately
-      //
+      //   if the re-assignment is fired immediately
       // 2.svele-apollo returns different data with the same query
       setTimeout(async () => {
-        const queryQuotidians2 = query(client, {
+        const q2 = query(client, {
           query: QUOTIDIANS,
           variables: { limit, skip },
         });
 
-        const resp = await queryQuotidians2.refetch({ limit, skip });
+        const resp = await q2.refetch({ limit, skip });
 
         quotidians = resp.data.quotidians.entries;
 
@@ -85,6 +91,12 @@
       }, 100);
 
     } catch (error) {
+      show({
+        actions: [ {text: 'retry'} ],
+        text: `Couldn't refresh quotidians.`,
+        type: 'error',
+      });
+
       queryStatus = 'error';
       handle(error);
     }
@@ -101,13 +113,22 @@
 
       quotidians = quotidians.filter((quotidian) => quotidian._id !== id);
 
+      show({ text: `Quotidian successfully deleted.`, type: 'success' });
+
     } catch (error) {
+      show({
+        actions: [ {text: 'retry'} ],
+        text: `Couldn't delete quotidian.`,
+        type: 'error',
+      });
+
       handle(error);
     }
   }
 
-  async function onValidateNewDate(id, index) {
-    const dateInput = domListQuotidians.querySelector(`.quotidian[data-index="${index}"] .date-input`);
+  async function onValidateNewDate(quotidian, index) {
+    const { _id: id, date: prevDate } = quotidian;
+    const dateInput = domListQuotidians.querySelector(`.quotidian[data-id="${id}"] .date-input`);
 
     if (!dateInput) { return; }
 
@@ -121,13 +142,22 @@
 
       const { updateQuotidian } = response.data;
 
+      show({ text: `Successfully updated quotidian date.` });
+
     } catch (error) {
+      show({
+        actions: [ {text: 'retry'} ],
+        text: `Couldn't update quotidian date.`,
+        type: 'error',
+      });
+
+      dateInput.value = prevDate;
       handle(error);
     }
   }
 
   async function onResetDate(quotidian, index) {
-    const dateInput = domListQuotidians.querySelector(`.quotidian[data-index="${index}"] .date-input`);
+    const dateInput = domListQuotidians.querySelector(`.quotidian[data-id="${quotidian._id}"] .date-input`);
 
     if (!dateInput) { return; }
 
@@ -136,22 +166,27 @@
 
   async function onLoadMore() {
     try {
-      const response = await queryQuotidians.fetchMore({
+      const q3 = await query(client, {
+        query: QUOTIDIANS,
         variables: { limit, skip },
-        updateQuery: (prev, result) => {
-          const { fetchMoreResult: { quotidians: { entries, pagination } } } = result;
-
-          hasMoreData = pagination.hasNext;
-          limit = pagination.limit;
-          skip = pagination.nextSkip;
-
-          const concatened = [...prev.quotidians.entries, ...entries];
-
-          quotidians = concatened;
-        }
       });
 
+      const resp = await q3.result();
+      const { quotidians: { entries, pagination } } = resp.data;
+
+      hasMoreData = pagination.hasNext;
+      limit = pagination.limit;
+      skip = pagination.nextSkip;
+
+      quotidians = [...quotidians, ...entries];
+
     } catch (error) {
+      show({
+        actions: [ {text: 'retry'} ],
+        text: `Couldn't fetch more quotidians.`,
+        type: 'error',
+      });
+
       handle(error);
     }
   }
@@ -286,7 +321,7 @@
   </header>
 
   <div class="quotidians-page__content">
-    {#await $queryQuotidians}
+    {#await queryQuotidians}
       <div>
         <Spinner visibility={spinnerVisibility} />
         <span>Loading published quotes...</span>
@@ -300,12 +335,12 @@
 
       <div class="list-quotidians" bind:this={domListQuotidians}>
         {#each quotidians as quotidian, index}
-          <div class="quotidian" transition:fly={{ y: 10, duration: 500 }} data-index="{index}" >
+          <div class="quotidian" transition:fly={{ y: 10, duration: 500 }} data-id="{quotidian._id}" >
             <div class="quotidian__date">
               <input type="text" value="{quotidian.date}" class="date-input" >
 
               <div class="quotidian__date__actions">
-                <IconButton margin="5px" onClick={ () => onValidateNewDate(quotidian._id, index) } >
+                <IconButton margin="5px" onClick={ () => onValidateNewDate(quotidian, index) } >
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
                     <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/>
                   </svg>
