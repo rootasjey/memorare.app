@@ -72,7 +72,7 @@
           variables: { limit, skip },
         });
 
-        const resp = await queryQuotidians2.refetch({ limit, skip: 2 });
+        const resp = await queryQuotidians2.refetch({ limit, skip });
 
         quotidians = resp.data.quotidians.entries;
 
@@ -81,6 +81,7 @@
         skip = pagination.nextSkip;
 
         queryStatus = 'completed';
+        hasMoreData = true;
       }, 100);
 
     } catch (error) {

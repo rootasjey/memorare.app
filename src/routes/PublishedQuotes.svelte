@@ -68,7 +68,7 @@
           variables: { limit, skip },
         });
 
-        const resp = await queryPublishedQuotes2.refetch({ limit, skip: 2 });
+        const resp = await queryPublishedQuotes2.refetch({ limit, skip });
 
         publishedQuotes = resp.data.publishedQuotesAdmin.entries;
 
