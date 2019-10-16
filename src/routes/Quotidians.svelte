@@ -199,8 +199,7 @@
 
 <style>
  .content__buttons-container {
-    margin-top: 20px;
-    align-self: flex-end;
+    margin: 25px 0;
   }
 
   .header__subtext {
@@ -210,18 +209,12 @@
     margin-top: -10px;
   }
 
-  .icon-button__icon {
-    font-size: 2em;
-    color: white;
-
-    position: relative;
-    top: 5px;
-  }
-
   .list-quotidians {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    padding-bottom: 50px;
   }
 
   .list-quotidians__content {
@@ -233,7 +226,7 @@
   }
 
   .list-quotidians__footer {
-    padding: 50px 0 ;
+    padding: 20px 0 ;
   }
 
   .quotidian {
@@ -391,9 +384,7 @@
       </div>
     {:then quotidiansResult}
       <div class="content__buttons-container">
-        <IconButton onClick={() => onRefresh()} backgroundColor="#686de0">
-          <span class="icon-button__icon">&#8634;</span>
-        </IconButton>
+        <Button outlined={true} value="refresh" onClick={() => onRefresh()} />
       </div>
 
       <div class="list-quotidians" bind:this={domListQuotidians}>
@@ -408,7 +399,7 @@
               <header class="quotidian__header">
                 <div class="quotidian__header__icons">
                   <IconButton margin="5px"
-                    on:click={ () => onDelete(quotidian._id) }
+                    onClick={() => onDelete(quotidian._id)}
                     backgroundColor="#f56498"
                     elevation={1} >
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">

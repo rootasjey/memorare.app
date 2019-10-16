@@ -3,8 +3,10 @@
   export let margin           = 0;
   export let onClick          = () => {};
   export let value            = '';
+  export let outlined         = false;
 
-  let classes     = `button ${additionalClass}`;
+  let baseClass   = outlined ? 'button-outlined' : 'button';
+  let classes     = `${baseClass} ${additionalClass}`;
   let marginRule  = `margin: ${margin}; `;
   let styles      = `${marginRule}`;
 </script>
@@ -35,21 +37,21 @@
     transform: translateY(-5px);
   }
 
-  .button > svg {
-    margin-right: 10px;
-    margin-left: 10px;
+  .button-outlined {
+    padding: 10px;
+    color: #706fd3;
+    border: 1px solid #706fd3;
+    border-radius: 3px;
+
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: .3s;
   }
 
-  .button > svg:first-child {
-    margin-right: 10px;
-  }
-
-  .button > svg:last-child {
-    margin-left: 10px;
-  }
-
-  .button:hover > svg {
-    fill: white;
+  .button-outlined:hover {
+    color: #f56498;
+    border: 1px solid #f56498;
+    transition: .3s;
   }
 
 </style>
