@@ -166,6 +166,7 @@ export const QUOTIDIANS = gql`
         date
         quote {
           _id
+          author
           name
         }
       }

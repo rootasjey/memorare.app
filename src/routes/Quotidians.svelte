@@ -28,6 +28,7 @@
   let limit               = 5;
   let queryStatus         = 'loading'; // loading || completed || error
   let quotidians          = [];
+  let selectedQuoteId     = -1;
   let skip                = 0;
 
   $: spinnerVisibility = queryStatus === 'loading' ? 'visible' : 'hidden';
@@ -190,35 +191,13 @@
       handle(error);
     }
   }
+
+  function onSelectQuote(id) {
+    selectedQuoteId = id;
+  }
 </script>
 
 <style>
-  .accent-color-button {
-    background: white;
-    padding: 15px;
-    margin: auto;
-    border-radius: 2px;
-    cursor: pointer;
-    position: relative;
-
-    display: flex;
-    align-items: center;
-
-    text-transform: uppercase;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-  }
-
-  .accent-color-button:hover {
-    color: white;
-    background: #706fd3;
-
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-
-    transform: translateY(-5px);
-  }
-
  .content__buttons-container {
     margin-top: 20px;
     align-self: flex-end;
@@ -229,28 +208,6 @@
     font-weight: 100;
 
     margin-top: -10px;
-  }
-
-  input {
-    height: 50px;
-    border: 1px solid #706fd3;
-    background-color: #eee;
-
-    margin: 0;
-    margin-right: 10px;
-  }
-
-  .quotidian__date__actions svg {
-    position: relative;
-    top: 10px;
-  }
-
-  .quotidians-page__header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    margin-bottom: 50px;
   }
 
   .icon-button__icon {
@@ -265,34 +222,137 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
 
-    padding-bottom: 80px;
+  .list-quotidians__content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .list-quotidians__footer {
+    padding: 50px 0 ;
   }
 
   .quotidian {
     margin: 10px;
-    padding: 10px;
-    max-width: 400px;
+    padding: 30px;
+
+    min-height: 320px;
+    max-width: 240px;
 
     display: flex;
     flex-direction: column;
-  }
-
-  .quotidian__date {
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .quotidian__date__actions {
-    display: flex;
-    flex-direction: row;
-  }
-
-  .quotidian__date {
-    display: flex;
-    flex-direction: row;
+    justify-content: center;
     align-items: center;
+
+    background-color: #706fd3;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.20);
+    border: 2px solid transparent;
+    border-radius: 10px;
+
+    position: relative;
+    transition: .3s;
+  }
+
+  .quotidian:hover {
+    transform: scale(1.050);
+    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.20);
+    transition: .3s;
+  }
+
+  .quotidian.selected {
+    border: 2px solid #f56498;
+  }
+
+  .quotidian__content {
+    color: white;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 300;
+
+    max-height: 170px;
+    overflow-y: auto;
+  }
+
+    .quotidian__footer {
+    position: absolute;
+    align-self: flex-start;
+    bottom: 0;
+
+    padding-bottom: 10px;
+    color: white;
+
+    opacity: 0;
+    transition: .3s;
+  }
+
+  .quotidian:hover .quotidian__footer,
+  .quotidian.selected .quotidian__footer {
+    opacity: 1;
+    transition: .3s;
+  }
+
+  .quotidian__footer__author {
+    align-items: center;
+    display: flex;
+    width: 100%;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .quotidian__footer__author-img {
+    height: 30px;
+    width: 30px;
+
+    border-radius: 50%;
+    background-color: white;
+
+    margin-right: 10px;
+  }
+
+  .quotidian__header {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+  }
+
+  .quotidian__header__icons {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+  }
+  .quotidian__header__icons svg {
+    position: relative;
+    top: 10px;
+  }
+
+  .quotidian__header__date {
+    color: white;
+    background-color: #f56498;
+    font-weight: 700;
+
+    padding: 5px;
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    position: absolute;
+    top: -15px;
+    right: 10px;
+
+    transition: .3s;
+  }
+
+  .quotidian__header__date:hover {
+    background-color: #cc5380;
+    transition: .3s;
   }
 
   .quotidians-page {
@@ -307,9 +367,12 @@
     align-items: center;
   }
 
-  .quotidian__footer {
-    align-self: flex-end;
-    margin-top: 5px;
+  .quotidians-page__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-bottom: 50px;
   }
 
 </style>
@@ -328,48 +391,57 @@
       </div>
     {:then quotidiansResult}
       <div class="content__buttons-container">
-        <IconButton onClick={() => onRefresh()} backgroundColor="#8395a7">
+        <IconButton onClick={() => onRefresh()} backgroundColor="#686de0">
           <span class="icon-button__icon">&#8634;</span>
         </IconButton>
       </div>
 
       <div class="list-quotidians" bind:this={domListQuotidians}>
-        {#each quotidians as quotidian, index}
-          <div class="quotidian" transition:fly={{ y: 10, duration: 500 }} data-id="{quotidian._id}" >
-            <div class="quotidian__date">
-              <input type="text" value="{quotidian.date}" class="date-input" >
+        <div class="list-quotidians__content">
+          {#each quotidians as quotidian, index}
+            <div class="quotidian"
+              class:selected={selectedQuoteId === quotidian._id}
+              data-id="{quotidian._id}"
+              transition:fly={{ y: 10, duration: 500 }}
+              on:click={() => onSelectQuote(quotidian._id)}
+              >
+              <header class="quotidian__header">
+                <div class="quotidian__header__icons">
+                  <IconButton margin="5px"
+                    on:click={ () => onDelete(quotidian._id) }
+                    backgroundColor="#f56498"
+                    elevation={1} >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                      <path d="M19 24h-14c-1.104 0-2-.896-2-2v-17h-1v-2h6v-1.5c0-.827.673-1.5 1.5-1.5h5c.825 0 1.5.671 1.5 1.5v1.5h6v2h-1v17c0 1.104-.896 2-2 2zm0-19h-14v16.5c0 .276.224.5.5.5h13c.276 0 .5-.224.5-.5v-16.5zm-9 4c0-.552-.448-1-1-1s-1 .448-1 1v9c0 .552.448 1 1 1s1-.448 1-1v-9zm6 0c0-.552-.448-1-1-1s-1 .448-1 1v9c0 .552.448 1 1 1s1-.448 1-1v-9zm-2-7h-4v1h4v-1z"/>
+                    </svg>
+                  </IconButton>
+                </div>
 
-              <div class="quotidian__date__actions">
-                <IconButton margin="5px" onClick={ () => onValidateNewDate(quotidian, index) } >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-                    <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/>
-                  </svg>
-                </IconButton>
+                <div class="quotidian__header__date">
+                  <span> {(new Date(quotidian.date)).toLocaleDateString()} </span>
+                </div>
+              </header>
 
-                <IconButton margin="5px" onClick={ () => onResetDate(quotidian, index) } >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-                    <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"/>
-                  </svg>
-                </IconButton>
+              <div class="quotidian__content">
+                {quotidian.quote.name}
+              </div>
+
+              <div class="quotidian__footer">
+                <div class="quotidian__footer__author">
+                  <div class="quotidian__footer__author-img"></div>
+                  <span> {quotidian.quote.author} </span>
+                </div>
               </div>
             </div>
-
-            <div class="quotidian__content">
-              {quotidian.quote.name}
-            </div>
-
-            <div class="quotidian__footer">
-              <div class="accent-color-button" on:click={ () => onDelete(quotidian._id) }>
-                <span>Delete</span>
-              </div>
-            </div>
-          </div>
-        {:else}
-          <div>There's currently no quotidians.</div>
-        {/each}
+          {:else}
+            <div>There's currently no quotidians.</div>
+          {/each}
+        </div>
 
         {#if hasMoreData}
-          <TextLink text="Load more..." onClick={onLoadMore} />
+          <div class="list-quotidians__footer">
+            <TextLink text="Load more..." onClick={onLoadMore} />
+          </div>
         {/if}
       </div>
     {:catch error}
