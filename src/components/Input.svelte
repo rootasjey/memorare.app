@@ -12,17 +12,19 @@
   } from '../data';
 
   // Props
-  export let checkValue   = false;  // activate front + back checks
-  export let inputValue   = '';     // actual value
-  export let isValid      = false;  // frontend + backend checks
-  export let label        = '';     // text displayed on top
+  export let checkValue   = false;      // activate front + back checks
+  export let errorMessage = '';
+  export let inputValue   = '';         // actual value
+  export let isValid      = true;      // frontend + backend checks
+  export let label        = '';         // text displayed on top
   export let onEnter      = () => {};
-  export let pattern      = '';     // regex for frontend check
-  export let placeholder  = '';     // when value is empty
+  export let pattern      = '';         // regex for frontend check
+  export let placeholder  = '';         // when value is empty
   export let type         = 'text';
 
-  let isChecking = false;           // checking data to backend
-  let isFormatValid = false;        // value matches regex (frontend)
+  let isChecking          = false;      // checking data to backend
+  let isDirty             = false;
+  let isFormatValid       = false;      // value matches regex (frontend)
 
   // Input's pattern choice
   const patterns = {
@@ -81,9 +83,14 @@
 
   const onChange = () => {
     if (!checkValue) { return; }
+    isDirty = true;
 
     isFormatValid = input.checkValidity();
-    if (!isFormatValid) { isValid = false; return; }
+
+    if (!isFormatValid) {
+      isValid = false;
+      return;
+    }
 
     isChecking = true;
 
@@ -120,7 +127,6 @@
   }
 
   input {
-    margin-bottom: 20px;
     width: 180px;
 
     border: 0;
@@ -143,6 +149,12 @@
 
   .input-container {
     display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+
+  .row {
+    display: flex;
   }
 
   .check-icon {
@@ -154,36 +166,54 @@
     color: #f56498;
     font-size: 1.5em;
   }
+
+  .error-message {
+    font-size: 0.9em;
+    color: #f56498;
+    display: none;
+    transition: .3s;
+  }
+
+  .error-message.visible {
+    display: block;
+    transition: .3s;
+  }
 </style>
 
 <div>
   <label for="input" >{label}</label>
 
   <div class="input-container">
-    {#if type.toLowerCase() === 'email'}
-      <input bind:value={inputValue} bind:this={input}
-              type="email" name="input" placeholder="{placeholder}" required
-              pattern="{pattern}" on:change={onChange} on:keyup={onKeyUp}>
+    <div class="row">
+      {#if type.toLowerCase() === 'email'}
+        <input bind:value={inputValue} bind:this={input}
+                type="email" name="input" placeholder="{placeholder}" required
+                pattern="{pattern}" on:change={onChange} on:keyup={onKeyUp}>
 
-    {:else if type.toLowerCase() === 'password'}
-      <input bind:value={inputValue} bind:this={input}
-              type="password" name="input" placeholder="{placeholder}" required
-              pattern="{pattern}" on:change={onChange} on:keyup={onKeyUp}>
-    {:else}
-      <!-- else type === 'text' -->
-      <input bind:value={inputValue} bind:this={input}
-              type="text" name="input" placeholder="{placeholder}" required
-              pattern="{pattern}" on:change={onChange} on:keyup={onKeyUp}>
-    {/if}
-
-    {#if checkValue}
-      {#if isChecking}
-        <Spinner />
-      {:else if isValid}
-        <span class="check-icon">&#10003;</span>
+      {:else if type.toLowerCase() === 'password'}
+        <input bind:value={inputValue} bind:this={input}
+                type="password" name="input" placeholder="{placeholder}" required
+                pattern="{pattern}" on:change={onChange} on:keyup={onKeyUp}>
       {:else}
-        <span class="cross-icon">&#215;</span>
+        <!-- else type === 'text' -->
+        <input bind:value={inputValue} bind:this={input}
+                type="text" name="input" placeholder="{placeholder}" required
+                pattern="{pattern}" on:change={onChange} on:keyup={onKeyUp}>
       {/if}
-    {/if}
+
+      {#if checkValue && isDirty}
+        {#if isChecking}
+          <Spinner />
+        {:else if isValid}
+          <span class="check-icon">&#10003;</span>
+        {:else}
+          <span class="cross-icon">&#215;</span>
+        {/if}
+      {/if}
+    </div>
+
+    <div class="error-message" class:visible={!isValid}>
+      <span>{errorMessage}</span>
+    </div>
   </div>
 </div>

@@ -6,14 +6,19 @@
   export let label        = '';     // text displayed on top
   export let placeholder  = '';     // when value is empty
   export let valueToCheck = '';
+  export let errorMessage = '';
+
+  let isDirty = false;
 
   $: isValid = (inputValue === valueToCheck) && valueToCheck.length > 0;
 
   const onChange = () => {
+    isDirty = true;
     isValid = (inputValue === valueToCheck) && valueToCheck.length > 0;
   }
 
   onMount(() => {
+    if (!inputValue) { return; }
     onChange();
   });
 </script>
@@ -47,6 +52,7 @@
 
   .input-container {
     display: flex;
+    flex-direction: column;
   }
 
   .check-icon {
@@ -58,20 +64,44 @@
     color: #f56498;
     font-size: 1.5em;
   }
+
+  .row {
+    display: flex;
+  }
+
+  .error-message {
+    font-size: 0.9em;
+    color: #f56498;
+    display: none;
+    transition: .3s;
+  }
+
+  .error-message.visible {
+    display: block;
+    transition: .3s;
+  }
 </style>
 
 <div>
   <label for="input" >{label}</label>
 
   <div class="input-container">
-    <input bind:value={inputValue}
-            type="password" name="input" placeholder="{placeholder}" required
-            on:change={onChange}>
+    <div class="row">
+      <input bind:value={inputValue}
+              type="password" name="input" placeholder="{placeholder}" required
+              on:change={onChange}>
 
-    {#if isValid}
-      <span class="check-icon">&#10003;</span>
-    {:else}
-      <span class="cross-icon">&#215;</span>
-    {/if}
+      {#if isDirty}
+        {#if isValid}
+          <span class="check-icon">&#10003;</span>
+        {:else}
+          <span class="cross-icon">&#215;</span>
+        {/if}
+      {/if}
+    </div>
+
+    <div class="error-message" class:visible={!isValid && isDirty}>
+      <span>{errorMessage}</span>
+    </div>
   </div>
 </div>
