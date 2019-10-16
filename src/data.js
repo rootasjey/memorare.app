@@ -131,8 +131,8 @@ export const LIST_AUTHORS = gql`
 `;
 
 export const PUBLISHED_QUOTES_ADMIN = gql`
-  query ($limit: Float, $skip: Float) {
-    publishedQuotesAdmin(limit: $limit, skip: $skip) {
+  query ($lang: String, $limit: Float, $skip: Float) {
+    publishedQuotesAdmin(lang: $lang, limit: $limit, skip: $skip) {
       entries {
         _id
         lang

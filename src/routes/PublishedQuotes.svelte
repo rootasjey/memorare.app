@@ -7,9 +7,11 @@
   import { fly }      from 'svelte/transition';
   import { navigate } from 'svelte-routing';
 
-  import IconButton from '../components/IconButton.svelte';
-  import { show }   from '../components/Snackbar.svelte';
-  import Spinner    from '../components/Spinner.svelte';
+  import IconButton   from '../components/IconButton.svelte';
+  import { show }     from '../components/Snackbar.svelte';
+  import Spinner      from '../components/Spinner.svelte';
+  import TextLink     from '../components/TextLink.svelte';
+  import { settings } from '../settings';
 
   import {
     client,
@@ -19,16 +21,17 @@
 
   import { handle } from '../errors';
 
-  let limit       = 10;
-  let queryStatus = 'loading'; // loading || completed || error
-  let skip        = 0;
-  let publishedQuotes  = [];
+  let hasMoreData     = true;
+  let limit           = 10;
+  let publishedQuotes = [];
+  let queryStatus     = 'loading'; // loading || completed || error
+  let skip            = 0;
 
   $: spinnerVisibility = queryStatus === 'loading' ? 'visible' : 'hidden';
 
   const queryPublishedQuotes = query(client, {
     query: PUBLISHED_QUOTES_ADMIN,
-    variables: { limit, skip },
+    variables: { lang: settings.getValue('lang'), limit, skip },
   });
 
   (async function fetchPublishedQuotes() {
@@ -65,7 +68,7 @@
       setTimeout(async () => {
         const queryPublishedQuotes2 = query(client, {
           query: PUBLISHED_QUOTES_ADMIN,
-          variables: { limit, skip },
+          variables: { lang: settings.getValue('lang'), limit, skip },
         });
 
         const resp = await queryPublishedQuotes2.refetch({ limit, skip });
@@ -117,6 +120,35 @@
       handle(error);
     }
   }
+
+  async function onLoadMore() {
+    try {
+      const lang = settings.getValue('lang');
+
+      const q3 = await query(client, {
+        query: PUBLISHED_QUOTES_ADMIN,
+        variables: { lang, limit, skip },
+      });
+
+      const resp = await q3.result();
+      const { publishedQuotesAdmin: { entries, pagination } } = resp.data;
+
+      hasMoreData = pagination.hasNext;
+      limit = pagination.limit;
+      skip = pagination.nextSkip;
+
+      publishedQuotes = [...publishedQuotes, ...entries];
+
+    } catch (error) {
+      show({
+        actions: [ {text: 'retry'} ],
+        text: `Couldn't fetch more published quotes.`,
+        type: 'error',
+      });
+
+      handle(error);
+    }
+  }
 </script>
 
 <style>
@@ -157,6 +189,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    padding-bottom: 80px;
   }
 
   .published-quote {
@@ -250,6 +284,10 @@
         {:else}
           <div>There's currently no published quotes.</div>
         {/each}
+
+        {#if hasMoreData}
+          <TextLink text="Load more..." onClick={onLoadMore} />
+        {/if}
       </div>
     {:else}
       <div>Tere was an error when retrieving published quotes.</div>
