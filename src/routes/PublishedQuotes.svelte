@@ -7,6 +7,7 @@
   import { fly }      from 'svelte/transition';
   import { navigate } from 'svelte-routing';
 
+  import Button       from '../components/Button.svelte';
   import IconButton   from '../components/IconButton.svelte';
   import { show }     from '../components/Snackbar.svelte';
   import Spinner      from '../components/Spinner.svelte';
@@ -25,6 +26,7 @@
   let limit           = 10;
   let publishedQuotes = [];
   let queryStatus     = 'loading'; // loading || completed || error
+  let selectedQuoteId = -1;
   let skip            = 0;
 
   $: spinnerVisibility = queryStatus === 'loading' ? 'visible' : 'hidden';
@@ -149,17 +151,21 @@
       handle(error);
     }
   }
+
+  function onSelectQuote(id) {
+    selectedQuoteId = id;
+  }
 </script>
 
 <style>
-  .content {
+  .published-quotes-page__content {
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
 
  .content__buttons-container {
-    margin-top: 20px;
-    align-self: flex-end;
+    margin: 25px 0;
   }
 
   header {
@@ -177,71 +183,162 @@
     margin-top: -10px;
   }
 
-  .icon-button__icon {
-    font-size: 2em;
-    color: white;
-
-    position: relative;
-    top: 5px;
-  }
-
   .list-published-quotes {
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    padding-bottom: 80px;
+    padding-bottom: 50px;
   }
 
-  .published-quote {
-    margin: 20px 0;
-    max-width: 500px;
+  .list-published-quotes__content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
   }
 
-  .published-quotes-container {
+  .list-published-quotes__footer {
+    padding: 20px 0;
+  }
+
+  .published-quotes-page {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  .published-quote__content {
-    border: 1px solid rgba(0,0,0,0.5);
-    border-radius: 5px;
+  .quote {
+    margin: 10px;
+    padding: 30px;
 
-    padding: 15px;
-    margin: 5px 0;
+    min-height: 320px;
+    max-width: 240px;
 
-    cursor: pointer;
-
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-
-    transition: .3s;
-  }
-
-  .published-quote__content:hover {
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    transition: .3s;
-  }
-
-  .published-quote__footer {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: white;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.20);
+    border: 2px solid transparent;
+    border-radius: 10px;
+
+    position: relative;
+    transition: .3s;
   }
 
-  .published-quote__footer svg {
+  .quote:hover {
+    transform: scale(1.050);
+    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.20);
+    transition: .3s;
+  }
+
+  .quote.selected {
+    border: 2px solid #f56498;
+  }
+
+  .quote__content {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 300;
+
+    max-height: 170px;
+    overflow-y: auto;
+  }
+
+
+  .quote__footer {
+    position: absolute;
+    align-self: flex-start;
+    bottom: 0;
+
+    padding-bottom: 10px;
+
+    opacity: 0;
+    transition: .3s;
+  }
+
+  .quote:hover .quote__footer,
+  .quote.selected .quote__footer {
+    opacity: 1;
+    transition: .3s;
+  }
+
+  .quote__footer__author {
+    align-items: center;
+    display: flex;
+    width: 100%;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .quote__footer__author-img {
+    height: 30px;
+    width: 30px;
+
+    border-radius: 50%;
+    background-color: #353b48;
+
+    margin-right: 10px;
+  }
+
+  .quote__header {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+  }
+
+  .quote__header__icons {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+
+    display: flex;
+  }
+
+  .quote__header__icons svg {
     position: relative;
     top: 10px;
   }
 
+  .quote__header__topics {
+    color: white;
+    background-color: #f56498;
+    font-weight: 700;
+
+    padding: 5px;
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    position: absolute;
+    top: -15px;
+    right: 10px;
+
+    transition: .3s;
+  }
+
+  .quote__header__topics:hover {
+    background-color: #cc5380;
+    transition: .3s;
+  }
+
 </style>
 
-<div class="published-quotes-container">
+<div class="published-quotes-page">
   <header class="header">
     <h1>Published Quotes</h1>
     <span class="header__subtext">Quotes discoverable by everyone.</span>
   </header>
 
-  <div class="content">
+  <div class="published-quotes-page__content">
     {#if queryStatus === 'loading'}
       <div>
         <Spinner visibility={spinnerVisibility} />
@@ -249,44 +346,66 @@
       </div>
     {:else if queryStatus === 'completed'}
       <div class="content__buttons-container">
-        <IconButton onClick={() => onRefresh()} backgroundColor="#8395a7">
-          <span class="icon-button__icon">&#8634;</span>
-        </IconButton>
+        <Button outlined={true} value="refresh" onClick={() => onRefresh()} />
       </div>
 
       <div class="list-published-quotes">
-        {#each publishedQuotes as quote, index}
-          <div class="published-quote" transition:fly={{ y: 10, duration: 200 * index }} >
-            <div class="published-quote__content">
-              {quote.name}
-            </div>
+        <div class="list-published-quotes__content">
+          {#each publishedQuotes as quote, index}
+            <div class="quote"
+              class:selected={selectedQuoteId === quote._id}
+              on:click={() => onSelectQuote(quote._id)}
+              transition:fly={{ y: 10, duration: 200 * index }} >
 
-            <div class="published-quote__footer">
-              <IconButton margin="5px" onClick={ () => onCreateQuotidian(quote) } >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-                  <path d="M24 2v22h-24v-22h3v1c0 1.103.897 2 2 2s2-.897 2-2v-1h10v1c0 1.103.897 2 2 2s2-.897 2-2v-1h3zm-2 6h-20v14h20v-14zm-2-7c0-.552-.447-1-1-1s-1 .448-1 1v2c0 .552.447 1 1 1s1-.448 1-1v-2zm-14 2c0 .552-.447 1-1 1s-1-.448-1-1v-2c0-.552.447-1 1-1s1 .448 1 1v2zm1 11.729l.855-.791c1 .484 1.635.852 2.76 1.654 2.113-2.399 3.511-3.616 6.106-5.231l.279.64c-2.141 1.869-3.709 3.949-5.967 7.999-1.393-1.64-2.322-2.686-4.033-4.271z"/>
-                </svg>
-              </IconButton>
+              <header class="quote__header">
+                <div class="quote__header__icons">
+                    <IconButton margin="5px"
+                      onClick={() => onDelete(quote._id)}
+                      backgroundColor="#f56498"
+                      elevation={1} >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                        <path d="M19 24h-14c-1.104 0-2-.896-2-2v-17h-1v-2h6v-1.5c0-.827.673-1.5 1.5-1.5h5c.825 0 1.5.671 1.5 1.5v1.5h6v2h-1v17c0 1.104-.896 2-2 2zm0-19h-14v16.5c0 .276.224.5.5.5h13c.276 0 .5-.224.5-.5v-16.5zm-9 4c0-.552-.448-1-1-1s-1 .448-1 1v9c0 .552.448 1 1 1s1-.448 1-1v-9zm6 0c0-.552-.448-1-1-1s-1 .448-1 1v9c0 .552.448 1 1 1s1-.448 1-1v-9zm-2-7h-4v1h4v-1z"/>
+                      </svg>
+                    </IconButton>
 
-              <!-- <IconButton margin="5px" >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-                  <path d="M20 20h-4v-4h4v4zm-6-10h-4v4h4v-4zm6 0h-4v4h4v-4zm-12 6h-4v4h4v-4zm6 0h-4v4h4v-4zm-6-6h-4v4h4v-4zm16-8v22h-24v-22h3v1c0 1.103.897 2 2 2s2-.897 2-2v-1h10v1c0 1.103.897 2 2 2s2-.897 2-2v-1h3zm-2 6h-20v14h20v-14zm-2-7c0-.552-.447-1-1-1s-1 .448-1 1v2c0 .552.447 1 1 1s1-.448 1-1v-2zm-14 2c0 .552-.447 1-1 1s-1-.448-1-1v-2c0-.552.447-1 1-1s1 .448 1 1v2z"/>
-                </svg>
-              </IconButton> -->
+                    <IconButton margin="5px"
+                      onClick={() => onCreateQuotidian(quote)}
+                      backgroundColor="#f56498"
+                      elevation={1} >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                        <path d="M12 5.173l2.335 4.817 5.305.732-3.861 3.71.942 5.27-4.721-2.524-4.721 2.525.942-5.27-3.861-3.71 5.305-.733 2.335-4.817zm0-4.586l-3.668 7.568-8.332 1.151 6.064 5.828-1.48 8.279 7.416-3.967 7.416 3.966-1.48-8.279 6.064-5.827-8.332-1.15-3.668-7.569z"/>
+                      </svg>
+                    </IconButton>
+                  </div>
 
-              <IconButton margin="5px" onClick={() => onDelete(quote) } backgroundColor="#ff6b6b" >
-                <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="white" fill-rule="evenodd" clip-rule="evenodd">
-                  <path d="M19 24h-14c-1.104 0-2-.896-2-2v-17h-1v-2h6v-1.5c0-.827.673-1.5 1.5-1.5h5c.825 0 1.5.671 1.5 1.5v1.5h6v2h-1v17c0 1.104-.896 2-2 2zm0-19h-14v16.5c0 .276.224.5.5.5h13c.276 0 .5-.224.5-.5v-16.5zm-7 7.586l3.293-3.293 1.414 1.414-3.293 3.293 3.293 3.293-1.414 1.414-3.293-3.293-3.293 3.293-1.414-1.414 3.293-3.293-3.293-3.293 1.414-1.414 3.293 3.293zm2-10.586h-4v1h4v-1z"/>
-                </svg>
-              </IconButton>
+                  {#if quote.topics && quote.topics.length > 0}
+                    <div class="quote__header__topics">
+                      <span> {quote.topics[0]} </span>
+                    </div>
+                  {/if}
+              </header>
+
+              <div class="quote__content">
+                {quote.name}
               </div>
-          </div>
-        {:else}
-          <div>There's currently no published quotes.</div>
-        {/each}
+
+              <div class="quote__footer">
+                <div class="quote__footer__author">
+                    <div class="quote__footer__author-img"></div>
+                    <span> {quote.author} </span>
+                </div>
+              </div>
+            </div>
+          {:else}
+            <div>There's currently no published quotes.</div>
+          {/each}
+        </div>
+
 
         {#if hasMoreData}
-          <TextLink text="Load more..." onClick={onLoadMore} />
+          <div class="list-published-quotes__footer">
+            <TextLink text="Load more..." onClick={onLoadMore} />
+          </div>
         {/if}
       </div>
     {:else}

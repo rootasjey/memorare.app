@@ -226,7 +226,7 @@
   }
 
   .list-quotidians__footer {
-    padding: 20px 0 ;
+    padding: 20px 0;
   }
 
   .quotidian {
@@ -270,7 +270,7 @@
     overflow-y: auto;
   }
 
-    .quotidian__footer {
+  .quotidian__footer {
     position: absolute;
     align-self: flex-start;
     bottom: 0;
@@ -321,6 +321,7 @@
     left: 20px;
     top: 20px;
   }
+
   .quotidian__header__icons svg {
     position: relative;
     top: 10px;
@@ -394,8 +395,8 @@
               class:selected={selectedQuoteId === quotidian._id}
               data-id="{quotidian._id}"
               transition:fly={{ y: 10, duration: 500 }}
-              on:click={() => onSelectQuote(quotidian._id)}
-              >
+              on:click={() => onSelectQuote(quotidian._id)}>
+
               <header class="quotidian__header">
                 <div class="quotidian__header__icons">
                   <IconButton margin="5px"

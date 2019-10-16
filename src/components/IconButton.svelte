@@ -45,13 +45,9 @@
 
   .icon-button:hover {
     top: -2px;
+    filter: brightness(95%);
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     transition: .3s;
-  }
-
-  .icon-button > svg {
-    position: relative;
-    top: 10px;
   }
 
   .icon-button__icon {
