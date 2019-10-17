@@ -8,6 +8,7 @@
   import ConfirmPass    from '../components/ConfirmPass.svelte';
   import Input          from '../components/Input.svelte';
   import TextLink       from '../components/TextLink.svelte';
+  import { handle }     from '../errors';
   import {
     isUserAuthenticated,
     settings
@@ -80,7 +81,7 @@
       navigate('/welcome');
 
     } catch(error) {
-      console.error(error);
+      handle(error);
     }
   }
 
@@ -98,8 +99,7 @@
       navigate(`/verifyemail/id=${_id}`);
 
     } catch (error) {
-      // TODO: Redirect to a page.
-      console.error(error);
+      handle(error);
     }
   }
 </script>
