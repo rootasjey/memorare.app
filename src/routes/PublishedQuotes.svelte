@@ -359,7 +359,8 @@
 
               <header class="quote__header">
                 <div class="quote__header__icons">
-                    <IconButton margin="5px"
+                    <IconButton
+                      margin="5px"
                       onClick={() => onDelete(quote._id)}
                       backgroundColor="#f56498"
                       elevation={1} >
