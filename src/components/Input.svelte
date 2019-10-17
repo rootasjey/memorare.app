@@ -102,9 +102,11 @@
     fetchQuery.result()
       .then((response) => {
         isChecking = false;
-        const responseOk = response.data[getResponseKey()];
+        const booleanMessage = response.data[getResponseKey()];
 
-        isValid = isFormatValid && responseOk;
+        isValid = booleanMessage.bool && isFormatValid;
+
+        errorMessage = booleanMessage.message ? booleanMessage.message : '';
       })
       .catch((reason) => {
         isChecking = false;

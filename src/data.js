@@ -103,19 +103,28 @@ export const DELETE_TEMP_QUOTE_ADMIN = gql`
 
 export const IS_EMAIL_VALID = gql`
   query ($email: String!) {
-    isEmailValid(email: $email)
+    isEmailValid(email: $email) {
+      bool
+      message
+    }
   }
 `;
 
 export const IS_NAME_VALID = gql`
   query ($name: String!) {
-    isNameValid(name: $name)
+    isNameValid(name: $name) {
+      bool
+      message
+    }
   }
 `;
 
 export const IS_PASSWORD_VALID = gql`
   query ($password: String!) {
-    isPasswordValid(password: $password)
+    isPasswordValid(password: $password) {
+      bool
+      message
+    }
   }
 `;
 

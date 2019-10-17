@@ -1,12 +1,13 @@
 <script>
   import { onMount }  from 'svelte';
 
+  export let errorMessage = '';
   export let inputValue   = '';
   export let isValid      = false;
-  export let label        = '';     // text displayed on top
-  export let placeholder  = '';     // when value is empty
+  export let label        = '';
+  export let onEnter      = () => {};
+  export let placeholder  = '';
   export let valueToCheck = '';
-  export let errorMessage = '';
 
   let isDirty = false;
 
@@ -15,6 +16,14 @@
   const onChange = () => {
     isDirty = true;
     isValid = (inputValue === valueToCheck) && valueToCheck.length > 0;
+  }
+
+  const onKeyUp = (event) => {
+    const reEnter = /Enter/ig;
+
+    if (reEnter.test(event.code)) {
+      onEnter(event);
+    }
   }
 
   onMount(() => {
@@ -30,7 +39,7 @@
 
   input {
     margin-bottom: 20px;
-    width: 180px;
+    width: 100%;
 
     border: 0;
     border-bottom: 2px solid #706fd3;
@@ -50,7 +59,7 @@
     box-shadow: none;
   }
 
-  .input-container {
+  .input-interactions {
     display: flex;
     flex-direction: column;
   }
@@ -80,15 +89,22 @@
     display: block;
     transition: .3s;
   }
+
+  .input-container {
+    width: 100%;
+  }
 </style>
 
-<div>
+<div class="input-container">
   <label for="input" >{label}</label>
 
-  <div class="input-container">
+  <div class="input-interactions">
     <div class="row">
       <input bind:value={inputValue}
-              type="password" name="input" placeholder="{placeholder}" required
+              type="password" name="input"
+              placeholder="{placeholder}"
+              required
+              on:keyup={onKeyUp}
               on:change={onChange}>
 
       {#if isDirty}
