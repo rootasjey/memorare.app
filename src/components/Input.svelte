@@ -122,41 +122,6 @@
 </script>
 
 <style>
-  label {
-    color: #706fd3;
-  }
-
-  input {
-    width: 180px;
-
-    border: 0;
-    border-bottom: 2px solid #706fd3;
-
-    opacity: .3;
-    transition: .3s;
-  }
-
-  input:focus {
-    opacity: 1;
-    border: 0;
-    border-bottom: 2px solid #706fd3;
-    transition: .3s;
-  }
-
-  input:required {
-    box-shadow: none;
-  }
-
-  .input-container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-  }
-
-  .row {
-    display: flex;
-  }
-
   .check-icon {
     color: #a3cb38;
     font-size: 1.5em;
@@ -178,12 +143,52 @@
     display: block;
     transition: .3s;
   }
+
+    label {
+    color: #706fd3;
+  }
+
+  input {
+    width: 100%;
+
+    border: 0;
+    border-bottom: 2px solid #706fd3;
+
+    opacity: .3;
+    transition: .3s;
+  }
+
+  input:focus {
+    opacity: 1;
+    border: 0;
+    border-bottom: 2px solid #706fd3;
+    transition: .3s;
+  }
+
+  input:required {
+    box-shadow: none;
+  }
+
+  .input-container {
+    width: 100%;
+  }
+
+  .input-interactions {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+
+  .row {
+    display: flex;
+  }
+
 </style>
 
-<div>
+<div class="input-container">
   <label for="input" >{label}</label>
 
-  <div class="input-container">
+  <div class="input-interactions">
     <div class="row">
       {#if type.toLowerCase() === 'email'}
         <input bind:value={inputValue} bind:this={input}

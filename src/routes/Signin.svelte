@@ -4,7 +4,6 @@
   import { fly }        from 'svelte/transition';
   import { navigate }   from 'svelte-routing';
 
-  import AuthorsCardShow from '../components/AuthorsCardShow.svelte';
   import Checkbox       from '../components/Checkbox.svelte';
   import ConfirmPass    from '../components/ConfirmPass.svelte';
   import Input          from '../components/Input.svelte';
@@ -158,14 +157,12 @@
     top: 42px;
   }
 
-  .signin {
+  .signin-page {
     min-height: 100%;
     background-color: #eee;
     padding-top: 50px;
     padding-bottom: 50px;
-  }
 
-  .signin__card {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -173,35 +170,11 @@
     position: relative;
   }
 
-  .signin__card-right {
-    height: 510px;
-    width: 400px;
-    padding: 20px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    background-color: #eee;
-    border-radius: 5px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-
-    transition: .3s;
-  }
-
-  .signin__card-right.extended {
-    height: 780px;
-
-    transition: .3s;
-  }
-
   .form {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 200px;
+    width: 300px;
     min-height: 200px;
     padding: 40px;
 
@@ -223,7 +196,7 @@
     padding: 20px 30px;
     padding-bottom: 25px;
     margin-bottom: -5px;
-    width: 219px;
+    width: 319px;
 
     position: relative;
     top: 10px;
@@ -253,67 +226,65 @@
 
 </style>
 
-<div class="signin">
-  <div class="signin__card">
-    <AuthorsCardShow />
-    <div class="signin__card-right" class:extended={!isSigninActive}>
-      <div class="form-container" bind:this={formContainer}>
-        <nav>
-          <span class:active="{isSigninActive}" on:click={toggleFormType}>Sign In</span>
-          <span class:active="{!isSigninActive}" on:click={toggleFormType}>Sign Up</span>
+<div class="signin-page">
+  <div class="form-container" bind:this={formContainer}>
+  <nav>
+    <span class:active="{isSigninActive}" on:click={toggleFormType}>Sign In</span>
+    <span class:active="{!isSigninActive}" on:click={toggleFormType}>Sign Up</span>
 
-          <div class="nav-marker"
-              class:left="{isSigninActive}"
-              class:right="{!isSigninActive}"
-              transition:fly="{{ y: 20, duration: 1000 }}"></div>
-        </nav>
+    <div class="nav-marker"
+        class:left="{isSigninActive}"
+        class:right="{!isSigninActive}"
+        transition:fly="{{ y: 20, duration: 1000 }}"></div>
+  </nav>
 
-        {#if isSigninActive}
-          <div class="form form-signin" transition:fly="{{ y: -20, duration: 500 }}">
-            <Input label="Email" type="email"
-              placeholder="socrate@philo.com"
-              bind:inputValue={email} onEnter={onEnterNextInput} />
+  {#if isSigninActive}
+    <div class="form form-signin" transition:fly="{{ y: -20, duration: 500 }}">
+      <Input label="Email" type="email"
+        placeholder="socrate@philo.com"
+        bind:inputValue={email} onEnter={onEnterNextInput} />
 
-            <Input label="Password" type="password"
-              placeholder="********"
-              bind:inputValue={password} onEnter={onEnterValidate} />
+      <Input label="Password" type="password"
+        placeholder="********"
+        bind:inputValue={password} onEnter={onEnterValidate} />
 
-            <TextLink text="I forgot my password ?" margin="-10px 0 20px 0" />
+      <TextLink text="I forgot my password ?" margin="-10px 0 20px 0" />
 
-            <Checkbox label={"Remember me"} bind:checked={rememberMe} />
+      <br>
 
-            <button class="action-button" on:click={onSignin}>Sign In</button>
+      <Checkbox label={"Remember me"} bind:checked={rememberMe} />
+      <br>
 
-            <TextLink text="I don't have an account ?" onClick={toggleFormType} />
-          </div>
-        {:else}
-           <div class="form form-signup" transition:fly="{{ y: 20, duration: 500 }}">
-            <Input label="Name" type="name" placeholder="Socrates"
-              bind:inputValue={name} checkValue={true}
-              errorMessage="Your name contains invalid characters. Only letters, numbers, underscores and hypens allowed."
-              onEnter={onEnterNextInput} />
+      <button class="action-button" on:click={onSignin}>Sign In</button>
 
-            <Input label="Email" type="email" placeholder="socrate@philo.com"
-              errorMessage="The value entered is not an email."
-              bind:inputValue={email} checkValue={true}
-              onEnter={onEnterNextInput} />
-
-            <Input label="Password" type="password" placeholder="********"
-              errorMessage="Your password must be at least 8 characters length and must contain at least one uppercase letter, one lowercase letter, and one number."
-              bind:inputValue={password} checkValue={true}
-              onEnter={onEnterNextInput} />
-
-            <ConfirmPass label="Confirm Password" placeholder="********"
-              bind:inputValue={confirmPassword} valueToCheck={password}
-              errorMessage="This value doesn't match the previous entered password."
-              onEnter={onEnterValidate} />
-
-            <button class="action-button" on:click={onSignup}>Sign Up</button>
-
-            <TextLink text="I already have an account ?" onClick={toggleFormType} />
-           </div>
-        {/if}
-      </div>
+      <TextLink text="I don't have an account ?" onClick={toggleFormType} />
     </div>
-  </div>
+  {:else}
+      <div class="form form-signup" transition:fly="{{ y: 20, duration: 500 }}">
+      <Input label="Name" type="name" placeholder="Socrates"
+        bind:inputValue={name} checkValue={true}
+        errorMessage="Your name contains invalid characters. Only letters, numbers, underscores and hypens allowed."
+        onEnter={onEnterNextInput} />
+
+      <Input label="Email" type="email" placeholder="socrate@philo.com"
+        errorMessage="The value entered is not an email."
+        bind:inputValue={email} checkValue={true}
+        onEnter={onEnterNextInput} />
+
+      <Input label="Password" type="password" placeholder="********"
+        errorMessage="Your password must be at least 8 characters length and must contain at least one uppercase letter, one lowercase letter, and one number."
+        bind:inputValue={password} checkValue={true}
+        onEnter={onEnterNextInput} />
+
+      <ConfirmPass label="Confirm Password" placeholder="********"
+        bind:inputValue={confirmPassword} valueToCheck={password}
+        errorMessage="This value doesn't match the previous entered password."
+        onEnter={onEnterValidate} />
+
+      <button class="action-button" on:click={onSignup}>Sign Up</button>
+
+      <TextLink text="I already have an account ?" onClick={toggleFormType} />
+      </div>
+  {/if}
+</div>
 </div>
