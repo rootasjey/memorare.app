@@ -163,7 +163,6 @@
   .author-square:hover .author-square__img {
     background-color: #706fd3;
     opacity: 1;
-    transform: scale(1.1);
     transition: .5s;
   }
 
@@ -197,6 +196,7 @@
     width: 100%;
 
     opacity: 1;
+    border-radius: 50%;
 
     position: absolute;
 
