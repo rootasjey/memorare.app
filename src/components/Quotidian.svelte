@@ -115,20 +115,21 @@
         </IconButton>
       </header>
 
-      <h1 class="quote-name"> {result.data.quotidian.name} </h1>
+      <h1 class="quote-name"> {result.data.quotidian.quote.name} </h1>
 
       <footer class="quote-footer">
-        <h4>{result.data.quotidian.author}</h4>
+        <h4>{result.data.quotidian.quote.author.name}</h4>
 
-        {#if result.data.quotidian.references.length}
-          <p>{result.data.quotidian.references[0]}</p>
+        {#if result.data.quotidian.quote.references.length}
+          <p>{result.data.quotidian.quote.references[0].name}</p>
         {/if}
       </footer>
     </div>
   {:catch error}
     <!-- $quotidian was rejected -->
     <div class="quote-error">
-      <h1>An error occurred while loading. Please contact...</h1>
+      <h1>An error occurred while loading :(</h1>
+      <h4>{error}</h4>
     </div>
   {/await}
 </div>

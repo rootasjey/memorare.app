@@ -144,7 +144,7 @@ export const PUBLISHED_QUOTES_ADMIN = gql`
     publishedQuotesAdmin(lang: $lang, limit: $limit, skip: $skip) {
       entries {
         _id
-        author
+        author { name }
         lang
         name
         topics
@@ -161,9 +161,15 @@ export const PUBLISHED_QUOTES_ADMIN = gql`
 export const QUOTIDIAN = gql`
   query {
     quotidian {
-      name
-      author
-      references
+      _id
+      date
+      quote {
+        author {
+          name
+        }
+        name
+        references { name }
+      }
     }
   }
 `;
@@ -176,7 +182,7 @@ export const QUOTIDIANS = gql`
         date
         quote {
           _id
-          author
+          author { name }
           name
         }
       }

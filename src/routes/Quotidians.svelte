@@ -421,7 +421,7 @@
               <div class="quotidian__footer">
                 <div class="quotidian__footer__author">
                   <div class="quotidian__footer__author-img"></div>
-                  <span> {quotidian.quote.author} </span>
+                  <span> {quotidian.quote.author.name} </span>
                 </div>
               </div>
             </div>
