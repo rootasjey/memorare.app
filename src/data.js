@@ -203,6 +203,7 @@ export const RANDOM_QUOTE = gql`
       author { name }
       name
       references { name }
+      topics
     }
   }
 `;
