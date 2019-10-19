@@ -124,6 +124,12 @@
     top: -15px;
     right: 10px;
 
+    max-width: 170px;
+    max-height: 20px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
     transition: .3s;
   }
 
