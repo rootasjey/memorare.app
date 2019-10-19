@@ -87,7 +87,9 @@ export const DELETE_QUOTIDIAN = gql`
     deleteQuotidian(id: $id) {
       _id
       date
-      quoteId
+      quote {
+        _id
+      }
     }
   }
 `;
