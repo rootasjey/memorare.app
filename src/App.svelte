@@ -17,6 +17,7 @@
 	import Pricing 					from './routes/Pricing.svelte';
 	import PublishedQuotes 	from './routes/PublishedQuotes.svelte';
 	import Quotidians 			from './routes/Quotidians.svelte';
+	import Route404 				from './routes/Route404.svelte';
 	import Signin 					from './routes/Signin.svelte';
 	import TempQuotes 			from './routes/TempQuotes.svelte';
 	import VerifyEmail 			from './routes/VerifyEmail.svelte';
@@ -60,6 +61,11 @@
 			<Route path="/admin/tempquotes" component="{TempQuotes}" />
 			<Route path="/admin/publishedquotes" component="{PublishedQuotes}" />
 			<Route path="/admin/quotidians" component="{Quotidians}" />
+
+			<!-- 404 -->
+			<Route path="/*wildcard" let:params>
+				<Route404 path="{params.wildcard}" />
+			</Route>
 		</div>
 
 		<Footer />

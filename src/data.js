@@ -196,6 +196,16 @@ export const QUOTIDIANS = gql`
   }
 `;
 
+export const RANDOM_QUOTE = gql`
+  query ($lang: String!) {
+    randomQuote(lang: $lang) {
+      author { name }
+      name
+      references { name }
+    }
+  }
+`;
+
 export const SEND_EMAIL_VERIFICATION = gql`
   query ($userId: String!) {
     sendEmailVerification(userId: $userId)
