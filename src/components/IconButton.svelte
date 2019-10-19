@@ -45,7 +45,7 @@
 
   .icon-button:hover {
     top: -2px;
-    filter: brightness(95%);
+    transform: scale(1.05);
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     transition: .3s;
   }
@@ -57,8 +57,17 @@
     position: relative;
     top: 2px;
   }
+
+  .svg-container {
+    position:relative;
+    top: 10px;
+  }
 </style>
 
 <div class="{classes}" style={styles} on:click={onClick}>
-  <slot><!-- optional fallback --></slot>
+  <slot name="txt"><!-- optional fallback --></slot>
+
+  <div class="svg-container">
+    <slot name="svg"></slot>
+  </div>
 </div>
