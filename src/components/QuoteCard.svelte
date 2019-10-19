@@ -4,10 +4,16 @@
 
   // Props
   export let authorName = '';
+  export let backgroundColor = '';
+  export let color = '';
   export let content = '';
   export let onClick = () => {};
   export let selected = false;
   export let tag = '';
+
+  $: backgroundColorCSS = backgroundColor ? `background-color: ${backgroundColor}`: '';
+  $: colorCSS = color ? `color: ${color}`: '';
+  $: styles = `${backgroundColorCSS}; ${colorCSS}`;
 </script>
 
 <style>
@@ -127,7 +133,7 @@
   }
 </style>
 
-<div class="quote" class:selected on:click={onClick}>
+<div class="quote" class:selected on:click={onClick} style="{styles}">
   <header class="quote__header">
     <div class="quote__header__icons">
       <slot name="quoteHeaderIcons"></slot>
