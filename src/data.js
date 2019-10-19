@@ -39,7 +39,6 @@ export const CREATE_QUOTIDIAN = gql`
     createQuotidian(lang: $lang, quoteId: $quoteId, targetDate: $targetDate) {
       _id
       date
-      quoteId
     }
   }
 `;

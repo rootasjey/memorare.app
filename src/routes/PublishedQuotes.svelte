@@ -9,6 +9,7 @@
 
   import Button       from '../components/Button.svelte';
   import IconButton   from '../components/IconButton.svelte';
+  import QuoteCard    from '../components/QuoteCard.svelte';
   import { show }     from '../components/Snackbar.svelte';
   import Spinner      from '../components/Spinner.svelte';
   import TextLink     from '../components/TextLink.svelte';
@@ -115,7 +116,7 @@
 
       show({
         text: 'The quote has successfully been added to quotidian',
-        actions: [ { text: 'OK' }]
+        type: 'success',
       });
 
     } catch (error) {
@@ -209,121 +210,9 @@
     align-items: center;
   }
 
-  .quote {
-    margin: 10px;
-    padding: 30px;
-
-    min-height: 320px;
-    max-width: 240px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    background-color: white;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.20);
-    border: 2px solid transparent;
-    border-radius: 10px;
-
-    position: relative;
-    transition: .3s;
-  }
-
-  .quote:hover {
-    transform: scale(1.050);
-    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.20);
-    transition: .3s;
-  }
-
-  .quote.selected {
-    border: 2px solid #f56498;
-  }
-
-  .quote__content {
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: 300;
-
-    max-height: 170px;
-    overflow-y: auto;
-  }
-
-  .quote__footer {
-    position: absolute;
-    align-self: flex-start;
-    bottom: 0;
-
-    padding-bottom: 10px;
-
-    opacity: 0;
-    transition: .3s;
-  }
-
-  .quote:hover .quote__footer,
-  .quote.selected .quote__footer {
-    opacity: 1;
-    transition: .3s;
-  }
-
-  .quote__footer__author {
-    align-items: center;
-    display: flex;
-    width: 100%;
-
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  .quote__footer__author-img {
-    height: 30px;
-    width: 30px;
-
-    border-radius: 50%;
-    background-color: #353b48;
-
-    margin-right: 10px;
-  }
-
-  .quote__header {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-  }
-
-  .quote__header__icons {
-    position: absolute;
-    left: 20px;
-    top: 20px;
-
+  .quote__header__icons__slot {
     display: flex;
   }
-
-  .quote__header__topics {
-    color: white;
-    background-color: #f56498;
-    font-weight: 700;
-
-    padding: 5px;
-    border-radius: 5px;
-
-    cursor: pointer;
-
-    position: absolute;
-    top: -15px;
-    right: 10px;
-
-    transition: .3s;
-  }
-
-  .quote__header__topics:hover {
-    background-color: #cc5380;
-    transition: .3s;
-  }
-
 </style>
 
 <div class="published-quotes-page">
@@ -346,13 +235,15 @@
       <div class="list-published-quotes">
         <div class="list-published-quotes__content">
           {#each publishedQuotes as quote, index}
-            <div class="quote"
-              class:selected={selectedQuoteId === quote._id}
-              on:click={() => onSelectQuote(quote._id)}
-              transition:fly={{ y: 10, duration: 200 * index }} >
+            <div transition:fly={{ y: 10, duration: 200 * index }} >
+              <QuoteCard
+                content="{quote.name}"
+                authorName="{quote.author.name}"
+                tag="{quote.topics.length > 0 ? quote.topics[0] : ''}"
+                onClick={() => onSelectQuote(quote._id)}
+                selected={selectedQuoteId === quote._id}>
 
-              <header class="quote__header">
-                <div class="quote__header__icons">
+                <div slot="quoteHeaderIcons" class="quote__header__icons__slot">
                   <IconButton
                     margin="5px"
                     onClick={() => onDelete(quote._id)}
@@ -372,24 +263,7 @@
                     </svg>
                   </IconButton>
                 </div>
-
-                {#if quote.topics && quote.topics.length > 0}
-                  <div class="quote__header__topics">
-                    <span> {quote.topics[0]} </span>
-                  </div>
-                {/if}
-              </header>
-
-              <div class="quote__content">
-                {quote.name}
-              </div>
-
-              <div class="quote__footer">
-                <div class="quote__footer__author">
-                    <div class="quote__footer__author-img"></div>
-                    <span> {quote.author.name} </span>
-                </div>
-              </div>
+              </QuoteCard>
             </div>
           {:else}
             <div>There's currently no published quotes.</div>

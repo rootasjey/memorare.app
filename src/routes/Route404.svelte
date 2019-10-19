@@ -69,7 +69,8 @@
         <span>Loading temporary quotes...</span>
       </div>
     {:then result}
-      <QuoteCard content="{result.data.randomQuote.name}"
+      <QuoteCard
+        content="{result.data.randomQuote.name}"
         authorName="{result.data.randomQuote.author.name}">
         <div slot="quoteHeaderIcons">
           <IconButton
