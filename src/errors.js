@@ -34,6 +34,7 @@ function notifyGraphQLError(error = {}) {
   error.graphQLErrors.map((err) => {
     show({
       text: err.message,
+      type: 'error',
       actions: [
         {
           text: 'Report',

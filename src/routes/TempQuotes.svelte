@@ -9,6 +9,7 @@
 
   import Button     from '../components/Button.svelte';
   import IconButton from '../components/IconButton.svelte';
+  import { show }   from '../components/Snackbar.svelte';
   import Spinner    from '../components/Spinner.svelte';
 
   import {
@@ -21,10 +22,11 @@
 
   import { handle } from '../errors';
 
-  let limit       = 10;
-  let queryStatus = 'loading'; // loading || completed || error
-  let skip        = 0;
-  let tempQuotes  = [];
+  let limit           = 10;
+  let queryStatus     = 'loading'; // loading || completed || error
+  let selectedQuoteId = -1;
+  let skip            = 0;
+  let tempQuotes      = [];
 
   $: spinnerVisibility = queryStatus === 'loading' ? 'visible' : 'hidden';
 
@@ -85,6 +87,11 @@
 
       tempQuotes = tempQuotes.filter((tempQuote) => tempQuote._id !== id);
 
+      show({
+        text: `Temporary quote successfully validated`,
+        type: 'success',
+      });
+
     } catch (error) {
       handle(error);
     }
@@ -138,25 +145,30 @@
 
       tempQuotes = tempQuotes.filter((tempQuote) => tempQuote._id !== id);
 
+      show({
+        text: `Temporary quote successfully validated`,
+        type: 'success',
+      });
+
     } catch (error) {
       handle(error);
     }
   }
 
-  async function onSelectTempQuote(quote) {
+  async function onEditTempQuote(quote) {
     navigate(`/addquote/${quote._id}`);
   }
 </script>
 
 <style>
-  .content {
+  .temp-quotes-page__content {
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
 
   .content__buttons-container {
-    margin-top: 20px;
-    align-self: flex-end;
+    margin: 25px 0;
   }
 
   .header {
@@ -174,64 +186,149 @@
     margin-top: -10px;
   }
 
-  .icon-button__icon {
-    font-size: 2em;
-    color: white;
-
-    position: relative;
-    top: 5px;
-  }
-
-  .temp-quotes-container {
+  .temp-quotes-page {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  .temp-quote {
-    margin: 40px 0;
-    max-width: 500px;
+  .list-temp-quote {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    padding-bottom: 40px;
   }
 
-  .temp-quote__content {
-    border: 1px solid rgba(0,0,0,0.5);
-    border-radius: 5px;
+  .quote {
+    margin: 15px;
+    padding: 30px;
 
-    padding: 15px;
-    margin: 5px 0;
+    min-height: 320px;
+    max-width: 240px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: white;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.20);
+    border: 2px solid transparent;
+    border-radius: 10px;
+
+    position: relative;
+    transition: .3s;
+  }
+
+  .quote:hover {
+    transform: scale(1.050);
+    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.20);
+    transition: .3s;
+  }
+
+  .quote.selected {
+    border: 2px solid #f56498;
+  }
+
+  .quote__content {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 300;
+
+    max-height: 170px;
+    overflow-y: auto;
+  }
+
+  .quote__footer {
+    position: absolute;
+    align-self: flex-start;
+    bottom: 0;
+
+    padding-bottom: 10px;
+
+    opacity: 0;
+    transition: .3s;
+  }
+
+  .quote:hover .quote__footer,
+  .quote.selected .quote__footer {
+    opacity: 1;
+    transition: .3s;
+  }
+
+  .quote__footer__author {
+    align-items: center;
+    display: flex;
+    width: 100%;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .quote__footer__author-img {
+    height: 30px;
+    width: 30px;
+
+    border-radius: 50%;
+    background-color: #353b48;
+
+    margin-right: 10px;
+  }
+
+  .quote__header {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+  }
+
+  .quote__header__icons {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+
+    display: flex;
+  }
+
+  .quote__header__icons svg {
+    position: relative;
+    top: 10px;
+  }
+
+  .quote__header__topics {
+    color: white;
+    background-color: #f56498;
+    font-weight: 700;
+
+    padding: 5px;
+    border-radius: 5px;
 
     cursor: pointer;
 
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    position: absolute;
+    top: -15px;
+    right: 10px;
 
     transition: .3s;
   }
 
-  .temp-quote__content:hover {
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  .quote__header__topics:hover {
+    background-color: #cc5380;
     transition: .3s;
-  }
-
-  .temp-quote__footer {
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  .temp-quote__footer svg {
-    position: relative;
-    top: 10px;
-    left: 1px;
   }
 
 </style>
 
-<div class="temp-quotes-container">
+<div class="temp-quotes-page">
   <div class="header">
     <h1>Proposed Quotes</h1>
     <span class="header__subtext">Quotes waiting for approval</span>
   </div>
 
-  <div class="content">
+  <div class="temp-quotes-page__content">
       {#if queryStatus === 'loading'}
         <div>
           <Spinner visibility={spinnerVisibility} />
@@ -239,37 +336,73 @@
         </div>
       {:else if queryStatus === 'completed'}
         <div class="content__buttons-container">
-          <IconButton onClick={() => onRefresh()} backgroundColor="#8395a7">
-            <span class="icon-button__icon">&#8634;</span>
-          </IconButton>
+          <Button outlined={true} value="refresh" onClick={() => onRefresh()} />
         </div>
 
         <div class="list-temp-quote">
           {#each tempQuotes as quote, index}
-            <div class="temp-quote" transition:fly="{{ y: 10, duration: 200 * index }}">
-              <div class="temp-quote__content"
-                on:click={() => onSelectTempQuote(quote)} >
+            <div class="quote"
+              class:selected={selectedQuoteId === quote._id}
+              transition:fly={{ y: 10, duration: 200 * index }} >
+
+              <header class="quote__header">
+                <div class="quote__header__icons">
+                  <IconButton
+                    margin="5px"
+                    onClick={() => onDelete(quote)}
+                    backgroundColor="#f56498"
+                    elevation={1} >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                      <path d="M19 24h-14c-1.104 0-2-.896-2-2v-17h-1v-2h6v-1.5c0-.827.673-1.5 1.5-1.5h5c.825 0 1.5.671 1.5 1.5v1.5h6v2h-1v17c0 1.104-.896 2-2 2zm0-19h-14v16.5c0 .276.224.5.5.5h13c.276 0 .5-.224.5-.5v-16.5zm-9 4c0-.552-.448-1-1-1s-1 .448-1 1v9c0 .552.448 1 1 1s1-.448 1-1v-9zm6 0c0-.552-.448-1-1-1s-1 .448-1 1v9c0 .552.448 1 1 1s1-.448 1-1v-9zm-2-7h-4v1h4v-1z"/>
+                    </svg>
+                  </IconButton>
+
+                  <IconButton
+                    margin="5px"
+                    onClick={() => onEditTempQuote(quote)}
+                    backgroundColor="#f56498"
+                    elevation={1} >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                      <path d="M18.363 8.464l1.433 1.431-12.67 12.669-7.125 1.436 1.439-7.127 12.665-12.668 1.431 1.431-12.255 12.224-.726 3.584 3.584-.723 12.224-12.257zm-.056-8.464l-2.815 2.817 5.691 5.692 2.817-2.821-5.693-5.688zm-12.318 18.718l11.313-11.316-.705-.707-11.313 11.314.705.709z"/>
+                    </svg>
+                  </IconButton>
+
+                  <IconButton margin="5px"
+                    onClick={() => onSwitchStatus(quote)}
+                    backgroundColor="#f56498"
+                    elevation={1} >
+                    <span style="font-size: 1.2em; position: relative; top: 7px;">
+                      {`${quote.validation.status}`}
+                    </span>
+                  </IconButton>
+
+                  <IconButton margin="5px"
+                    onClick={() => onValidate(quote)}
+                    backgroundColor="#f56498"
+                    elevation={1} >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="white" width="24" height="24" viewBox="0 0 24 24"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/>
+                    </svg>
+                  </IconButton>
+                </div>
+
+                {#if quote.topics && quote.topics.length > 0}
+                  <div class="quote__header__topics">
+                    <span> {quote.topics[0]} </span>
+                  </div>
+                {/if}
+              </header>
+
+              <div class="quote__content">
                 {quote.name}
               </div>
 
-              <div class="temp-quote__footer">
-                <IconButton margin="5px" onClick={ () => onSwitchStatus(quote) } >
-                  <span style="font-size: 1.2em; position: relative; top: 7px;">
-                    {`${quote.validation.status}`}
-                  </span>
-                </IconButton>
-
-                <IconButton margin="5px" onClick={ () => onValidate(quote) }>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="white" width="24" height="24" viewBox="0 0 24 24"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/>
-                  </svg>
-                </IconButton>
-
-                <IconButton margin="5px" onClick={() => onDelete(quote) } backgroundColor="#ff6b6b" >
-                  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="white" fill-rule="evenodd" clip-rule="evenodd"><path d="M19 24h-14c-1.104 0-2-.896-2-2v-17h-1v-2h6v-1.5c0-.827.673-1.5 1.5-1.5h5c.825 0 1.5.671 1.5 1.5v1.5h6v2h-1v17c0 1.104-.896 2-2 2zm0-19h-14v16.5c0 .276.224.5.5.5h13c.276 0 .5-.224.5-.5v-16.5zm-7 7.586l3.293-3.293 1.414 1.414-3.293 3.293 3.293 3.293-1.414 1.414-3.293-3.293-3.293 3.293-1.414-1.414 3.293-3.293-3.293-3.293 1.414-1.414 3.293 3.293zm2-10.586h-4v1h4v-1z"/>
-                  </svg>
-                </IconButton>
+              <div class="quote__footer">
+                <div class="quote__footer__author">
+                    <div class="quote__footer__author-img"></div>
+                    <span> {quote.author.name} </span>
+                </div>
               </div>
-          </div>
+            </div>
           {:else}
             <div>There's currently no temporary quotes. You're all clean!</div>
           {/each}

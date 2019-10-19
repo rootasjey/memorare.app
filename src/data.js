@@ -261,6 +261,7 @@ export const TEMP_QUOTES_ADMIN = gql`
         author {
           name
         }
+        topics
         validation {
           status
         }

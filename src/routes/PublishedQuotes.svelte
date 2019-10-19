@@ -249,7 +249,6 @@
     overflow-y: auto;
   }
 
-
   .quote__footer {
     position: absolute;
     align-self: flex-start;
@@ -359,31 +358,31 @@
 
               <header class="quote__header">
                 <div class="quote__header__icons">
-                    <IconButton
-                      margin="5px"
-                      onClick={() => onDelete(quote._id)}
-                      backgroundColor="#f56498"
-                      elevation={1} >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-                        <path d="M19 24h-14c-1.104 0-2-.896-2-2v-17h-1v-2h6v-1.5c0-.827.673-1.5 1.5-1.5h5c.825 0 1.5.671 1.5 1.5v1.5h6v2h-1v17c0 1.104-.896 2-2 2zm0-19h-14v16.5c0 .276.224.5.5.5h13c.276 0 .5-.224.5-.5v-16.5zm-9 4c0-.552-.448-1-1-1s-1 .448-1 1v9c0 .552.448 1 1 1s1-.448 1-1v-9zm6 0c0-.552-.448-1-1-1s-1 .448-1 1v9c0 .552.448 1 1 1s1-.448 1-1v-9zm-2-7h-4v1h4v-1z"/>
-                      </svg>
-                    </IconButton>
+                  <IconButton
+                    margin="5px"
+                    onClick={() => onDelete(quote._id)}
+                    backgroundColor="#f56498"
+                    elevation={1} >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                      <path d="M19 24h-14c-1.104 0-2-.896-2-2v-17h-1v-2h6v-1.5c0-.827.673-1.5 1.5-1.5h5c.825 0 1.5.671 1.5 1.5v1.5h6v2h-1v17c0 1.104-.896 2-2 2zm0-19h-14v16.5c0 .276.224.5.5.5h13c.276 0 .5-.224.5-.5v-16.5zm-9 4c0-.552-.448-1-1-1s-1 .448-1 1v9c0 .552.448 1 1 1s1-.448 1-1v-9zm6 0c0-.552-.448-1-1-1s-1 .448-1 1v9c0 .552.448 1 1 1s1-.448 1-1v-9zm-2-7h-4v1h4v-1z"/>
+                    </svg>
+                  </IconButton>
 
-                    <IconButton margin="5px"
-                      onClick={() => onCreateQuotidian(quote)}
-                      backgroundColor="#f56498"
-                      elevation={1} >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-                        <path d="M12 5.173l2.335 4.817 5.305.732-3.861 3.71.942 5.27-4.721-2.524-4.721 2.525.942-5.27-3.861-3.71 5.305-.733 2.335-4.817zm0-4.586l-3.668 7.568-8.332 1.151 6.064 5.828-1.48 8.279 7.416-3.967 7.416 3.966-1.48-8.279 6.064-5.827-8.332-1.15-3.668-7.569z"/>
-                      </svg>
-                    </IconButton>
+                  <IconButton margin="5px"
+                    onClick={() => onCreateQuotidian(quote)}
+                    backgroundColor="#f56498"
+                    elevation={1} >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                      <path d="M12 5.173l2.335 4.817 5.305.732-3.861 3.71.942 5.27-4.721-2.524-4.721 2.525.942-5.27-3.861-3.71 5.305-.733 2.335-4.817zm0-4.586l-3.668 7.568-8.332 1.151 6.064 5.828-1.48 8.279 7.416-3.967 7.416 3.966-1.48-8.279 6.064-5.827-8.332-1.15-3.668-7.569z"/>
+                    </svg>
+                  </IconButton>
+                </div>
+
+                {#if quote.topics && quote.topics.length > 0}
+                  <div class="quote__header__topics">
+                    <span> {quote.topics[0]} </span>
                   </div>
-
-                  {#if quote.topics && quote.topics.length > 0}
-                    <div class="quote__header__topics">
-                      <span> {quote.topics[0]} </span>
-                    </div>
-                  {/if}
+                {/if}
               </header>
 
               <div class="quote__content">
@@ -393,7 +392,7 @@
               <div class="quote__footer">
                 <div class="quote__footer__author">
                     <div class="quote__footer__author-img"></div>
-                    <span> {quote.author} </span>
+                    <span> {quote.author.name} </span>
                 </div>
               </div>
             </div>

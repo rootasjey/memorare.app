@@ -95,7 +95,6 @@
     (async function () {
       const response = await queryTempQuoteAdmin.result();
       const { tempQuoteAdmin } = response.data;
-      console.log(tempQuoteAdmin);
 
       const { author: tqAuthor } = tempQuoteAdmin;
 
