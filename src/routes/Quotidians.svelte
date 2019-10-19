@@ -10,6 +10,7 @@
   import Button       from '../components/Button.svelte';
   import IconButton   from '../components/IconButton.svelte';
   import Input        from '../components/Input.svelte';
+  import QuoteCard    from '../components/QuoteCard.svelte';
   import { show }     from '../components/Snackbar.svelte';
   import Spinner      from '../components/Spinner.svelte';
   import TextLink     from '../components/TextLink.svelte';
@@ -79,7 +80,7 @@
           variables: { limit, skip },
         });
 
-        const resp = await q2.refetch({ limit, skip });
+        const resp = await q2.result();
 
         quotidians = resp.data.quotidians.entries;
 
@@ -229,119 +230,8 @@
     padding: 20px 0;
   }
 
-  .quotidian {
-    margin: 10px;
-    padding: 30px;
-
-    min-height: 320px;
-    max-width: 240px;
-
+  .quote__header__icons__slot {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    background-color: #706fd3;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.20);
-    border: 2px solid transparent;
-    border-radius: 10px;
-
-    position: relative;
-    transition: .3s;
-  }
-
-  .quotidian:hover {
-    transform: scale(1.050);
-    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.20);
-    transition: .3s;
-  }
-
-  .quotidian.selected {
-    border: 2px solid #f56498;
-  }
-
-  .quotidian__content {
-    color: white;
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: 300;
-
-    max-height: 170px;
-    overflow-y: auto;
-  }
-
-  .quotidian__footer {
-    position: absolute;
-    align-self: flex-start;
-    bottom: 0;
-
-    padding-bottom: 10px;
-    color: white;
-
-    opacity: 0;
-    transition: .3s;
-  }
-
-  .quotidian:hover .quotidian__footer,
-  .quotidian.selected .quotidian__footer {
-    opacity: 1;
-    transition: .3s;
-  }
-
-  .quotidian__footer__author {
-    align-items: center;
-    display: flex;
-    width: 100%;
-
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  .quotidian__footer__author-img {
-    height: 30px;
-    width: 30px;
-
-    border-radius: 50%;
-    background-color: white;
-
-    margin-right: 10px;
-  }
-
-  .quotidian__header {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-  }
-
-  .quotidian__header__icons {
-    position: absolute;
-    left: 20px;
-    top: 20px;
-  }
-
-  .quotidian__header__date {
-    color: white;
-    background-color: #f56498;
-    font-weight: 700;
-
-    padding: 5px;
-    border-radius: 5px;
-
-    cursor: pointer;
-
-    position: absolute;
-    top: -15px;
-    right: 10px;
-
-    transition: .3s;
-  }
-
-  .quotidian__header__date:hover {
-    background-color: #cc5380;
-    transition: .3s;
   }
 
   .quotidians-page {
@@ -386,14 +276,17 @@
       <div class="list-quotidians" bind:this={domListQuotidians}>
         <div class="list-quotidians__content">
           {#each quotidians as quotidian, index}
-            <div class="quotidian"
-              class:selected={selectedQuoteId === quotidian._id}
-              data-id="{quotidian._id}"
-              transition:fly={{ y: 10, duration: 500 }}
-              on:click={() => onSelectQuote(quotidian._id)}>
+            <div transition:fly={{ y: 10, duration: 500 }}>
+              <QuoteCard
+                backgroundColor="#706fd3"
+                color="white"
+                content="{quotidian.quote.name}"
+                authorName="{quotidian.quote.author.name}"
+                onClick={() => onSelectQuote(quotidian._id)}
+                selected={selectedQuoteId === quotidian._id}
+                tag="{(new Date(quotidian.date)).toLocaleDateString()}">
 
-              <header class="quotidian__header">
-                <div class="quotidian__header__icons">
+                <div slot="quoteHeaderIcons" class="quote__header__icons__slot">
                   <IconButton margin="5px"
                     onClick={() => onDelete(quotidian._id)}
                     backgroundColor="#f56498"
@@ -403,22 +296,7 @@
                     </svg>
                   </IconButton>
                 </div>
-
-                <div class="quotidian__header__date">
-                  <span> {(new Date(quotidian.date)).toLocaleDateString()} </span>
-                </div>
-              </header>
-
-              <div class="quotidian__content">
-                {quotidian.quote.name}
-              </div>
-
-              <div class="quotidian__footer">
-                <div class="quotidian__footer__author">
-                  <div class="quotidian__footer__author-img"></div>
-                  <span> {quotidian.quote.author.name} </span>
-                </div>
-              </div>
+              </QuoteCard>
             </div>
           {:else}
             <div>There's currently no quotidians.</div>
