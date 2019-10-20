@@ -61,7 +61,7 @@
   </header>
 
   <div class="route404-page__content">
-    <p class="thin-title">Read this cheerup quote</p>
+    <p class="thin-title">Read this cheer-up quote</p>
 
     {#await $queryRandomQuote}
       <div>

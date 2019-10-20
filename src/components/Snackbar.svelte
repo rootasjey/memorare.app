@@ -52,7 +52,7 @@
   let messageText = ''
   let secondTimer; // second setTimout ref.
 
-  const unsubscrbe = observableMessageQueue.subscribe((messagesArray) => {
+  const unsubscribe = observableMessageQueue.subscribe((messagesArray) => {
     if (isMessageVisible) { return; } // wait for the previous message to go away.
     if (messagesQueue.length < 1) { return; }
 
