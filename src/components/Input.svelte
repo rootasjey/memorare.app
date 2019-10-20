@@ -11,17 +11,24 @@
     IS_PASSWORD_VALID
   } from '../data';
 
-  // Props
+  // Props. (external)
+  export let bgColor      = '';
+  export let borderColor  = '';
   export let checkValue   = false;      // activate front + back checks
+  export let color        = '';
   export let errorMessage = '';
   export let inputValue   = '';         // actual value
   export let isValid      = true;      // frontend + backend checks
   export let label        = '';         // text displayed on top
+  export let lightcontent = false;
+  export let margin       = '';
   export let onEnter      = () => {};
+  export let outlined     = false;
   export let pattern      = '';         // regex for frontend check
   export let placeholder  = '';         // when value is empty
   export let type         = 'text';
 
+  // Props. (internal)
   let isChecking          = false;      // checking data to backend
   let isDirty             = false;
   let isFormatValid       = false;      // value matches regex (frontend)
@@ -36,6 +43,13 @@
   if (!pattern && checkValue) {
     pattern = patterns[type] ? patterns[type] : '';
   }
+
+  $: borderColorCSS = borderColor ? `border-color: ${borderColor};` : '';
+  $: bgColorCSS = bgColor ? `background-color: ${bgColor};` : '';
+  $: colorCSS = color ? `color: ${color};` : '';
+  $: marginCSS = margin ? `margin: ${margin};` : '';
+
+  $: styles = `${borderColorCSS} ${bgColorCSS} ${colorCSS} ${marginCSS}`;
 
   let input; // bind this
 
@@ -146,7 +160,7 @@
     transition: .3s;
   }
 
-    label {
+  label {
     color: #706fd3;
   }
 
@@ -156,12 +170,10 @@
     border: 0;
     border-bottom: 2px solid #706fd3;
 
-    opacity: .3;
     transition: .3s;
   }
 
   input:focus {
-    opacity: 1;
     border: 0;
     border-bottom: 2px solid #706fd3;
     transition: .3s;
@@ -169,6 +181,22 @@
 
   input:required {
     box-shadow: none;
+  }
+
+  input.outlined {
+    height: 40px;
+    border: 1px solid #706fd3;
+    background-color: #eee;
+
+    margin-right: 10px;
+  }
+
+  input.lightcontent {
+    color: #fff;
+  }
+
+  input.lightcontent::placeholder {
+    color: #fff;
   }
 
   .input-container {
@@ -194,18 +222,27 @@
     <div class="row">
       {#if type.toLowerCase() === 'email'}
         <input bind:value={inputValue} bind:this={input}
-                type="email" name="input" placeholder="{placeholder}" required
-                pattern="{pattern}" on:change={onChange} on:keyup={onKeyUp}>
+              class:outlined
+              class:lightcontent
+              style={styles}
+              type="email" name="input" placeholder="{placeholder}" required
+              pattern="{pattern}" on:change={onChange} on:keyup={onKeyUp}>
 
       {:else if type.toLowerCase() === 'password'}
         <input bind:value={inputValue} bind:this={input}
-                type="password" name="input" placeholder="{placeholder}" required
-                pattern="{pattern}" on:change={onChange} on:keyup={onKeyUp}>
+              class:outlined
+              class:lightcontent
+              style={styles}
+              type="password" name="input" placeholder="{placeholder}" required
+              pattern="{pattern}" on:change={onChange} on:keyup={onKeyUp}>
       {:else}
         <!-- else type === 'text' -->
         <input bind:value={inputValue} bind:this={input}
-                type="text" name="input" placeholder="{placeholder}" required
-                pattern="{pattern}" on:change={onChange} on:keyup={onKeyUp}>
+              class:outlined
+              class:lightcontent
+              style={styles}
+              type="text" name="input" placeholder="{placeholder}" required
+              pattern="{pattern}" on:change={onChange} on:keyup={onKeyUp}>
       {/if}
 
       {#if checkValue && isDirty}
