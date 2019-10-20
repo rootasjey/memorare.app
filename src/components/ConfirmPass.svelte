@@ -5,13 +5,17 @@
   export let inputValue   = '';
   export let isValid      = false;
   export let label        = '';
+  export let margin       = '';
   export let onEnter      = () => {};
+  export let outlined     = false;
   export let placeholder  = '';
   export let valueToCheck = '';
 
   let isDirty = false;
 
   $: isValid = (inputValue === valueToCheck) && valueToCheck.length > 0;
+  $: marginCSS = margin ? `margin: ${margin};` : '';
+  $: styles = `${marginCSS}`;
 
   const onChange = () => {
     isDirty = true;
@@ -44,12 +48,10 @@
     border: 0;
     border-bottom: 2px solid #706fd3;
 
-    opacity: .3;
     transition: .3s;
   }
 
   input:focus {
-    opacity: 1;
     border: 0;
     border-bottom: 2px solid #706fd3;
     transition: .3s;
@@ -57,6 +59,14 @@
 
   input:required {
     box-shadow: none;
+  }
+
+  input.outlined {
+    height: 40px;
+    border: 1px solid #706fd3;
+    background-color: #eee;
+
+    margin-right: 10px;
   }
 
   .input-interactions {
@@ -101,11 +111,13 @@
   <div class="input-interactions">
     <div class="row">
       <input bind:value={inputValue}
-              type="password" name="input"
-              placeholder="{placeholder}"
-              required
-              on:keyup={onKeyUp}
-              on:change={onChange}>
+            class:outlined
+            type="password" name="input"
+            placeholder="{placeholder}"
+            required
+            style="{styles}"
+            on:keyup={onKeyUp}
+            on:change={onChange}>
 
       {#if isDirty}
         {#if isValid}
