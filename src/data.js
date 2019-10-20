@@ -301,6 +301,14 @@ export const TINY_LIST_AUTHORS = gql`
   }
 `;
 
+export const UPDATE_PASSWORD = gql`
+  mutation($id: String!, $oldPassword: String!, $newPassword: String!) {
+    updatePassword(oldPassword: $oldPassword, newPassword: $newPassword) {
+      token
+    }
+  }
+`;
+
 export const UPDATE_QUOTIDIAN = gql`
   mutation($id: String!, $quoteId: String, $targetDate: String) {
     updateQuotidian(id: $id, quoteId: $quoteId, targetDate: $targetDate) {
