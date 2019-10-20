@@ -4,6 +4,7 @@
   export let onClick          = () => {};
   export let value            = '';
   export let outlined         = false;
+  export let secondary        = false;
 
   let baseClass   = outlined ? 'button-outlined' : 'button';
   let classes     = `${baseClass} ${additionalClass}`;
@@ -37,6 +38,15 @@
     transform: translateY(-5px);
   }
 
+  .button.secondary {
+    color: #fff;
+    background-color: #f56498;
+  }
+
+  .button.secondary:hover {
+    background-color: #cf2929;
+  }
+
   .button-outlined {
     padding: 10px;
     color: #706fd3;
@@ -56,7 +66,7 @@
 
 </style>
 
-<div class={classes} style="{styles}" on:click={onClick}>
+<div class={classes} class:secondary style="{styles}" on:click={onClick}>
   <slot></slot>
   <span>{value}</span>
 </div>
