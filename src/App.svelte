@@ -11,6 +11,8 @@
 	import Footer						from './components/Footer.svelte';
 	import Header 					from './components/Header.svelte';
 	import Snackbar 				from './components/Snackbar.svelte';
+
+	import AccountSettings	from './routes/AccountSettings.svelte';
 	import AddQuote					from './routes/AddQuote.svelte';
 	import Apps 						from './routes/Apps.svelte';
 	import Home 						from './routes/Home.svelte';
@@ -63,6 +65,7 @@
 			<Route path="/admin/publishedquotes" component="{PublishedQuotes}" />
 			<Route path="/admin/quotidians" component="{Quotidians}" />
 			<Route path="/random/quote" component="{RandomQuote}" />
+			<Route path="/accountsettings" component="{AccountSettings}" />
 
 			<!-- 404 -->
 			<Route path="/*wildcard" let:params>

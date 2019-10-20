@@ -300,7 +300,7 @@
   {#if isUserMenuOpened}
     <nav class="user-nav" transition:fly={{ y: 10 }}>
       <ul>
-        <li class="item-multiline">
+        <li class="item-multiline" on:click={() => goAndClose('/accountsettings')}>
           <span class="header">{username}</span>
           <span class="subheader">Account settings</span>
         </li>
