@@ -11,6 +11,11 @@ class Settings {
     return localStorage.getItem(name);
   }
 
+  setValue(name = '', value = '') {
+    if (!name) { return; }
+    localStorage.setItem(name, value);
+  }
+
   saveData({ _id, email, name, token }) {
     localStorage.setItem('id', _id);
     localStorage.setItem('email', email);
