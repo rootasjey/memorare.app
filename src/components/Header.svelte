@@ -181,7 +181,7 @@
     height: 40px;
     width: 40px;
     border-radius: 50%;
-    background-color: #f56498;
+    background-color: #fff;
 
     position: relative;
     top: -10px;
@@ -202,11 +202,8 @@
     right: 60px;
     top: 80px;
 
-    color: white;
-    background-color: #f56498;
-    padding-bottom: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
+    color: #000;
+    background-color: #fff;
 
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 
@@ -219,14 +216,14 @@
 
   .user-nav li {
     list-style-type: none;
-    padding: 5px 0;
+    padding: 15px 20px;
     cursor: pointer;
 
     transition: .3s;
   }
 
   .user-nav li:hover {
-    color: #706fd3;
+    background: rgb(206, 203, 203);
     transition: .3s;
   }
 

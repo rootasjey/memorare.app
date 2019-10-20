@@ -139,7 +139,7 @@
     </div>
 
     <div class="refresh-container">
-      <Button value="Get another..." outlined="{true}" onClick={onGetAnother} />
+      <Button value="Bring me another..." outlined="{true}" onClick={onGetAnother} />
     </div>
   {/if}
 </div>
