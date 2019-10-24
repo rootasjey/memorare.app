@@ -28,8 +28,8 @@
   let newPassword         = '';
   let confirmNewPassword  = '';
 
+  let defaultLabel = lang ? lang.toUpperCase() : '';
   let showPasswordDialog = false;
-  let defaultLabel = initialLang.toUpperCase();
 
   const selectItems = [
     { label: 'EN', value: 'en' },
@@ -84,15 +84,18 @@
   }
 
   async function updatePassword() {
+    showPasswordDialog = false
+
     try {
       const response  = await client.mutate({
         mutation: UPDATE_PASSWORD,
         variables: { oldPassword, newPassword },
       });
 
-      console.log(response)
-      // settings.setValue('token', response.data.updatePassword.token);
-      show({ text: 'Your password has been updated.' });
+      const { token } = response.data.updatePassword;
+      settings.setValue('token', token);
+
+      show({ text: 'Your password has been updated.', type: 'success' });
 
     } catch (error) {
       handle(error);
@@ -264,7 +267,7 @@
       <div class="row-reverse">
         <Button
         value="Confirm"
-        onClick={() => showPasswordDialog = false }/>
+        onClick={updatePassword}/>
 
         <Button
           value="Cancel"
