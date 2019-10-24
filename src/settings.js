@@ -15,9 +15,10 @@ class Settings {
     localStorage.setItem(name, value);
   }
 
-  saveData({ _id, email, name, token }) {
+  saveData({ _id, email, lang, name, token }) {
     localStorage.setItem('id', _id);
     localStorage.setItem('email', email);
+    localStorage.setItem('lang', lang);
     localStorage.setItem('name', name);
     localStorage.setItem('token', token);
   }
