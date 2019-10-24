@@ -1,6 +1,7 @@
 <script>
   export let additionalClass  = '';
   export let height           = -1;
+  export let hide             = false;
   export let margin           = '';
   export let onClick          = () => {};
   export let value            = '';
@@ -52,6 +53,10 @@
     background-color: #cf2929;
   }
 
+  .button.hide {
+    display: none;
+  }
+
   .button-outlined {
     padding: 10px;
     color: #706fd3;
@@ -71,7 +76,11 @@
 
 </style>
 
-<div class={classes} class:secondary style="{styles}" on:click={onClick}>
+<div
+  class={classes}
+  class:secondary style="{styles}"
+  class:hide
+  on:click={onClick}>
   <slot></slot>
   <span>{value}</span>
 </div>
