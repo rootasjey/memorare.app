@@ -1,15 +1,20 @@
 <script>
   export let additionalClass  = '';
-  export let margin           = 0;
+  export let height           = -1;
+  export let margin           = '';
   export let onClick          = () => {};
   export let value            = '';
   export let outlined         = false;
   export let secondary        = false;
+  export let width            = -1;
 
   let baseClass   = outlined ? 'button-outlined' : 'button';
   let classes     = `${baseClass} ${additionalClass}`;
-  let marginRule  = `margin: ${margin}; `;
-  let styles      = `${marginRule}`;
+  let marginRule  = margin.length > 0 ? `margin: ${margin};` : '';
+  let heightRule  = height > -1 ? `height: ${height}px;` : '';
+  let widthRule   = width > -1 ? `width: ${width}px;` : '';
+  let sizeRule    = `${widthRule} ${heightRule}`;
+  let styles      = `${marginRule} ${sizeRule}`;
 </script>
 
 <style>
