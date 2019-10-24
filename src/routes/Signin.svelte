@@ -72,9 +72,9 @@
         variables: { login: email, pass: password },
       });
 
-      const { _id, email: userEmail, name: userName, token } = response.data.signin;
+      const { _id, email: userEmail, lang, name: userName, token } = response.data.signin;
 
-      settings.saveData({ _id, email: userEmail, name: userName, token });
+      settings.saveData({ _id, email: userEmail, lang, name: userName, token });
 
       isUserAuthenticated.set(true);
 
@@ -92,9 +92,9 @@
         variables: { email, name, password },
       });
 
-      const { _id, email: userEmail, name: userName, token } = response.data.signup;
+      const { _id, email: userEmail, lang, name: userName, token } = response.data.signup;
 
-      settings.saveData({ _id, email: userEmail, name: userName, token });
+      settings.saveData({ _id, email: userEmail, lang, name: userName, token });
 
       navigate(`/verifyemail/id=${_id}`);
 
