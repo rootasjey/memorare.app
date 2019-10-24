@@ -2,25 +2,31 @@
   export let color    = '#f56498';
   export let disabled = false;
   export let fontSize = '.8em';
-  export let margin   = 'auto';
+  export let margin   = '';
   export let onClick  = () => {}
   export let text     = '';
 
   let classes = 'text-link';
 
-  $: styles = `color: ${color}; font-size: ${fontSize}; margin: ${margin}`;
+  $: marginRule = margin ? `margin: ${margin};`: '';
+
+  $: styles = `color: ${color}; font-size: ${fontSize}; ${marginRule}`;
 
   $: if (disabled) {
     classes = 'text-link disabled';
     color = '#535c68';
 
-  } else { classes = 'text-link'; color = '#f56498'; }
+  } else {
+    classes = 'text-link';
+    color = color ? color : '#f56498';
+  }
 
 </script>
 
 <style>
   .text-link {
     font-size: .8em;
+    display: inline-block;
 
     cursor: pointer;
     position:relative;
