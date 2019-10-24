@@ -22,7 +22,7 @@
     padding: 30px;
 
     min-height: 320px;
-    max-width: 240px;
+    width: 240px;
 
     display: flex;
     flex-direction: column;
