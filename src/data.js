@@ -241,7 +241,7 @@ export const SIGNIN = gql`
     signin(login: $login, pass: $pass) {
       _id
       email
-      lang,
+      lang
       name
       token
     }
@@ -325,7 +325,7 @@ export const UPDATE_NAME = gql`
 `;
 
 export const UPDATE_PASSWORD = gql`
-  mutation($id: String!, $oldPassword: String!, $newPassword: String!) {
+  mutation($oldPassword: String!, $newPassword: String!) {
     updatePassword(oldPassword: $oldPassword, newPassword: $newPassword) {
       token
     }
