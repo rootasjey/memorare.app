@@ -37,7 +37,7 @@
   const patterns = {
     email   : "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
     password: "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$", // At least 8 characters, 1 number, 1 lower-case letter, 1 upper-case letter
-    name   : "^[\\w0-9-]{3,64}$", // Only alphanumeric, hyphens, underscores.
+    name   : "^[\\p{L}0-9-._ ]{3,64}$", // Only alphanumeric, hyphens, dots, spaces, underscores.
   };
 
   if (!pattern && checkValue) {
