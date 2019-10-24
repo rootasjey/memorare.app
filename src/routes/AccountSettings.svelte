@@ -6,20 +6,26 @@
   import Select       from '../components/Select.svelte';
   import { show }     from '../components/Snackbar.svelte';
 
-  import { handle }   from '../errors';
-  import { settings } from '../settings';
-
   import {
     client,
+    UPDATE_NAME,
     UPDATE_PASSWORD,
   } from '../data';
 
-  let email = '';
-  let lang = '';
-  let name = '';
-  let oldPassword = '';
-  let newPassword = '';
-  let confirmNewPassword = '';
+  import { handle }   from '../errors';
+  import { settings } from '../settings';
+
+  let email               = settings.getValue('email');
+  let lang                = settings.getValue('lang');
+  let name                = settings.getValue('name');
+
+  let initialEmail        = email;
+  let initialLang         = lang;
+  let initialName         = name;
+
+  let oldPassword         = '';
+  let newPassword         = '';
+  let confirmNewPassword  = '';
 
   let showPasswordDialog = false;
 
@@ -28,12 +34,37 @@
     { label: 'FR', value: 'fr' },
   ];
 
+  $: isInitialName = name === initialName;
+
+  async function updateName() {
+    try {
+      const response = await client.mutate({
+        mutation: UPDATE_NAME,
+        variables: { name },
+      });
+
+      const { name: userName } = response.data.updateName;
+
+      settings.setValue('name', userName);
+      initialName = userName;
+
+      show({ text: 'Your name has been updated.', type: 'success' });
+
+    } catch (error) {
+      handle(error);
+
+      show({
+        text: error.message ? error.message : 'Sorry, could not save your new name.',
+        type: 'error',
+      });
+    }
+  }
+
   async function updatePassword() {
     try {
       const response  = await client.mutate({
         mutation: UPDATE_PASSWORD,
         variables: { oldPassword, newPassword },
-        fetchPolicy: 'network-only',
       });
 
       console.log(response)
@@ -99,10 +130,14 @@
     margin-bottom: 40px;
   }
 
-  .row {
+  .row-reverse {
     display: flex;
     flex-direction: row-reverse;
     margin: 20px 0;
+  }
+
+  .row {
+    display: flex;
   }
 </style>
 
@@ -116,10 +151,18 @@
     <div class="user-info">
       <div class="input-container">
         <span class="label">Name</span>
-        <Input type="name"
-          outlined={true}
-          bind:inputValue={name} checkValue={true}
-          errorMessage="Your name contains invalid characters. Only letters, numbers, underscores and hypens allowed." />
+        <div class="row">
+          <Input type="name"
+            outlined={true}
+            bind:inputValue={name} checkValue={true}
+            errorMessage="Your name contains invalid characters. Only letters, numbers, underscores and hypens allowed." />
+
+          <Button
+            value="Save"
+            hide={isInitialName}
+            onClick={updateName}
+            width={50} height={10} margin="0 0 0 20px"/>
+        </div>
       </div>
 
       <div class="input-container">
@@ -183,7 +226,7 @@
         />
       </div>
 
-      <div class="row">
+      <div class="row-reverse">
         <Button
         value="Confirm"
         onClick={() => showPasswordDialog = false }/>
