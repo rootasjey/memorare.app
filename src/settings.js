@@ -7,7 +7,6 @@ class Settings {
   }
 
   getValue(name = '') {
-    if (name === 'lang') return 'en'; // TODO: delete
     return localStorage.getItem(name);
   }
 

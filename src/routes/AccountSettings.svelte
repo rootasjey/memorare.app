@@ -8,6 +8,7 @@
 
   import {
     client,
+    UPDATE_LANG,
     UPDATE_NAME,
     UPDATE_PASSWORD,
   } from '../data';
@@ -28,6 +29,7 @@
   let confirmNewPassword  = '';
 
   let showPasswordDialog = false;
+  let defaultLabel = initialLang.toUpperCase();
 
   const selectItems = [
     { label: 'EN', value: 'en' },
@@ -35,6 +37,27 @@
   ];
 
   $: isInitialName = name === initialName;
+
+  async function updateLang() {
+    try {
+      const response = await client.mutate({
+        mutation: UPDATE_LANG,
+        variables: { lang },
+      });
+
+      const { lang: userLang } = response.data.updateLang;
+
+      settings.setValue('lang', userLang);
+      show({ text: 'Your new language has been saved.', type: 'success' });
+
+    } catch (error) {
+      handle(error);
+      show({
+        text: error.message ? error.message : "Sorry, could not save your new language.",
+        type: error,
+      });
+    }
+  }
 
   async function updateName() {
     try {
@@ -78,6 +101,15 @@
 
   function onClickUpdatePassword() {
     showPasswordDialog = true;
+  }
+
+  function onSelectLang(item) {
+    const { value } = item;
+
+    if (value === initialLang) { return; }
+
+    lang = value;
+    updateLang();
   }
 
 </script>
@@ -173,7 +205,10 @@
 
       <div class="select-container">
         <span class="label">Language</span>
-        <Select items={selectItems} />
+        <Select
+          defaultLabel={defaultLabel}
+          items={selectItems}
+          onClickItem={onSelectLang} />
       </div>
 
       <div class="input-container">

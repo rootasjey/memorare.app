@@ -303,13 +303,23 @@ export const TINY_LIST_AUTHORS = gql`
   }
 `;
 
+export const UPDATE_LANG = gql`
+  mutation($lang: String!) {
+    updateLang(lang: $lang) {
+      _id
+      lang
+      token
+    }
+  }
+`;
+
 export const UPDATE_NAME = gql`
   mutation($name: String!) {
     updateName(name: $name) {
       _id
-      name,
-      rights,
-      token,
+      name
+      rights
+      token
     }
   }
 `;

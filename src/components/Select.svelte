@@ -1,15 +1,18 @@
 <script>
+  export let defaultLabel = 'Select your language';
   export let items = [];
+  export let onClickItem = () => {}
 
   let active = false;
-  let activeItem = { label: 'Select your language', value: '' };
+  let activeItem = { label: defaultLabel, value: '' };
 
   function onClickComponent() {
     active = !active;
   }
 
-  function onClickItem(item) {
+  function _onClickItem(item) {
     activeItem = item;
+    onClickItem(activeItem);
   }
 </script>
 
@@ -114,7 +117,7 @@
     {#each items as item}
       <li role="option"
         id="{item.value}"
-        on:click={() => onClickItem(item)}
+        on:click={() => _onClickItem(item)}
         data-value="{item.value}"
         class="ng-binding ng-scope"
         class:active={activeItem.value === item.value}
