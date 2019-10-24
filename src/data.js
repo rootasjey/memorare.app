@@ -229,6 +229,7 @@ export const SIGNUP = gql`
     signup(email: $email, password: $password, name: $name) {
       _id
       email
+      lang,
       name
       token
     }
@@ -240,6 +241,7 @@ export const SIGNIN = gql`
     signin(login: $login, pass: $pass) {
       _id
       email
+      lang,
       name
       token
     }
