@@ -5,9 +5,11 @@
   import Input        from '../components/Input.svelte';
   import Select       from '../components/Select.svelte';
   import { show }     from '../components/Snackbar.svelte';
+  import TextLink     from '../components/TextLink.svelte';
 
   import {
     client,
+    UPDATE_EMAIL_STEP_ONE,
     UPDATE_LANG,
     UPDATE_NAME,
     UPDATE_PASSWORD,
@@ -30,6 +32,7 @@
 
   let defaultLabel = lang ? lang.toUpperCase() : '';
   let showPasswordDialog = false;
+  let emailSent = false;
 
   const selectItems = [
     { label: 'EN', value: 'en' },
@@ -37,6 +40,26 @@
   ];
 
   $: isInitialName = name === initialName;
+  $: isInitialEmail = email === initialEmail;
+
+  async function updateEmail() {
+    try {
+      const response = await client.mutate({
+        mutation: UPDATE_EMAIL_STEP_ONE,
+        variables: { newEmail: email },
+      });
+
+      if (response.data.updateEmailStepOne) {
+        show({ text: 'Please click on the link inside the email sent.' });
+
+        emailSent = true;
+        initialEmail = email;
+      }
+
+    } catch (error) {
+      handle(error);
+    }
+  }
 
   async function updateLang() {
     try {
@@ -129,14 +152,6 @@
     width: 350px;
   }
 
-  input {
-    height: 40px;
-    border: 1px solid #706fd3;
-    background-color: #eee;
-
-    margin-right: 10px;
-  }
-
   .label {
     color: #fff;
     background-color: #706fd3;
@@ -174,6 +189,12 @@
   .row {
     display: flex;
   }
+
+  .sub-text {
+    color: rgba(0,0,0,0.5);
+    font-size: .9em;
+    margin-bottom: 10px;
+  }
 </style>
 
 <div class="account-settings__page">
@@ -202,8 +223,25 @@
 
       <div class="input-container">
         <span class="label">Email</span>
-        <input type="text"
-          bind:value={email}>
+        <div class="row">
+          <Input type="email"
+            outlined={true}
+            bind:inputValue={email} checkValue={true}
+            errorMessage="The value entered is not an email." />
+
+          <Button
+              value="Save"
+              hide={isInitialEmail}
+              onClick={updateEmail}
+              width={50} height={10} margin="0 0 0 20px" />
+        </div>
+
+        {#if emailSent}
+          <span class="sub-text" >We've sent you an email. Click on the link inside the email to confirm the change.
+            Check your spam folder if you don't see the email in your INBOX.
+            <TextLink text="Re-send" color="#6ab04c" fontSize="1.1em" />
+          </span>
+        {/if}
       </div>
 
       <div class="select-container">

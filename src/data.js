@@ -303,6 +303,21 @@ export const TINY_LIST_AUTHORS = gql`
   }
 `;
 
+export const UPDATE_EMAIL_STEP_ONE = gql`
+  mutation($newEmail: String!) {
+    updateEmailStepOne(newEmail: $newEmail)
+  }
+`;
+
+export const UPDATE_EMAIL_STEP_TWO = gql`
+  mutation($emailToken: String!) {
+    updateEmailStepTwo(emailToken: $emailToken) {
+      email
+      token
+    }
+  }
+`;
+
 export const UPDATE_LANG = gql`
   mutation($lang: String!) {
     updateLang(lang: $lang) {
