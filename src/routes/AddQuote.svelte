@@ -616,7 +616,7 @@
       </div>
 
     </div>
-  {:else}
+  {:else if pageState === 'success'}
     <!--loading-->
     <div class="loading-container">
       <SpinnerCheckmark isCompleted={loadingSpinnerCompleted} />
@@ -633,6 +633,13 @@
         </p>
       {/if}
     </div>
+  {:else}
+     <!-- Failure -->
+     <div class="error-container">
+      <h2>Sorry for the inconvenience.</h2>
+      <p>It seems that you cannot perform this action.</p>
+      <p>If you think that you should, please contact the support.</p>
+     </div>
   {/if}
 
 </div>
