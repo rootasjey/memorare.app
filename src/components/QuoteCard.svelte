@@ -157,9 +157,11 @@
   </div>
 
   <div class="quote__footer">
-    <div class="quote__footer__author">
-        <div class="quote__footer__author-img"></div>
-        <span> {authorName} </span>
-    </div>
+    {#if authorName}
+      <div class="quote__footer__author">
+          <div class="quote__footer__author-img"></div>
+          <span> {authorName} </span>
+      </div>
+    {/if}
   </div>
 </div>
