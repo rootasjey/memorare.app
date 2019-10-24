@@ -29,6 +29,7 @@
   export let type         = 'text';
 
   // Props. (internal)
+  let inputInitialValue   = inputValue;
   let isChecking          = false;      // checking data to backend
   let isDirty             = false;
   let isFormatValid       = false;      // value matches regex (frontend)
@@ -96,7 +97,7 @@
   }
 
   const onChange = () => {
-    if (!checkValue) { return; }
+    if (!checkValue || inputInitialValue === inputValue) { return; }
     isDirty = true;
 
     isFormatValid = input.checkValidity();
