@@ -396,11 +396,11 @@ export const VALIDATE_TEMP_QUOTE_ADMIN = gql`
 `;
 
 export const VERIFY_EMAIL = gql`
-  mutation ($userId: String!, $token: String!) {
-    verifyEmail(token: $token) {
+  mutation ($emailToken: String!) {
+    verifyEmail(emailToken: $emailToken) {
       _id
-      name
       email
+      name
       emailConfig { isVerified }
     }
   }
