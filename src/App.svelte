@@ -23,6 +23,7 @@
 	import Route404 				from './routes/Route404.svelte';
 	import Signin 					from './routes/Signin.svelte';
 	import TempQuotes 			from './routes/TempQuotes.svelte';
+	import UpdateEmail 			from './routes/UpdateEmail.svelte';
 	import VerifyEmail 			from './routes/VerifyEmail.svelte';
 	import Welcome					from './routes/Welcome.svelte';
 
@@ -66,6 +67,9 @@
 			<Route path="/admin/quotidians" component="{Quotidians}" />
 			<Route path="/random/quote" component="{RandomQuote}" />
 			<Route path="/accountsettings" component="{AccountSettings}" />
+			<Route path="/email/update/:emailToken" let:params>
+				<UpdateEmail emailToken={params.emailToken} />
+			</Route>
 
 			<!-- 404 -->
 			<Route path="/*wildcard" let:params>
