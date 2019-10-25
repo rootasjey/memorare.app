@@ -36,7 +36,10 @@
     const { _id, name, emailConfig: { isVerified } } = response.data.verifyEmail;
 
     if (!isVerified) {
-      throw new Error('Something went wrong while verifying email. Please try again or contact support.')
+      throw new Error(`
+        Something went wrong while verifying email.
+        Please try again or contact support.`
+      )
     }
 
     isEmailVerified = true;
