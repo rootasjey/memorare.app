@@ -1,16 +1,19 @@
 <script>
-  import { navigate } from 'svelte-routing';
+  import { navigate }       from 'svelte-routing';
 
-  import Button       from '../components/Button.svelte';
-  import ConfirmPass  from '../components/ConfirmPass.svelte';
-  import Dialog       from '../components/Dialog.svelte';
-  import Input        from '../components/Input.svelte';
-  import Select       from '../components/Select.svelte';
-  import { show }     from '../components/Snackbar.svelte';
-  import TextLink     from '../components/TextLink.svelte';
+  import Button             from '../components/Button.svelte';
+  import ConfirmPass        from '../components/ConfirmPass.svelte';
+  import Dialog             from '../components/Dialog.svelte';
+  import Input              from '../components/Input.svelte';
+  import Select             from '../components/Select.svelte';
+  import SpinnerCheckmark   from '../components/SpinnerCheckmark.svelte';
+  import { show }           from '../components/Snackbar.svelte';
+  import TextLink           from '../components/TextLink.svelte';
+  import { status }         from '../utils';
 
   import {
     client,
+    DELETE_ACCOUNT,
     UPDATE_EMAIL_STEP_ONE,
     UPDATE_LANG,
     UPDATE_NAME,
@@ -18,7 +21,12 @@
   } from '../data';
 
   import { handle }   from '../errors';
-  import { isUserAuthenticated, settings } from '../settings';
+
+  import {
+    isUserAuthenticated,
+    logout,
+    settings,
+  } from '../settings';
 
   if (!$isUserAuthenticated) {
     setTimeout(() => {
@@ -26,6 +34,7 @@
     }, 500);
   }
 
+  // Inputs value
   let email               = settings.getValue('email');
   let lang                = settings.getValue('lang');
   let name                = settings.getValue('name');
@@ -37,10 +46,14 @@
   let oldPassword         = '';
   let newPassword         = '';
   let confirmNewPassword  = '';
-
-  let defaultLabel = lang ? lang.toUpperCase() : '';
-  let showPasswordDialog = false;
-  let emailSent = false;
+  // -------------
+  let defaultLabel        = lang ? lang.toUpperCase() : '';
+  let delUserStatus       = status.idle;
+  let emailSent           = false;
+  let showPasswordDialog  = false;
+  let showDelUserDialog   = false;
+  let passConfirmDelUser  = '';
+  let domPassDialog;
 
   const selectItems = [
     { label: 'EN', value: 'en' },
@@ -133,6 +146,24 @@
     }
   }
 
+  async function deleteAccount() {
+    delUserStatus = status.loading;
+
+    try {
+      const response = await client.mutate({
+        mutation: DELETE_ACCOUNT,
+        variables: { password: passConfirmDelUser },
+      });
+
+      delUserStatus = status.completed;
+      logout({ delay: 60000 });
+
+    } catch (error) {
+      handle(error);
+      delUserStatus = status.error;
+    }
+  }
+
   function onClickUpdatePassword() {
     showPasswordDialog = true;
   }
@@ -150,6 +181,39 @@
     updateEmail();
   }
 
+  function onEnterValidateDeleteAccount() {
+    deleteAccount();
+  }
+
+  function onEnterValidateUpdatePassword() {
+    updatePassword();
+  }
+
+  function onEnterNextInput (event) {
+    const { target } = event;
+    const inputs = domPassDialog.querySelectorAll('input');
+
+    let indexMatch;
+
+    Array
+      .from(inputs)
+      .some((input, index) => {
+        if (input === target) {
+          indexMatch = index;
+          return true;
+        }
+
+        return false;
+    });
+
+    if (indexMatch >= inputs.length) { return; }
+
+    const nextInput = inputs[indexMatch + 1];
+    if (!nextInput || !nextInput.focus) { return; }
+
+    nextInput.focus();
+  }
+
 </script>
 
 <style>
@@ -162,6 +226,48 @@
   .account-settings__content {
     margin-top: 30px;
     width: 350px;
+  }
+
+  .delete-account-dialog__body {
+    margin: 40px 0 80px 0;
+  }
+
+  .delete-account-dialog__body .input-container {
+    margin-top: 50px;
+  }
+
+  .delete-account-dialog-content {
+    max-width: 500px;
+  }
+
+  .delete-account-dialog-content header h1 {
+    margin: 0;
+  }
+
+  .delete-account-dialog-content footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .delete-account-dialog__body--centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .input-container {
+    display: flex;
+    flex-direction: column;
+
+    margin: 20px 0;
+  }
+
+  .header--centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-bottom: 30px;
   }
 
   .label {
@@ -177,13 +283,6 @@
     text-transform: uppercase;
   }
 
-  .input-container {
-    display: flex;
-    flex-direction: column;
-
-    margin: 20px 0;
-  }
-
   .password-dialog-content {
     padding: 20px;
   }
@@ -195,11 +294,15 @@
   .row-reverse {
     display: flex;
     flex-direction: row-reverse;
-    margin: 20px 0;
   }
 
   .row {
     display: flex;
+  }
+
+  .sub-header {
+    font-weight: bold;
+    text-transform: uppercase;
   }
 
   .sub-text {
@@ -270,13 +373,13 @@
       </div>
 
       <div class="input-container">
-        <Button value="Delete my account" secondary={true} />
+        <Button value="Delete my account" secondary={true} onClick={() => showDelUserDialog = true} />
       </div>
     </div>
   </div>
 
   <Dialog bind:active={showPasswordDialog} maxWidth={350}>
-    <div slot="content" class="password-dialog-content">
+    <div slot="content" bind:this={domPassDialog} class="password-dialog-content">
       <header>
         <h1>Update password</h1>
         <p>Please confirm your changes by entering your old and new passwords.</p>
@@ -310,7 +413,9 @@
           placeholder="********"
           outlined={true}
           margin="10px 0"
-          bind:inputValue={confirmNewPassword} valueToCheck={newPassword}
+          bind:inputValue={confirmNewPassword}
+          valueToCheck={newPassword}
+          onEnter={onEnterValidateUpdatePassword}
           errorMessage="This value doesn't match the previous entered password."
         />
       </div>
@@ -326,6 +431,75 @@
           secondary={true}
           onClick={() => showPasswordDialog = false }/>
       </div>
+    </div>
+  </Dialog>
+
+  <Dialog bind:active={showDelUserDialog} fullSize={true}>
+    <div slot="content" class="delete-account-dialog-content">
+      {#if delUserStatus === status.idle}
+        <header>
+          <span class="sub-header">Delete account</span>
+          <h1>Are you sure?</h1>
+        </header>
+
+        <div class="delete-account-dialog__body">
+          <span>The following actions will be completed:</span>
+
+          <ul>
+            <li>This action is irreversible and you won't be able to login back</li>
+            <li>All you lists and favorites will be deleted</li>
+            <li>Your quotes will stay and won't be deleted but they will be disassociated with your account</li>
+          </ul>
+
+          <div class="input-container">
+            <span class="label">Current password</span>
+            <Input
+              bind:inputValue={passConfirmDelUser}
+              type="password"
+              placeholder="My Awesomee Password"
+              onEnter={onEnterValidateDeleteAccount}
+              outlined={true} />
+          </div>
+        </div>
+
+        <footer>
+          <Button value="Cancel" margin="0 10px" onClick={() => showDelUserDialog = false} />
+          <Button value="Delete" secondary={true} onClick={deleteAccount} />
+        </footer>
+      {:else if delUserStatus === status.error}
+        <header>
+          <span class="sub-header">Delete account</span>
+          <h1>Everything didn't go as expected.</h1>
+        </header>
+
+        <div class="delete-account-dialog__body">
+          <p>
+            Sorry for the inconvenience. Please close this dialog and try again.
+          </p>
+        </div>
+      {:else}
+        <header class="header--centered">
+          <span class="sub-header">Delete account</span>
+
+          {#if delUserStatus === status.completed}
+            <h1>Good Bye!</h1>
+          {:else}
+            <h1>Deleting data through the space and time...</h1>
+          {/if}
+        </header>
+
+        <div class="delete-account-dialog__body--centered">
+          <SpinnerCheckmark isCompleted={delUserStatus === status.completed} />
+
+          {#if delUserStatus === status.completed}
+            <p>
+              Your account has been successfully deleted. <br>
+              We hope we'll see each other one day ;)
+            </p>
+          {/if}
+        </div>
+      {/if}
+
     </div>
   </Dialog>
 </div>

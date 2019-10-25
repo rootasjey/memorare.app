@@ -72,6 +72,15 @@ export const CREATE_TEMP_QUOTE = gql`
   }
 `;
 
+export const DELETE_ACCOUNT = gql`
+  mutation ($password: String!) {
+    deleteAccount(password: $password) {
+      _id
+      name
+    }
+  }
+ `;
+
 export const DELETE_QUOTIDIAN = gql`
   mutation ($id: String!) {
     deleteQuotidian(id: $id) {
