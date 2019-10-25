@@ -1,4 +1,5 @@
 <script>
+  import { fly } from 'svelte/transition';
   import { navigate } from 'svelte-routing';
 
   import { settings } from '../settings';
@@ -37,7 +38,7 @@
 
 </style>
 
-<div class="welcome">
+<div class="welcome" transition:fly={{ y: 10, duration: 500 }}>
   <div class="welcome__quote">
     <Quotidian />
   </div>

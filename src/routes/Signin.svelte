@@ -233,13 +233,13 @@
     <span class:active="{!isSigninActive}" on:click={toggleFormType}>Sign Up</span>
 
     <div class="nav-marker"
-        class:left="{isSigninActive}"
-        class:right="{!isSigninActive}"
-        transition:fly="{{ y: 20, duration: 1000 }}"></div>
+      class:left="{isSigninActive}"
+      class:right="{!isSigninActive}"
+      in:fly="{{ y: 20, duration: 1000 }}"></div>
   </nav>
 
   {#if isSigninActive}
-    <div class="form form-signin" transition:fly="{{ y: -20, duration: 500 }}">
+    <div class="form form-signin" transition:fly="{{ y: -20, duration: 250 }}">
       <Input label="Email" type="email"
         placeholder="socrate@philo.com"
         bind:inputValue={email} onEnter={onEnterNextInput} />
@@ -257,33 +257,33 @@
 
       <button class="action-button" on:click={onSignin}>Sign In</button>
 
-      <TextLink text="I don't have an account ?" onClick={toggleFormType} />
+      <TextLink text="I don't have an account ?" margin="0 auto" onClick={toggleFormType} />
     </div>
   {:else}
-      <div class="form form-signup" transition:fly="{{ y: 20, duration: 500 }}">
-      <Input label="Name" type="name" placeholder="Socrates"
-        bind:inputValue={name} checkValue={true}
-        errorMessage="Your name contains invalid characters. Only letters, numbers, underscores and hypens allowed."
-        onEnter={onEnterNextInput} />
+      <div class="form form-signup" transition:fly="{{ y: 20, duration: 250 }}">
+        <Input label="Name" type="name" placeholder="Socrates"
+          bind:inputValue={name} checkValue={true}
+          errorMessage="Your name contains invalid characters. Only letters, numbers, underscores and hypens allowed."
+          onEnter={onEnterNextInput} />
 
-      <Input label="Email" type="email" placeholder="socrate@philo.com"
-        errorMessage="The value entered is not an email."
-        bind:inputValue={email} checkValue={true}
-        onEnter={onEnterNextInput} />
+        <Input label="Email" type="email" placeholder="socrate@philo.com"
+          errorMessage="The value entered is not an email."
+          bind:inputValue={email} checkValue={true}
+          onEnter={onEnterNextInput} />
 
-      <Input label="Password" type="password" placeholder="********"
-        errorMessage="Your password must be at least 8 characters length and must contain at least one uppercase letter, one lowercase letter, and one number."
-        bind:inputValue={password} checkValue={true}
-        onEnter={onEnterNextInput} />
+        <Input label="Password" type="password" placeholder="********"
+          errorMessage="Your password must be at least 8 characters length and must contain at least one uppercase letter, one lowercase letter, and one number."
+          bind:inputValue={password} checkValue={true}
+          onEnter={onEnterNextInput} />
 
-      <ConfirmPass label="Confirm Password" placeholder="********"
-        bind:inputValue={confirmPassword} valueToCheck={password}
-        errorMessage="This value doesn't match the previous entered password."
-        onEnter={onEnterValidate} />
+        <ConfirmPass label="Confirm Password" placeholder="********"
+          bind:inputValue={confirmPassword} valueToCheck={password}
+          errorMessage="This value doesn't match the previous entered password."
+          onEnter={onEnterValidate} />
 
-      <button class="action-button" on:click={onSignup}>Sign Up</button>
+        <button class="action-button" on:click={onSignup}>Sign Up</button>
 
-      <TextLink text="I already have an account ?" onClick={toggleFormType} />
+        <TextLink text="I already have an account ?" margin="0 auto" onClick={toggleFormType} />
       </div>
   {/if}
 </div>
