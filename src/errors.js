@@ -1,7 +1,7 @@
 import { navigate } from 'svelte-routing';
 
 import { show }     from './components/Snackbar.svelte';
-import { settings } from './settings';
+import { settings, isUserAuthenticated } from './settings';
 
 /** Errors handler. */
 export const handle = (error = {}) => {
@@ -17,6 +17,7 @@ export const handle = (error = {}) => {
 
   if (reJwtExpired.test(message) || reJwtMalFormed.test(message)) {
     settings.clearData();
+    isUserAuthenticated.set(false);
     navigate('/signin');
     return;
   }
