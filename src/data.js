@@ -24,16 +24,6 @@ export const client = new ApolloClient({
   link: concat(authMiddleware, httpLink),
 });
 
-export const CHECK_EMAIL = gql`
-  mutation ($userId: String!, $token: String!) {
-    checkEmail(userId: $userId, token: $token) {
-      _id
-      name
-      emailConfig { isVerified }
-    }
-  }
-`;
-
 export const CREATE_QUOTIDIAN = gql`
   mutation ($lang: String!, $quoteId: String!, $targetDate: String) {
     createQuotidian(lang: $lang, quoteId: $quoteId, targetDate: $targetDate) {
@@ -401,6 +391,17 @@ export const VALIDATE_TEMP_QUOTE_ADMIN = gql`
   mutation ($id: String!) {
     validateTempQuoteAdmin(id: $id) {
       _id
+    }
+  }
+`;
+
+export const VERIFY_EMAIL = gql`
+  mutation ($userId: String!, $token: String!) {
+    verifyEmail(token: $token) {
+      _id
+      name
+      email
+      emailConfig { isVerified }
     }
   }
 `;
