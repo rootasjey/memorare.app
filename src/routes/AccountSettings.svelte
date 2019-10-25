@@ -1,4 +1,6 @@
 <script>
+  import { navigate } from 'svelte-routing';
+
   import Button       from '../components/Button.svelte';
   import ConfirmPass  from '../components/ConfirmPass.svelte';
   import Dialog       from '../components/Dialog.svelte';
@@ -16,7 +18,13 @@
   } from '../data';
 
   import { handle }   from '../errors';
-  import { settings } from '../settings';
+  import { isUserAuthenticated, settings } from '../settings';
+
+  if (!$isUserAuthenticated) {
+    setTimeout(() => {
+      navigate('/signin');
+    }, 500);
+  }
 
   let email               = settings.getValue('email');
   let lang                = settings.getValue('lang');
