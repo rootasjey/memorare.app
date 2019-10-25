@@ -146,6 +146,10 @@
     updateLang();
   }
 
+  function onResendEmail() {
+    updateEmail();
+  }
+
 </script>
 
 <style>
@@ -248,7 +252,7 @@
           <span class="sub-text" >
             We've sent you an email. Click on the link inside the email to confirm the change.
             Check your spam folder if you don't see the email in your INBOX.
-            <TextLink text="Re-send" color="#6ab04c" fontSize="1.1em" />
+            <TextLink text="Re-send" color="#6ab04c" fontSize="1.1em" onClick={onResendEmail} />
           </span>
         {/if}
       </div>
