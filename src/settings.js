@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+import { navigate } from 'svelte-routing';
 
 /** Application's data store. */
 class Settings {
@@ -31,4 +32,13 @@ export const isUserAuthenticated = writable(false);
 
 if (settings.getValue('name')) {
   isUserAuthenticated.set(true);
+}
+
+export const logout = ({ route = '/', delay = 0 }) => {
+  settings.clearData();
+  isUserAuthenticated.set(false);
+
+  setTimeout(() => {
+    navigate(route);
+  }, delay);
 }
