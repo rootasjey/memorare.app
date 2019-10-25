@@ -199,8 +199,8 @@ export const RANDOM_QUOTE = gql`
 `;
 
 export const SEND_EMAIL_VERIFICATION = gql`
-  query ($userId: String!) {
-    sendEmailVerification(userId: $userId)
+  query {
+    sendEmailVerification
   }
 `;
 

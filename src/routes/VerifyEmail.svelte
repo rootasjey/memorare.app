@@ -8,8 +8,9 @@
     SEND_EMAIL_VERIFICATION
   } from '../data';
 
-  import SpinnerCheckmark from '../components/SpinnerCheckmark.svelte';
-  import TextLink from '../components/TextLink.svelte';
+  import SpinnerCheckmark   from '../components/SpinnerCheckmark.svelte';
+  import TextLink           from '../components/TextLink.svelte';
+  import { handle }         from '../errors';
 
   // External props
   export let emailToken = '';
@@ -21,7 +22,7 @@
   let isEmailVerified = false;
 
   // If token is defined, auto-send request and redirect.
-  if (emailToken) {
+  if (emailToken && emailToken.length > 1) {
     onCheckEmail();
   }
 
@@ -32,9 +33,9 @@
       variables: { emailToken },
     });
 
-    const { _id, name } = response.data.checkEmail;
+    const { _id, name, emailConfig: { isVerified } } = response.data.verifyEmail;
 
-    if (!response.data.checkEmail.emailConfig.isVerified) {
+    if (!isVerified) {
       throw new Error('Something went wrong while verifying email. Please try again or contact support.')
     }
 
@@ -58,7 +59,6 @@
     try {
         const response = await client.query({
           query: SEND_EMAIL_VERIFICATION,
-          variables: { userId: id },
         });
 
         if (response.data.sendEmailVerification) {
@@ -106,8 +106,12 @@
     position: absolute;
   }
 
-  .verify-email--unverified {
+  .verify-email__unverified {
     position: absolute;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 </style>
 
@@ -123,7 +127,7 @@
       </div>
     </div>
   {:else}
-    <div class="verify-email--unverified" transition:fly={{ y: 20, duration: 500 }}>
+    <div class="verify-email__unverified" transition:fly={{ y: 20, duration: 500 }}>
       <img class="icon--centered" src="/img/mail.png" alt="mail icon" height="128" width="128">
 
       <div class="verify-email__content">
