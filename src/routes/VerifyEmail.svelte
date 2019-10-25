@@ -1,12 +1,10 @@
 <script>
-  import queryString        from 'query-string';
-  import { query, mutate }  from 'svelte-apollo';
   import { navigate }       from 'svelte-routing';
   import { fly }            from 'svelte/transition';
 
   import {
     client,
-    CHECK_EMAIL,
+    VERIFY_EMAIL,
     SEND_EMAIL_VERIFICATION
   } from '../data';
 
@@ -14,7 +12,7 @@
   import TextLink from '../components/TextLink.svelte';
 
   // External props
-  export let tokenid = '';
+  export let emailToken = '';
 
   // Internal props
   let textLinkValue   = 'No email received ?';
@@ -22,14 +20,16 @@
   let emailSent       = false;
   let isEmailVerified = false;
 
-  let queryParams = queryString.parse(tokenid);
-  const { id, token } = queryParams;
+  // If token is defined, auto-send request and redirect.
+  if (emailToken) {
+    onCheckEmail();
+  }
 
-
-  const onCheckEmail = async (pId = '', pToken = '') => {
-    const response = await mutate(client, {
-      mutation: CHECK_EMAIL,
-      variables: { userId: pId, token: pToken },
+  async function onCheckEmail() {
+    try {
+      const response = await client.mutate({
+      mutation: VERIFY_EMAIL,
+      variables: { emailToken },
     });
 
     const { _id, name } = response.data.checkEmail;
@@ -42,35 +42,40 @@
 
     // Redirect after 2 sec.
     window.setTimeout(() => navigate('/welcome'), 2000);
+
+    } catch (error) {
+      handle(error);
+    }
   }
 
-  if (id && token) { // If token is defined, auto-send request and redirect.
-    onCheckEmail(id, token).catch((reason) => console.error(reason));
-  }
+  function onGotoWelcomePage() { navigate('/welcome'); }
 
-  const sendEmailQuery = query(client, {
-    query: SEND_EMAIL_VERIFICATION,
-    variables: { userId: id },
-  });
-
-  const onGotoWelcomePage = () => navigate('/welcome');
-
-  const onResendEmail = () => {
+  async function onResendEmail() {
     if (emailSent || isSendingEmail) { return; }
 
     isSendingEmail = true;
 
-    sendEmailQuery.result()
-      .then((response) => {
-        isSendingEmail = false;
-        emailSent = true;
-        textLinkValue = 'We emailed you a new link ✓';
-      })
-      .catch((reason) => {
+    try {
+        const response = await client.query({
+          query: SEND_EMAIL_VERIFICATION,
+          variables: { userId: id },
+        });
+
+        if (response.data.sendEmailVerification) {
+          isSendingEmail = false;
+          emailSent = true;
+          textLinkValue = 'We emailed you a new link ✓';
+
+          return;
+        }
+
         isSendingEmail = false;
         emailSent = false;
         textLinkValue = 'Something went wrong. Try to send a new link again?';
-      });
+
+    } catch (error) {
+      handle(error);
+    }
   }
 </script>
 

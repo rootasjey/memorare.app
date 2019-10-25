@@ -54,8 +54,8 @@
 			<Route path="/apps" component="{Apps}" />
 			<Route path="/pricing" component="{Pricing}" />
 			<Route path="/signin" component="{Signin}" />
-			<Route path="/verifyemail/:tokenid" let:params>
-				<VerifyEmail tokenid="{params.tokenid}"/>
+			<Route path="/verify/email/:emailToken" let:params>
+				<VerifyEmail emailToken="{params.emailToken}"/>
 			</Route>
 			<Route path="/welcome" component="{Welcome}" />
 			<Route path="/addquote/:id" let:params>
@@ -67,7 +67,7 @@
 			<Route path="/admin/quotidians" component="{Quotidians}" />
 			<Route path="/random/quote" component="{RandomQuote}" />
 			<Route path="/accountsettings" component="{AccountSettings}" />
-			<Route path="/email/update/:emailToken" let:params>
+			<Route path="/update/email/:emailToken" let:params>
 				<UpdateEmail emailToken={params.emailToken} />
 			</Route>
 

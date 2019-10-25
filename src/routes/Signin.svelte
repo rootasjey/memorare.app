@@ -96,7 +96,7 @@
 
       settings.saveData({ _id, email: userEmail, lang, name: userName, token });
 
-      navigate(`/verifyemail/id=${_id}`);
+      navigate(`/verify/email/`);
 
     } catch (error) {
       handle(error);
