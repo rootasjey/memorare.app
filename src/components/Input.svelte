@@ -29,6 +29,7 @@
   export let type         = 'text';
 
   // Props. (internal)
+  let backendMessage      = '';
   let inputInitialValue   = inputValue;
   let isChecking          = false;      // checking data to backend
   let isDirty             = false;
@@ -97,6 +98,8 @@
   }
 
   const onChange = () => {
+    backendMessage = '';
+
     if (!checkValue || inputInitialValue === inputValue) { return; }
     isDirty = true;
 
@@ -121,7 +124,7 @@
 
         isValid = booleanMessage.bool && isFormatValid;
 
-        errorMessage = booleanMessage.message ? booleanMessage.message : '';
+        backendMessage = booleanMessage.message ? booleanMessage.message : '';
       })
       .catch((reason) => {
         isChecking = false;
@@ -258,7 +261,7 @@
     </div>
 
     <div class="error-message" class:visible={!isValid}>
-      <span>{errorMessage}</span>
+      <span>{backendMessage ? backendMessage : errorMessage}</span>
     </div>
   </div>
 </div>
