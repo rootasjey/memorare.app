@@ -303,7 +303,7 @@ export const TINY_LIST_AUTHORS = gql`
 `;
 
 export const UPDATE_EMAIL_STEP_ONE = gql`
-  mutation($newEmail: String!) {
+  query($newEmail: String!) {
     updateEmailStepOne(newEmail: $newEmail)
   }
 `;

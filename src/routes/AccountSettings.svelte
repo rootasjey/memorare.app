@@ -65,8 +65,8 @@
 
   async function updateEmail() {
     try {
-      const response = await client.mutate({
-        mutation: UPDATE_EMAIL_STEP_ONE,
+      const response = await client.query({
+        query: UPDATE_EMAIL_STEP_ONE,
         variables: { newEmail: email },
       });
 
