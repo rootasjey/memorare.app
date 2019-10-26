@@ -69,7 +69,7 @@
     try {
       const response = await mutate(client, {
         mutation: SIGNIN,
-        variables: { login: email, pass: password },
+        variables: { email, password },
       });
 
       const { _id, email: userEmail, lang, name: userName, token } = response.data.signin;

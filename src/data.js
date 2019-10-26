@@ -236,8 +236,8 @@ export const SIGNUP = gql`
 `;
 
 export const SIGNIN = gql`
-  mutation ($login: String!, $pass: String!) {
-    signin(login: $login, pass: $pass) {
+  mutation ($email: String!, $password: String!) {
+    signin(email: $email, password: $password) {
       _id
       email
       lang
