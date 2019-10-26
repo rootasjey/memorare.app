@@ -33,7 +33,7 @@
       variables: { emailToken },
     });
 
-    const { _id, name, emailConfig: { isVerified } } = response.data.verifyEmail;
+    const { id, name, emailConfig: { isVerified } } = response.data.verifyEmail;
 
     if (!isVerified) {
       throw new Error(`

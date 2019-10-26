@@ -113,7 +113,7 @@
 
       const { deleteQuotidian } = response.data;
 
-      quotidians = quotidians.filter((quotidian) => quotidian._id !== id);
+      quotidians = quotidians.filter((quotidian) => quotidian.id !== id);
 
       show({ text: `Quotidian successfully deleted.`, type: 'success' });
 
@@ -129,7 +129,7 @@
   }
 
   async function onValidateNewDate(quotidian, index) {
-    const { _id: id, date: prevDate } = quotidian;
+    const { id, date: prevDate } = quotidian;
     const dateInput = domListQuotidians.querySelector(`.quotidian[data-id="${id}"] .date-input`);
 
     if (!dateInput) { return; }
@@ -159,7 +159,8 @@
   }
 
   async function onResetDate(quotidian, index) {
-    const dateInput = domListQuotidians.querySelector(`.quotidian[data-id="${quotidian._id}"] .date-input`);
+    const dateInput = domListQuotidians
+      .querySelector(`.quotidian[data-id="${quotidian.id}"] .date-input`);
 
     if (!dateInput) { return; }
 
@@ -282,13 +283,13 @@
                 color="white"
                 content="{quotidian.quote.name}"
                 authorName="{quotidian.quote.author.name}"
-                onClick={() => onSelectQuote(quotidian._id)}
-                selected={selectedQuoteId === quotidian._id}
+                onClick={() => onSelectQuote(quotidian.id)}
+                selected={selectedQuoteId === quotidian.id}
                 tag="{(new Date(quotidian.date)).toLocaleDateString()}">
 
                 <div slot="quoteHeaderIcons" class="quote__header__icons__slot">
                   <IconButton margin="5px"
-                    onClick={() => onDelete(quotidian._id)}
+                    onClick={() => onDelete(quotidian.id)}
                     backgroundColor="#f56498"
                     elevation={1} >
                     <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">

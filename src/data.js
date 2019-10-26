@@ -27,7 +27,7 @@ export const client = new ApolloClient({
 export const CREATE_QUOTIDIAN = gql`
   mutation ($lang: String!, $quoteId: String!, $targetDate: String) {
     createQuotidian(lang: $lang, quoteId: $quoteId, targetDate: $targetDate) {
-      _id
+      id
       date
     }
   }
@@ -61,7 +61,7 @@ export const CREATE_TEMP_QUOTE = gql`
       refUrl: $refUrl
       topics: $topics
     ) {
-      _id
+      id
       date
       name
       validation {
@@ -75,7 +75,7 @@ export const CREATE_TEMP_QUOTE = gql`
 export const DELETE_ACCOUNT = gql`
   mutation ($password: String!) {
     deleteAccount(password: $password) {
-      _id
+      id
       name
     }
   }
@@ -84,10 +84,10 @@ export const DELETE_ACCOUNT = gql`
 export const DELETE_QUOTIDIAN = gql`
   mutation ($id: String!) {
     deleteQuotidian(id: $id) {
-      _id
+      id
       date
       quote {
-        _id
+        id
       }
     }
   }
@@ -96,7 +96,7 @@ export const DELETE_QUOTIDIAN = gql`
 export const DELETE_TEMP_QUOTE_ADMIN = gql`
   mutation ($id: String!) {
     deleteTempQuoteAdmin(id: $id) {
-      _id
+      id
     }
   }
 `;
@@ -143,7 +143,7 @@ export const PUBLISHED_QUOTES_ADMIN = gql`
   query ($lang: String, $limit: Float, $skip: Float) {
     publishedQuotesAdmin(lang: $lang, limit: $limit, skip: $skip) {
       entries {
-        _id
+        id
         author { name }
         lang
         name
@@ -161,7 +161,7 @@ export const PUBLISHED_QUOTES_ADMIN = gql`
 export const QUOTIDIAN = gql`
   query {
     quotidian {
-      _id
+      id
       date
       quote {
         author {
@@ -178,10 +178,10 @@ export const QUOTIDIANS = gql`
   query ($limit: Float, $skip: Float) {
     quotidians(limit: $limit, skip: $skip) {
       entries {
-        _id
+        id
         date
         quote {
-          _id
+          id
           author { name }
           name
         }
@@ -226,7 +226,7 @@ export const SET_VALIDATION_STATUS_ADMIN = gql`
 export const SIGNUP = gql`
   mutation ($email: String!, $password: String!, $name: String!) {
     signup(email: $email, password: $password, name: $name) {
-      _id
+      id
       email
       lang,
       name
@@ -238,7 +238,7 @@ export const SIGNUP = gql`
 export const SIGNIN = gql`
   mutation ($email: String!, $password: String!) {
     signin(email: $email, password: $password) {
-      _id
+      id
       email
       lang
       name
@@ -250,7 +250,7 @@ export const SIGNIN = gql`
 export const TEMP_QUOTE_ADMIN = gql`
   query($id: String!) {
     tempQuoteAdmin(id: $id) {
-      _id
+      id
       author {
         name
         summary
@@ -269,7 +269,7 @@ export const TEMP_QUOTES_ADMIN = gql`
   query ($limit: Float, $skip: Float) {
     tempQuotesAdmin(limit: $limit, skip: $skip) {
       entries {
-        _id
+        id
         name
         author {
           name
@@ -320,7 +320,7 @@ export const UPDATE_EMAIL_STEP_TWO = gql`
 export const UPDATE_LANG = gql`
   mutation($lang: String!) {
     updateLang(lang: $lang) {
-      _id
+      id
       lang
       token
     }
@@ -330,7 +330,7 @@ export const UPDATE_LANG = gql`
 export const UPDATE_NAME = gql`
   mutation($name: String!) {
     updateName(name: $name) {
-      _id
+      id
       name
       rights
       token
@@ -349,7 +349,7 @@ export const UPDATE_PASSWORD = gql`
 export const UPDATE_QUOTIDIAN = gql`
   mutation($id: String!, $quoteId: String, $targetDate: String) {
     updateQuotidian(id: $id, quoteId: $quoteId, targetDate: $targetDate) {
-      _id
+      id
       date
       quoteId
     }
@@ -385,7 +385,7 @@ export const UPDATE_TEMP_QUOTE_ADMIN = gql`
       refUrl: $refUrl
       topics: $topics
     ) {
-      _id
+      id
       date
       name
       validation {
@@ -399,7 +399,7 @@ export const UPDATE_TEMP_QUOTE_ADMIN = gql`
 export const VALIDATE_TEMP_QUOTE_ADMIN = gql`
   mutation ($id: String!) {
     validateTempQuoteAdmin(id: $id) {
-      _id
+      id
     }
   }
 `;
@@ -407,7 +407,7 @@ export const VALIDATE_TEMP_QUOTE_ADMIN = gql`
 export const VERIFY_EMAIL = gql`
   mutation ($emailToken: String!) {
     verifyEmail(emailToken: $emailToken) {
-      _id
+      id
       email
       name
       emailConfig { isVerified }

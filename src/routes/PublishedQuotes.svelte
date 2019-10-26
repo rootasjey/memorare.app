@@ -111,7 +111,7 @@
     try {
       const response = await mutate(client, {
         mutation: CREATE_QUOTIDIAN,
-        variables: { lang: quote.lang, quoteId: quote._id },
+        variables: { lang: quote.lang, quoteId: quote.id },
       });
 
       show({
@@ -240,13 +240,13 @@
                 content="{quote.name}"
                 authorName="{quote.author.name}"
                 tag="{quote.topics.length > 0 ? quote.topics[0] : ''}"
-                onClick={() => onSelectQuote(quote._id)}
-                selected={selectedQuoteId === quote._id}>
+                onClick={() => onSelectQuote(quote.id)}
+                selected={selectedQuoteId === quote.id}>
 
                 <div slot="quoteHeaderIcons" class="quote__header__icons__slot">
                   <IconButton
                     margin="5px"
-                    onClick={() => onDelete(quote._id)}
+                    onClick={() => onDelete(quote.id)}
                     backgroundColor="#f56498"
                     elevation={1} >
                     <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">

@@ -56,7 +56,7 @@
   })();
 
   async function onDelete(quote) {
-    const { _id: id } = quote;
+    const { id } = quote;
 
     try {
       const response = await mutate(client, {
@@ -66,7 +66,7 @@
 
       const deleteTempQuote = response.data.deleteTempQuoteAdmin;
 
-      tempQuotes = tempQuotes.filter((tempQuote) => tempQuote._id !== id);
+      tempQuotes = tempQuotes.filter((tempQuote) => tempQuote.id !== id);
 
       show({
         text: `Temporary quote successfully validated`,
@@ -79,7 +79,7 @@
   }
 
   async function onEditTempQuote(quote) {
-    navigate(`/addquote/${quote._id}`);
+    navigate(`/addquote/${quote.id}`);
   }
 
   async function onRefresh() {
@@ -122,7 +122,7 @@
   }
 
   async function onSwitchStatus(quote) {
-    const { _id: id, validation: { status: currentStatus } } = quote;
+    const { id, validation: { status: currentStatus } } = quote;
 
     const status = currentStatus === 'ko' ? 'ok' : 'ko';
 
@@ -144,7 +144,7 @@
   }
 
   async function onValidate(quote) {
-    const { _id: id, validation: { status: currentStatus } } = quote;
+    const { id, validation: { status: currentStatus } } = quote;
 
     try {
       const response = await mutate(client, {
@@ -152,7 +152,7 @@
         variables: { id },
       });
 
-      tempQuotes = tempQuotes.filter((tempQuote) => tempQuote._id !== id);
+      tempQuotes = tempQuotes.filter((tempQuote) => tempQuote.id !== id);
 
       show({
         text: `Temporary quote successfully validated`,
@@ -261,8 +261,8 @@
               <QuoteCard
                 content="{quote.name}"
                 authorName="{quote.author.name}"
-                onClick={() => onSelectQuote(quote._id)}
-                selected={selectedQuoteId === quote._id}
+                onClick={() => onSelectQuote(quote.id)}
+                selected={selectedQuoteId === quote.id}
                 tag="{quote.topics.length > 0 ? quote.topics[0] : ''}">
 
                 <div slot="quoteHeaderIcons" class="quote__header__icons__slot">
