@@ -156,7 +156,7 @@
       });
 
       delUserStatus = status.completed;
-      logout({ delay: 60000 });
+      logout({ delay: 5000 });
 
     } catch (error) {
       handle(error);
