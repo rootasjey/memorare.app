@@ -150,6 +150,11 @@
   .cross-icon {
     color: #f56498;
     font-size: 1.5em;
+
+    margin: 0 10px;
+
+    position: relative;
+    top: -2px;
   }
 
   .error-message {
@@ -215,6 +220,7 @@
 
   .row {
     display: flex;
+    align-items: center;
   }
 
 </style>
