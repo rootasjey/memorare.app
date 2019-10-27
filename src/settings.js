@@ -8,7 +8,11 @@ class Settings {
   }
 
   getValue(name = '') {
-    return localStorage.getItem(name);
+    const value = localStorage.getItem(name);
+
+    if (name === 'lang') {
+      return value || 'en';
+    }
   }
 
   setValue(name = '', value = '') {
