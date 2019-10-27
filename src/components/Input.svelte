@@ -14,14 +14,15 @@
   // Props. (external)
   export let bgColor      = '';
   export let borderColor  = '';
-  export let checkValue   = false;      // activate front + back checks
+  export let checkValue   = false;       // activate front + back checks
   export let color        = '';
   export let errorMessage = '';
   export let inputValue   = '';         // actual value
-  export let isValid      = true;      // frontend + backend checks
+  export let isValid      = true;       // frontend + backend checks
   export let label        = '';         // text displayed on top
   export let lightcontent = false;
   export let margin       = '';
+  export let noBackCheck  = false;      // value won't be checked gainst backend
   export let onEnter      = () => {};
   export let outlined     = false;
   export let pattern      = '';         // regex for frontend check
@@ -47,9 +48,9 @@
   }
 
   $: borderColorCSS = borderColor ? `border-color: ${borderColor};` : '';
-  $: bgColorCSS = bgColor ? `background-color: ${bgColor};` : '';
-  $: colorCSS = color ? `color: ${color};` : '';
-  $: marginCSS = margin ? `margin: ${margin};` : '';
+  $: bgColorCSS     = bgColor     ? `background-color: ${bgColor};` : '';
+  $: colorCSS       = color       ? `color: ${color};`              : '';
+  $: marginCSS      = margin      ? `margin: ${margin};`            : '';
 
   $: styles = `${borderColorCSS} ${bgColorCSS} ${colorCSS} ${marginCSS}`;
 
@@ -109,6 +110,8 @@
       isValid = false;
       return;
     }
+
+    if (noBackCheck) { return; }
 
     isChecking = true;
 
