@@ -1,6 +1,4 @@
 <script>
-  import { mutate } from 'svelte-apollo';
-
   import { fly }        from 'svelte/transition';
   import { navigate }   from 'svelte-routing';
 
@@ -46,7 +44,7 @@
 
   const onSignin = async () => {
     try {
-      const response = await mutate(client, {
+      const response = await client.mutate({
         mutation: SIGNIN,
         variables: { email, password },
       });
@@ -66,7 +64,7 @@
 
   const onSignup = async () => {
     try {
-      const response = await mutate(client, {
+      const response = await client.mutate({
         mutation: SIGNUP,
         variables: { email, name, password },
       });
