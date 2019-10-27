@@ -8,17 +8,21 @@
   import ConfirmPass    from '../components/ConfirmPass.svelte';
   import Input          from '../components/Input.svelte';
   import TextLink       from '../components/TextLink.svelte';
-  import { handle }     from '../errors';
-  import {
-    isUserAuthenticated,
-    settings
-    } from '../settings';
 
   import {
     client,
     SIGNIN,
     SIGNUP,
   } from '../data';
+
+  import { handle }     from '../errors';
+
+  import {
+    isUserAuthenticated,
+    settings
+  } from '../settings';
+
+  import { onEnterNextInput } from '../utils';
 
   // Form variables
   let confirmPassword = '';
@@ -30,31 +34,6 @@
   let rememberMe      = false;
 
   const toggleFormType = () => isSigninActive = !isSigninActive;
-
-  const onEnterNextInput = (event) => {
-    const { target } = event;
-    const inputs = formContainer.querySelectorAll('input');
-
-    let indexMatch;
-
-    Array
-      .from(inputs)
-      .some((input, index) => {
-        if (input === target) {
-          indexMatch = index;
-          return true;
-        }
-
-        return false;
-    });
-
-    if (indexMatch >= inputs.length) { return; }
-
-    const nextInput = inputs[indexMatch + 1];
-    if (!nextInput || !nextInput.focus) { return; }
-
-    nextInput.focus();
-  }
 
   const onEnterValidate = () => {
     if (isSigninActive) {
@@ -101,6 +80,10 @@
     } catch (error) {
       handle(error);
     }
+  }
+
+  function _onEnterNextInput(event) {
+    onEnterNextInput(event, formContainer);
   }
 </script>
 
@@ -242,7 +225,7 @@
     <div class="form form-signin" transition:fly="{{ y: -20, duration: 250 }}">
       <Input label="Email" type="email"
         placeholder="socrate@philo.com"
-        bind:inputValue={email} onEnter={onEnterNextInput} />
+        bind:inputValue={email} onEnter={_onEnterNextInput} />
 
       <Input label="Password" type="password"
         placeholder="********"
@@ -264,17 +247,17 @@
         <Input label="Name" type="name" placeholder="Socrates"
           bind:inputValue={name} checkValue={true}
           errorMessage="Your name contains invalid characters. Only letters, numbers, underscores and hypens allowed."
-          onEnter={onEnterNextInput} />
+          onEnter={_onEnterNextInput} />
 
         <Input label="Email" type="email" placeholder="socrate@philo.com"
           errorMessage="The value entered is not an email."
           bind:inputValue={email} checkValue={true}
-          onEnter={onEnterNextInput} />
+          onEnter={_onEnterNextInput} />
 
         <Input label="Password" type="password" placeholder="********"
           errorMessage="Your password must be at least 8 characters length and must contain at least one uppercase letter, one lowercase letter, and one number."
           bind:inputValue={password} checkValue={true}
-          onEnter={onEnterNextInput} />
+          onEnter={_onEnterNextInput} />
 
         <ConfirmPass label="Confirm Password" placeholder="********"
           bind:inputValue={confirmPassword} valueToCheck={password}
