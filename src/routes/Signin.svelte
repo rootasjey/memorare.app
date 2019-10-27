@@ -229,7 +229,10 @@
         placeholder="********"
         bind:inputValue={password} onEnter={onEnterValidate} />
 
-      <TextLink text="I forgot my password ?" margin="-10px 0 20px 0" />
+      <TextLink text="I forgot my password ?"
+        margin="-10px 0 20px 0"
+        onClick={() => navigate('/forget/password')}
+      />
 
       <br>
 

@@ -101,6 +101,24 @@ export const DELETE_TEMP_QUOTE_ADMIN = gql`
   }
 `;
 
+export const FORGET_PASSWORD_STEP_ONE = gql`
+  query ($email: String!) {
+    forgetPasswordStepOne(email: $email)
+  }
+`;
+
+export const FORGET_PASSWORD_STEP_TWO = gql`
+  mutation ($emailToken: String!, $newPassword: String!) {
+    forgetPasswordStepTwo(
+      emailToken: $emailToken,
+      newPassword: $newPassword
+    ) {
+      id
+      token
+    }
+  }
+`;
+
 export const IS_EMAIL_VALID = gql`
   query ($email: String!) {
     isEmailValid(email: $email) {

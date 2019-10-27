@@ -15,6 +15,7 @@
 	import AccountSettings	from './routes/AccountSettings.svelte';
 	import AddQuote					from './routes/AddQuote.svelte';
 	import Apps 						from './routes/Apps.svelte';
+	import ForgetPassword		from './routes/ForgetPassword.svelte';
 	import Home 						from './routes/Home.svelte';
 	import Pricing 					from './routes/Pricing.svelte';
 	import PublishedQuotes 	from './routes/PublishedQuotes.svelte';
@@ -69,6 +70,10 @@
 			<Route path="/accountsettings" component="{AccountSettings}" />
 			<Route path="/update/email/:emailToken" let:params>
 				<UpdateEmail emailToken={params.emailToken} />
+			</Route>
+			<Route path="/forget/password" component="{ForgetPassword}" />
+			<Route path="/forget/password/:emailToken" let:params>
+				<ForgetPassword emailToken={params.emailToken} />
 			</Route>
 
 			<!-- 404 -->
