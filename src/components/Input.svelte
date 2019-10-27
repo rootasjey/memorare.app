@@ -145,6 +145,11 @@
   .check-icon {
     color: #a3cb38;
     font-size: 1.5em;
+
+    margin: 0 10px;
+
+    position: relative;
+    top: -2px;
   }
 
   .cross-icon {
