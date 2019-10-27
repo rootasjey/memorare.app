@@ -59,10 +59,10 @@
 				<VerifyEmail emailToken="{params.emailToken}"/>
 			</Route>
 			<Route path="/welcome" component="{Welcome}" />
-			<Route path="/addquote/:id" let:params>
+			<Route path="/add/quote/:id" let:params>
 				<AddQuote id="{params.id}" />
 			</Route>
-			<Route path="/addquote" component="{AddQuote}" />
+			<Route path="/add/quote" component="{AddQuote}" />
 			<Route path="/admin/tempquotes" component="{TempQuotes}" />
 			<Route path="/admin/publishedquotes" component="{PublishedQuotes}" />
 			<Route path="/admin/quotidians" component="{Quotidians}" />
