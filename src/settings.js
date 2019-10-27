@@ -13,6 +13,8 @@ class Settings {
     if (name === 'lang') {
       return value || 'en';
     }
+
+    return value;
   }
 
   setValue(name = '', value = '') {
@@ -20,7 +22,9 @@ class Settings {
     localStorage.setItem(name, value);
   }
 
-  saveData({ id, email, lang, name, token }) {
+  saveData(config = {}) {
+    const { id, email, lang, name, token } = config;
+
     localStorage.setItem('id', id);
     localStorage.setItem('email', email);
     localStorage.setItem('lang', lang);
@@ -38,7 +42,7 @@ if (settings.getValue('name')) {
   isUserAuthenticated.set(true);
 }
 
-export const logout = ({ route = '/', delay = 0 }) => {
+export const logout = ({ route = '/', delay = 0 } = {}) => {
   settings.clearData();
   isUserAuthenticated.set(false);
 

@@ -1,14 +1,18 @@
 <script>
-  import { fly } from 'svelte/transition';
+  import { fly }      from 'svelte/transition';
   import { navigate } from 'svelte-routing';
 
-  import { settings } from '../settings';
-  import Quotidian from '../components/Quotidian.svelte';
+  import Quotidian    from '../components/Quotidian.svelte';
+
+  import {
+    logout,
+    settings,
+  } from '../settings';
 
   let username = settings.getValue('name');
 
   if (typeof username !== 'string' || username.length === 0) {
-    navigate('/signin');
+    logout();
   }
 </script>
 
