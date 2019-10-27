@@ -37,8 +37,40 @@
 </script>
 
 <style>
- label {
-    color: #706fd3;
+  .check-icon {
+    color: #a3cb38;
+    font-size: 1.5em;
+
+    margin: 0 10px;
+
+    position: relative;
+    top: -2px;
+  }
+
+  .cross-icon {
+    color: #f56498;
+    font-size: 1.5em;
+
+    margin: 0 10px;
+
+    position: relative;
+    top: -2px;
+  }
+
+  .error-message {
+    font-size: 0.9em;
+    color: #f56498;
+    display: none;
+    transition: .3s;
+  }
+
+  .error-message.visible {
+    display: block;
+    transition: .3s;
+  }
+
+  .input-container {
+    width: 100%;
   }
 
   input {
@@ -74,34 +106,13 @@
     flex-direction: column;
   }
 
-  .check-icon {
-    color: #a3cb38;
-    font-size: 1.5em;
-  }
-
-  .cross-icon {
-    color: #f56498;
-    font-size: 1.5em;
+  label {
+    color: #706fd3;
   }
 
   .row {
     display: flex;
-  }
-
-  .error-message {
-    font-size: 0.9em;
-    color: #f56498;
-    display: none;
-    transition: .3s;
-  }
-
-  .error-message.visible {
-    display: block;
-    transition: .3s;
-  }
-
-  .input-container {
-    width: 100%;
+    align-items: center;
   }
 </style>
 
