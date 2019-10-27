@@ -1,5 +1,4 @@
 <script>
-  import { getClient, query } from 'svelte-apollo';
   import { navigate }         from 'svelte-routing';
 
   import {
@@ -7,16 +6,33 @@
     QUOTIDIAN
   } from '../data';
   import { settings } from '../settings';
+  import { handle }   from '../errors'
+  import { status }   from '../utils'
   import IconButton   from './IconButton.svelte';
   import { show }     from './Snackbar.svelte'
 
-  const quotidian = query(client, { query: QUOTIDIAN });
+  let pageStatus = status.idle;
+  let quotidian = {};
 
   export let top = '0';
 
   let style = `
     top: ${top};
   `;
+
+  (async function fetchQuotidian() {
+    pageStatus = status.loading;
+
+    try {
+      const response = await client.query({ query: QUOTIDIAN });
+      quotidian = response.data.quotidian;
+      pageStatus = status.completed;
+
+    } catch (error) {
+      pageStatus = status.error;
+
+    }
+  })();
 
   async function onLike(quote) {
     if (!settings.getValue('id')) {
@@ -80,18 +96,16 @@
 </style>
 
 <div class="quote-container" style="{style}">
-  {#await $quotidian}
-    <!-- $quotidian is pending -->
-    <div class="quote-loading">
+  {#if pageStatus === status.loading}
+     <div class="quote-loading">
       <h1>Loading quote...</h1>
     </div>
-  {:then result}
-    <!-- $quotidian was fulfilled -->
+  {:else if pageStatus === status.completed}
     <div class="quote-content">
       <header>
         <IconButton
           margin="5px"
-          onClick={() => onLike(result.data.quotidian)}
+          onClick={() => onLike(quotidian)}
           backgroundColor="#f56498"
           elevation={1} >
           <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
@@ -101,7 +115,7 @@
 
         <IconButton
           margin="5px"
-          onClick={() => onShare(result.data.quotidian)}
+          onClick={() => onShare(quotidian)}
           backgroundColor="#f56498"
           elevation={1} >
           <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
@@ -110,21 +124,19 @@
         </IconButton>
       </header>
 
-      <h1 class="quote-name"> {result.data.quotidian.quote.name} </h1>
+      <h1 class="quote-name"> {quotidian.quote.name} </h1>
 
       <footer class="quote-footer">
-        <h4>{result.data.quotidian.quote.author.name}</h4>
+        <h4>{quotidian.quote.author.name}</h4>
 
-        {#if result.data.quotidian.quote.references.length}
-          <p>{result.data.quotidian.quote.references[0].name}</p>
+        {#if quotidian.quote.references.length}
+          <p>{quotidian.quote.references[0].name}</p>
         {/if}
       </footer>
     </div>
-  {:catch error}
-    <!-- $quotidian was rejected -->
+  {:else}
     <div class="quote-error">
       <h1>An error occurred while loading :(</h1>
-      <h4>{error}</h4>
     </div>
-  {/await}
+  {/if}
 </div>

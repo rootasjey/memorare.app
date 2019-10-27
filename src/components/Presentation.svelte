@@ -1,10 +1,26 @@
 <script>
-  import { getClient, query }     from 'svelte-apollo';
-  import { navigate }             from 'svelte-routing';
+  import { navigate } from 'svelte-routing';
 
   import { client, LIST_AUTHORS } from '../data';
+  import { handle } from '../errors';
+  import { status } from '../utils';
 
-  const listAuthors = query(client, { query: LIST_AUTHORS });
+  let authors = [];
+  let pageStatus = status.idle;
+
+  (async function fetchAuthors() {
+    pageStatus = status.loading;
+
+    try {
+      const response = await client.query({ query: LIST_AUTHORS });
+      authors = response.data.listAuthors.entries;
+      pageStatus = status.completed;
+
+    } catch (error) {
+      handle(error);
+      pageStatus = status.error;
+    }
+  })();
 
   function goTo(route) {
     navigate(route);
@@ -494,18 +510,18 @@
     </div>
 
     <div class="authors-wall">
-      {#await $listAuthors}
-        <!-- $listAuthors is pending -->
-        ...
-      {:then result}
-        <!-- $listAuthors was fulfilled -->
-        {#each result.data.listAuthors.entries as author}
+      {#if pageStatus === status.loading}
+         <!-- content here -->
+      {:else if pageStatus === status.completed}
+         {#each authors as author}
           <div class="author-square">
             <div class="author-square__img" style="background-image: url('{author.imgUrl}');"></div>
             <div class="author-square__name"> {author.name} </div>
           </div>
         {/each}
-      {/await}
+      {:else}
+        <h3>An error occurred while fetching authors.</h3>
+      {/if}
     </div>
 
     <div class="authors-wall-background"></div>

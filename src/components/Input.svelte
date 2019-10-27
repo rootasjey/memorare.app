@@ -1,6 +1,5 @@
 <script>
   import { onMount }  from 'svelte';
-  import { query }    from 'svelte-apollo';
 
   import Spinner      from '../components/Spinner.svelte';
 
@@ -98,7 +97,7 @@
     }
   }
 
-  const onChange = () => {
+  async function onChange() {
     backendMessage = '';
 
     if (!checkValue || inputInitialValue === inputValue) { return; }
@@ -115,24 +114,23 @@
 
     isChecking = true;
 
-    const fetchQuery = query(client, {
-      query: getQuery(),
-      variables: getVariables(),
-    });
-
-    fetchQuery.result()
-      .then((response) => {
-        isChecking = false;
-        const booleanMessage = response.data[getResponseKey()];
-
-        isValid = booleanMessage.bool && isFormatValid;
-
-        backendMessage = booleanMessage.message ? booleanMessage.message : '';
-      })
-      .catch((reason) => {
-        isChecking = false;
-        isValid = false;
+    try {
+      const response = await client.query({
+        query: getQuery(),
+        variables: getVariables(),
       });
+
+      isChecking = false;
+      const booleanMessage = response.data[getResponseKey()];
+
+      isValid = booleanMessage.bool && isFormatValid;
+
+      backendMessage = booleanMessage.message ? booleanMessage.message : '';
+
+    } catch (error) {
+      isChecking = false;
+      isValid = false;
+    }
   }
 
   const onKeyUp = (event) => {

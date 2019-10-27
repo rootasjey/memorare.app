@@ -1,8 +1,4 @@
 <script>
-  import {
-    query,
-  } from 'svelte-apollo';
-
   import { fly }      from 'svelte/transition';
   import { navigate } from 'svelte-routing';
 
@@ -18,13 +14,30 @@
   } from '../data';
 
   import { settings } from '../settings';
+  import { status } from '../utils';
 
   export let path = '';
 
-  const queryRandomQuote = query(client, {
-    query: RANDOM_QUOTE,
-    variables: { lang: settings.getValue('lang') },
-  });
+  let pageStatus = status.idle;
+  let randomQuote = {};
+
+  (async function fetchRandomQuote() {
+    pageStatus = status.loading;
+
+    try {
+      const response = await client.query({
+        query: RANDOM_QUOTE,
+        variables: { lang: settings.getValue('lang') },
+      });
+
+      randomQuote = response.data.randomQuote;
+      pageStatus = status.completed;
+
+    } catch (error) {
+      handle(error);
+      pageStatus = status.error;
+    }
+  })();
 
   function goToHome() {
     navigate('/');
@@ -97,15 +110,15 @@
   <div class="route404-page__content">
     <p class="thin-title">Read this cheer-up quote</p>
 
-    {#await $queryRandomQuote}
+    {#if pageStatus === status.loading}
       <div>
         <Spinner />
         <span>Loading temporary quotes...</span>
       </div>
-    {:then result}
+    {:else if pageStatus === status.completed}
       <QuoteCard
-        content="{result.data.randomQuote.name}"
-        authorName="{result.data.randomQuote.author.name}">
+        content="{randomQuote.name}"
+        authorName="{randomQuote.author.name}">
         <div slot="quoteHeaderIcons">
           <IconButton
             backgroundColor="#f56498"
@@ -117,8 +130,9 @@
       </QuoteCard>
 
       <TextLink text="Go back on track" onClick={goToHome} />
-    {:catch error}
+    {:else}
       <h3>Error</h3>
-    {/await}
+      <p>There was an error while fetching a random quote.</p>
+    {/if}
   </div>
 </div>

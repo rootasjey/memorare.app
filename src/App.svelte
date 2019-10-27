@@ -1,6 +1,5 @@
 <script>
 	import ApolloClient 	from 'apollo-boost';
-	import { setClient } 	from 'svelte-apollo';
 	import {
 		Link,
 		Route,
@@ -27,8 +26,6 @@
 	import UpdateEmail 			from './routes/UpdateEmail.svelte';
 	import VerifyEmail 			from './routes/VerifyEmail.svelte';
 	import Welcome					from './routes/Welcome.svelte';
-
-	setClient(client);
 
 	export let url = '';
 </script>

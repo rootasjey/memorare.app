@@ -1,10 +1,4 @@
 <script>
-  import {
-    query,
-    mutate,
-  } from 'svelte-apollo';
-
-  import { fly }      from 'svelte/transition';
   import { navigate } from 'svelte-routing';
 
   import Button       from '../components/Button.svelte';
@@ -14,6 +8,7 @@
   import { show }     from '../components/Snackbar.svelte';
   import Spinner      from '../components/Spinner.svelte';
   import TextLink     from '../components/TextLink.svelte';
+  import { status }   from '../utils';
 
   import {
     client,
@@ -24,32 +19,30 @@
 
   import { handle } from '../errors';
 
-  let domListQuotidians;
-  let hasMoreData         = true;
-  let limit               = 5;
-  let queryStatus         = 'loading'; // loading || completed || error
-  let quotidians          = [];
-  let selectedQuoteId     = -1;
-  let skip                = 0;
-
-  $: spinnerVisibility = queryStatus === 'loading' ? 'visible' : 'hidden';
-
-  const queryQuotidians = query(client, {
-    query: QUOTIDIANS,
-    variables: { limit, skip },
-  });
+  let domQuotidians;
+  let hasMoreData     = true;
+  let limit           = 5;
+  let quotidians      = [];
+  let selectedQuoteId = -1;
+  let skip            = 0;
+  let pageStatus      = status.idle;
 
   (async function fetchQuotidians() {
+    pageStatus = status.loading;
+
     try {
-      queryStatus = 'loading';
-      const response = await queryQuotidians.result();
+      const response = await client.query({
+        query: QUOTIDIANS,
+        variables: { limit, skip },
+      });
+
       quotidians = response.data.quotidians.entries;
 
       const { pagination } = response.data.quotidians;
       limit = pagination.limit;
       skip = pagination.nextSkip;
 
-      queryStatus = 'completed';
+      pageStatus = status.completed;
 
     } catch (error) {
       show({
@@ -58,39 +51,31 @@
         type: 'error',
       });
 
-      queryStatus = 'error';
+      pageStatus = status.error;
       handle(error);
     }
   })();
 
   async function onRefresh() {
-    queryStatus = 'loading';
+    pageStatus = status.loading;
     skip = 0;
 
     try {
-      // NOTE
-      // 2 issues:
-      // ~~~~~~~~~
-      // 1.Svelte does not want to update properly the array with a async func &
-      //   if the re-assignment is fired immediately
-      // 2.svele-apollo returns different data with the same query
-      setTimeout(async () => {
-        const q2 = query(client, {
-          query: QUOTIDIANS,
-          variables: { limit, skip },
-        });
+      const response = await client.query({
+        query: QUOTIDIANS,
+        variables: { limit, skip },
+        fetchPolicy: 'network-only',
+      });
 
-        const resp = await q2.result();
+      quotidians = [];
+      quotidians = response.data.quotidians.entries;
 
-        quotidians = resp.data.quotidians.entries;
+      const { pagination } = response.data.quotidians;
 
-        const { pagination } = resp.data.quotidians;
-        limit = pagination.limit;
-        skip = pagination.nextSkip;
-
-        queryStatus = 'completed';
-        hasMoreData = true;
-      }, 100);
+      hasMoreData = true;
+      limit       = pagination.limit;
+      pageStatus  = status.completed;
+      skip        = pagination.nextSkip;
 
     } catch (error) {
       show({
@@ -99,14 +84,14 @@
         type: 'error',
       });
 
-      queryStatus = 'error';
+      pageStatus = status.error;
       handle(error);
     }
   }
 
   async function onDelete(id) {
     try {
-      const response = await mutate(client, {
+      const response = await client.mutate({
         mutation: DELETE_QUOTIDIAN,
         variables: { id },
       });
@@ -130,14 +115,14 @@
 
   async function onValidateNewDate(quotidian, index) {
     const { id, date: prevDate } = quotidian;
-    const dateInput = domListQuotidians.querySelector(`.quotidian[data-id="${id}"] .date-input`);
+    const dateInput = domQuotidians.querySelector(`.quotidian[data-id="${id}"] .date-input`);
 
     if (!dateInput) { return; }
 
     const targetDate = dateInput.value;
 
     try {
-      const response = await mutate(client, {
+      const response = await client.mutate({
         mutation: UPDATE_QUOTIDIAN,
         variables: { id, targetDate },
       });
@@ -159,7 +144,7 @@
   }
 
   async function onResetDate(quotidian, index) {
-    const dateInput = domListQuotidians
+    const dateInput = domQuotidians
       .querySelector(`.quotidian[data-id="${quotidian.id}"] .date-input`);
 
     if (!dateInput) { return; }
@@ -169,17 +154,17 @@
 
   async function onLoadMore() {
     try {
-      const q3 = await query(client, {
+      const response = await client.query({
         query: QUOTIDIANS,
         variables: { limit, skip },
+        fetchPolicy: 'network-only',
       });
 
-      const resp = await q3.result();
-      const { quotidians: { entries, pagination } } = resp.data;
+      const { entries, pagination } = response.data.quotidians;
 
       hasMoreData = pagination.hasNext;
-      limit = pagination.limit;
-      skip = pagination.nextSkip;
+      limit       = pagination.limit;
+      skip        = pagination.nextSkip;
 
       quotidians = [...quotidians, ...entries];
 
@@ -264,20 +249,20 @@
   </header>
 
   <div class="quotidians-page__content">
-    {#await queryQuotidians}
+    {#if pageStatus === status.loading}
       <div>
-        <Spinner visibility={spinnerVisibility} />
+        <Spinner visibility={pageStatus === status.loading} />
         <span>Loading published quotes...</span>
       </div>
-    {:then quotidiansResult}
+    {:else if  pageStatus === status.completed}
       <div class="content__buttons-container">
         <Button outlined={true} value="refresh" onClick={() => onRefresh()} />
       </div>
 
-      <div class="list-quotidians" bind:this={domListQuotidians}>
+      <div class="list-quotidians" bind:this={domQuotidians}>
         <div class="list-quotidians__content">
           {#each quotidians as quotidian, index}
-            <div transition:fly={{ y: 10, duration: 500 }}>
+            <div>
               <QuoteCard
                 backgroundColor="#706fd3"
                 color="white"
@@ -310,8 +295,8 @@
           </div>
         {/if}
       </div>
-    {:catch error}
+    {:else}
       <div>There was an error when retreiving quotidians.</div>
-    {/await}
+    {/if}
   </div>
 </div>

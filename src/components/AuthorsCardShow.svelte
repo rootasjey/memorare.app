@@ -1,6 +1,5 @@
 <script>
   import { onDestroy }  from 'svelte';
-  import { query }      from 'svelte-apollo';
   import { fly }        from 'svelte/transition';
 
   import {
@@ -16,8 +15,6 @@
   let authorQuote = '';
   let authorQuoteFontStyle = 'font-size: 2em;';
   let showAuthorQuote = true;
-
-  const listAuthors = query(client, { query: TINY_LIST_AUTHORS });
 
   // Authors slideshow
   let index = 0;
@@ -55,7 +52,7 @@
 
   // Authors request
   (async function () {
-    let response = await listAuthors.result();
+    const response = await client.query({ query: TINY_LIST_AUTHORS });
 
     authors = response.data.listAuthors.entries
       .filter((author) => author.imgUrl !== null);

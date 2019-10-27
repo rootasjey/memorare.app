@@ -1,12 +1,6 @@
 <script>
-  import {
-    query,
-    mutate,
-  } from 'svelte-apollo';
-
+  import { fly }      from 'svelte/transition';
   import { navigate } from 'svelte-routing';
-
-  import { fly } from 'svelte/transition';
 
   import {
     client,
@@ -87,13 +81,12 @@
   if (id) {
     submitButtonValue = 'Save quote';
 
-    const queryTempQuoteAdmin = query(client, {
-      query: TEMP_QUOTE_ADMIN,
-      variables: { id },
-    });
-
     (async function () {
-      const response = await queryTempQuoteAdmin.result();
+      const response = await client.query({
+        query: TEMP_QUOTE_ADMIN,
+        variables: { id },
+      });
+
       const { tempQuoteAdmin } = response.data;
 
       const { author: tqAuthor } = tempQuoteAdmin;
@@ -164,7 +157,7 @@
         topics,
       } = fieldsValue;
 
-      const response = await mutate(client, {
+      const response = await client.mutate({
         mutation: id && id.length > 0 ? UPDATE_TEMP_QUOTE_ADMIN : CREATE_TEMP_QUOTE,
         variables: {
           authorName,
@@ -198,8 +191,8 @@
     fieldsValue.name = '';
   }
 
-  function onGotoDashboard() {
-    navigate('/welcome')
+  function onGoToTempQuotes() {
+    navigate('/admin/tempquotes'); // TODO: conditional admin
   }
 </script>
 
@@ -628,8 +621,8 @@
           Your quote has been successfully proposed! <br>
           Wait for the moderators to review it. <br><br>
           Would you like to
-          <span class="link" on:click={onAddAnotherQuote}>add another quote</span> or go to your
-          <span class="link" on:click={onGotoDashboard}>dashboard</span>?
+          <span class="link" on:click={onAddAnotherQuote}>add another quote</span> or go to
+          <span class="link" on:click={onGoToTempQuotes}>temporary quotes</span>?
         </p>
       {/if}
     </div>

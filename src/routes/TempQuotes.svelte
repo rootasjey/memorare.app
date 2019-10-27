@@ -1,10 +1,4 @@
 <script>
-  import {
-    query,
-    mutate,
-  } from 'svelte-apollo';
-
-  import { fly }      from 'svelte/transition';
   import { navigate } from 'svelte-routing';
 
   import Button     from '../components/Button.svelte';
@@ -22,35 +16,33 @@
   } from '../data';
 
   import { handle } from '../errors';
+  import { status } from '../utils';
 
   let limit           = 10;
-  let queryStatus     = 'loading'; // loading || completed || error
+  let pageStatus      = status.idle; // loading || completed || error
   let selectedQuoteId = -1;
   let skip            = 0;
   let tempQuotes      = [];
 
-  $: spinnerVisibility = queryStatus === 'loading' ? 'visible' : 'hidden';
-
-  const queryTempQuotes = query(client, {
-    query: TEMP_QUOTES_ADMIN,
-    variables: { limit, skip },
-  });
-
   (async function fetchTempQuotes() {
-    try {
-      queryStatus = 'loading';
+    pageStatus = status.loading;
 
-      const response = await queryTempQuotes.result();
+    try {
+      const response = await client.query({
+        query: TEMP_QUOTES_ADMIN,
+        variables: { limit, skip },
+      });
+
       tempQuotes = response.data.tempQuotesAdmin.entries;
 
       const { pagination } = response.data.tempQuotesAdmin;
       limit = pagination.limit;
       skip = pagination.nextSkip;
 
-      queryStatus = 'completed';
+      pageStatus = status.completed;
 
     } catch (error) {
-      queryStatus = 'error';
+      pageStatus = status.error;
       handle(error);
     }
   })();
@@ -59,9 +51,10 @@
     const { id } = quote;
 
     try {
-      const response = await mutate(client, {
+      const response = await client.mutate({
         mutation: DELETE_TEMP_QUOTE_ADMIN,
         variables: { id },
+        fetchPolicy: 'network-only',
       });
 
       const deleteTempQuote = response.data.deleteTempQuoteAdmin;
@@ -83,36 +76,28 @@
   }
 
   async function onRefresh() {
-    queryStatus = 'loading';
+    pageStatus = status.loading;
     skip = 0;
 
     try {
-      // NOTE
-      // 2 issues:
-      // ~~~~~~~~~
-      // 1.Svelte does not want to update properly the array with a async func &
-      // if the re-assignment is fired immediately
-      //
-      // 2.svele-apollo returns different data with the same query
-      setTimeout(async () => {
-        const queryTempQuotes2 = query(client, {
-          query: TEMP_QUOTES_ADMIN,
-          variables: { limit, skip },
-        });
+      const queryTempQuotes2 = client.query({
+        query: TEMP_QUOTES_ADMIN,
+        variables: { limit, skip },
+        fetchPolicy: 'network-only',
+      });
 
-        const resp = await queryTempQuotes2.refetch({ limit, skip: 2 });
+      const resp = await queryTempQuotes2.refetch({ limit, skip: 2 });
 
-        tempQuotes = resp.data.tempQuotesAdmin.entries;
+      tempQuotes = resp.data.tempQuotesAdmin.entries;
 
-        const { pagination } = resp.data.tempQuotesAdmin;
-        limit = pagination.limit;
-        skip = pagination.nextSkip;
+      const { pagination } = resp.data.tempQuotesAdmin;
+      limit = pagination.limit;
+      skip = pagination.nextSkip;
 
-        queryStatus = 'completed';
-      }, 100);
+      pageStatus = status.completed;
 
     } catch (error) {
-      queryStatus = 'error';
+      pageStatus = status.error;
       handle(error);
     }
   }
@@ -127,9 +112,10 @@
     const status = currentStatus === 'ko' ? 'ok' : 'ko';
 
     try {
-      const response = await mutate(client, {
+      const response = await client.mutate({
         mutation: SET_VALIDATION_STATUS_ADMIN,
         variables: { id, status },
+        fetchPolicy: 'network-only',
       });
 
       const { validation } = response.data.setValidationStatusAdmin;
@@ -147,9 +133,10 @@
     const { id, validation: { status: currentStatus } } = quote;
 
     try {
-      const response = await mutate(client, {
+      const response = await client.mutate({
         mutation: VALIDATE_TEMP_QUOTE_ADMIN,
         variables: { id },
+        fetchPolicy: 'network-only',
       });
 
       tempQuotes = tempQuotes.filter((tempQuote) => tempQuote.id !== id);
@@ -245,19 +232,19 @@
   </div>
 
   <div class="temp-quotes-page__content">
-      {#if queryStatus === 'loading'}
+      {#if pageStatus === status.loading}
         <div>
-          <Spinner visibility={spinnerVisibility} />
+          <Spinner visibility={pageStatus === status.loading} />
           <span>Loading temporary quotes...</span>
         </div>
-      {:else if queryStatus === 'completed'}
+      {:else if pageStatus === status.completed}
         <div class="content__buttons-container">
           <Button outlined={true} value="refresh" onClick={() => onRefresh()} />
         </div>
 
         <div class="list-temp-quote">
           {#each tempQuotes as quote, index}
-            <div transition:fly={{ y: 10, duration: 200 * index }}>
+            <div>
               <QuoteCard
                 content="{quote.name}"
                 authorName="{quote.author.name}"
