@@ -6,6 +6,7 @@
   import { fly }      from 'svelte/transition';
   import { navigate } from 'svelte-routing';
 
+  import CapHeader    from '../components/CapHeader.svelte';
   import IconButton   from '../components/IconButton.svelte';
   import QuoteCard    from '../components/QuoteCard.svelte';
   import Spinner      from '../components/Spinner.svelte';
@@ -32,33 +33,66 @@
 </script>
 
 <style>
+  .info-error {
+    color: white;
+    background-color: #f56498;
+    padding: 20px;
+    border-radius: 5px;
+
+    display: flex;
+    align-items: center;
+  }
+
+  .info-error__text {
+    margin: 0 10px;
+  }
+
   .route404-page {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  .thin-title {
-    font-size: 1.4em;
-  }
-
-  .txt-pink {
-    color: #f56498;
-    font-weight: 600;
-  }
-
   .route404-page__content {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    padding: 60px 0;
+  }
+
+  .thin-title {
+    font-size: 1.4em;
+  }
+
+  .txt {
+    display: inline-block;
+    font-weight: 600;
+
+    position: relative;
+    top: 3px;
+    padding: 0 5px;
+
+    max-width: 200px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>
 
 <div class="route404-page">
-  <header>
-    <h1>You've lost your way.</h1>
-    <p>The path <span class="txt-pink">{path}</span> does not exist.</p>
-  </header>
+  <CapHeader caption="404" title="You've lost your way" />
+  <div class="info-error">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#fff" viewBox="0 0 24 24"><path d="M11 1h2v22h-2v-11h-8l-3-3 3-3h8v-5zm10 2h-7v6h7l3-3-3-3z"/>
+    </svg>
+
+    <div class="info-error__text">
+      <span>The path </span>
+      <div class="txt" title="{path}">{path}</div>
+      <span> does not exist.</span>
+    </div>
+
+  </div>
 
   <div class="route404-page__content">
     <p class="thin-title">Read this cheer-up quote</p>
