@@ -18,6 +18,7 @@
   import {
     client,
     CREATE_QUOTIDIAN,
+    DELETE_QUOTE,
     PUBLISHED_QUOTES_ADMIN,
   } from '../data';
 
@@ -91,20 +92,29 @@
     }
   }
 
-  async function onDelete(quote) {
-    // Code to directly add to published quotes
+  async function onDelete(id) {
+    try {
+      const response = await client.mutate({
+        mutation: DELETE_QUOTE,
+        variables: { id },
+      });
 
-    show({
-      text: 'Delete published quote',
-      actions: [
-        {
-          text: 'UNDO',
-          handler: () => {
+      const deletedQuote = response.data.deleteQuote;
 
-          }
-        }
-      ]
-    });
+      publishedQuotes = publishedQuotes.filter((quote) => quote.id !== deletedQuote.id);
+
+      show({
+        text: 'The quote has successfully been deleted',
+        type: 'success',
+      });
+
+    } catch (error) {
+      handle(error);
+      show({
+        text: `Couldn't delete the quote. Try again in a moment.`,
+        type: 'error',
+      });
+    }
   }
 
   async function onCreateQuotidian(quote) {

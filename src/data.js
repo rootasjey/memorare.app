@@ -81,6 +81,14 @@ export const DELETE_ACCOUNT = gql`
   }
  `;
 
+ export const DELETE_QUOTE = gql`
+  mutation ($id: String!) {
+    deleteQuote(id: $id) {
+      id
+    }
+  }
+ `;
+
 export const DELETE_QUOTIDIAN = gql`
   mutation ($id: String!) {
     deleteQuotidian(id: $id) {
@@ -168,6 +176,7 @@ export const PUBLISHED_QUOTES_ADMIN = gql`
         topics
       }
       pagination {
+        hasNext
         limit
         skip
         nextSkip
