@@ -1,9 +1,4 @@
 <script>
-  import {
-    query,
-    mutate,
-  } from 'svelte-apollo';
-
   import { fly }      from 'svelte/transition';
   import { navigate } from 'svelte-routing';
 
@@ -23,71 +18,62 @@
   } from '../data';
 
   import { handle } from '../errors';
+  import { status } from '../utils';
 
   let hasMoreData     = true;
   let limit           = 10;
   let publishedQuotes = [];
-  let queryStatus     = 'loading'; // loading || completed || error
+  let queryStatus     = status.loading;
   let selectedQuoteId = -1;
   let skip            = 0;
 
-  $: spinnerVisibility = queryStatus === 'loading' ? 'visible' : 'hidden';
-
-  const queryPublishedQuotes = query(client, {
-    query: PUBLISHED_QUOTES_ADMIN,
-    variables: { lang: settings.getValue('lang'), limit, skip },
-  });
+  $: spinnerVisibility = queryStatus === status.loading ? 'visible' : 'hidden';
 
   (async function fetchPublishedQuotes() {
-    try {
-      queryStatus = 'loading';
+    queryStatus = status.loading;
 
-      const response = await queryPublishedQuotes.result();
+    try {
+      const response = await client.query({
+        query: PUBLISHED_QUOTES_ADMIN,
+        variables: { lang: settings.getValue('lang'), limit, skip },
+      });
+
       publishedQuotes = response.data.publishedQuotesAdmin.entries;
 
       const { pagination } = response.data.publishedQuotesAdmin;
       limit = pagination.limit;
       skip = pagination.nextSkip;
 
-      queryStatus = 'completed';
+      queryStatus = status.completed;
 
     } catch (error) {
-      queryStatus = 'error';
+      queryStatus = status.error;
       handle(error);
     }
   })();
 
   async function onRefresh() {
-    queryStatus = 'loading';
+    queryStatus = status.loading;
     skip = 0;
 
     try {
-      // NOTE
-      // 2 issues:
-      // ~~~~~~~~~
-      // 1.Svelte does not want to update properly the array with a async func &
-      // if the re-assignment is fired immediately
-      //
-      // 2.svele-apollo returns different data with the same query
-      setTimeout(async () => {
-        const queryPublishedQuotes2 = query(client, {
-          query: PUBLISHED_QUOTES_ADMIN,
-          variables: { lang: settings.getValue('lang'), limit, skip },
-        });
+      const response = await client.query({
+        query: PUBLISHED_QUOTES_ADMIN,
+        variables: { lang: settings.getValue('lang'), limit, skip },
+        fetchPolicy: 'network-only',
+      });
 
-        const resp = await queryPublishedQuotes2.refetch({ limit, skip });
+      publishedQuotes = [];
 
-        publishedQuotes = resp.data.publishedQuotesAdmin.entries;
+      const { pagination } = response.data.publishedQuotesAdmin;
+      limit = pagination.limit;
+      skip = pagination.nextSkip;
 
-        const { pagination } = resp.data.publishedQuotesAdmin;
-        limit = pagination.limit;
-        skip = pagination.nextSkip;
-
-        queryStatus = 'completed';
-      }, 100);
+      publishedQuotes = response.data.publishedQuotesAdmin.entries;
+      queryStatus = status.completed;
 
     } catch (error) {
-      queryStatus = 'error';
+      queryStatus = status.error;
       handle(error);
     }
   }
@@ -119,7 +105,7 @@
 
   async function onCreateQuotidian(quote) {
     try {
-      const response = await mutate(client, {
+      const response = await client.mutate({
         mutation: CREATE_QUOTIDIAN,
         variables: { lang: quote.lang, quoteId: quote.id },
       });
@@ -138,17 +124,16 @@
     try {
       const lang = settings.getValue('lang');
 
-      const q3 = await query(client, {
+      const response = await client.query({
         query: PUBLISHED_QUOTES_ADMIN,
         variables: { lang, limit, skip },
       });
 
-      const resp = await q3.result();
-      const { publishedQuotesAdmin: { entries, pagination } } = resp.data;
+      const { entries, pagination } = response.data.publishedQuotesAdmin;
 
       hasMoreData = pagination.hasNext;
-      limit = pagination.limit;
-      skip = pagination.nextSkip;
+      limit       = pagination.limit;
+      skip        = pagination.nextSkip;
 
       publishedQuotes = [...publishedQuotes, ...entries];
 
@@ -232,12 +217,12 @@
   </header>
 
   <div class="published-quotes-page__content">
-    {#if queryStatus === 'loading'}
+    {#if queryStatus === status.loading}
       <div>
         <Spinner visibility={spinnerVisibility} />
         <span>Loading published quotes...</span>
       </div>
-    {:else if queryStatus === 'completed'}
+    {:else if queryStatus === status.completed}
       <div class="content__buttons-container">
         <Button outlined={true} value="refresh" onClick={() => onRefresh()} />
       </div>
@@ -245,7 +230,7 @@
       <div class="list-published-quotes">
         <div class="list-published-quotes__content">
           {#each publishedQuotes as quote, index}
-            <div transition:fly={{ y: 10, duration: 200 * index }} >
+            <div>
               <QuoteCard
                 content="{quote.name}"
                 authorName="{quote.author.name}"
