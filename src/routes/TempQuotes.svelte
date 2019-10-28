@@ -54,7 +54,7 @@
       const response = await client.mutate({
         mutation: DELETE_TEMP_QUOTE_ADMIN,
         variables: { id },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'no-cache',
       });
 
       const deleteTempQuote = response.data.deleteTempQuoteAdmin;
@@ -115,7 +115,7 @@
       const response = await client.mutate({
         mutation: SET_VALIDATION_STATUS_ADMIN,
         variables: { id, status },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'no-cache',
       });
 
       const { validation } = response.data.setValidationStatusAdmin;
@@ -136,7 +136,7 @@
       const response = await client.mutate({
         mutation: VALIDATE_TEMP_QUOTE_ADMIN,
         variables: { id },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'no-cache',
       });
 
       tempQuotes = tempQuotes.filter((tempQuote) => tempQuote.id !== id);
