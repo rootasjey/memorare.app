@@ -156,7 +156,7 @@ export const IS_PASSWORD_VALID = gql`
 
 export const LIST_AUTHORS = gql`
   query {
-    listAuthors(limit: 10) {
+    authors(limit: 10) {
       entries {
         name
         imgUrl
@@ -317,7 +317,7 @@ export const TEMP_QUOTES_ADMIN = gql`
 
 export const TINY_LIST_AUTHORS = gql`
   query {
-    listAuthors(limit: 3) {
+    authors(limit: 3) {
       entries {
         name
         imgUrl

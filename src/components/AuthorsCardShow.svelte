@@ -54,7 +54,7 @@
   (async function () {
     const response = await client.query({ query: TINY_LIST_AUTHORS });
 
-    authors = response.data.listAuthors.entries
+    authors = response.data.authors.entries
       .filter((author) => author.imgUrl !== null);
 
     backgroundStyle = `background-image: url("${authors[0].imgUrl}")`;

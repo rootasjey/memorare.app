@@ -13,7 +13,7 @@
 
     try {
       const response = await client.query({ query: LIST_AUTHORS });
-      authors = response.data.listAuthors.entries;
+      authors = response.data.authors.entries;
       pageStatus = status.completed;
 
     } catch (error) {
