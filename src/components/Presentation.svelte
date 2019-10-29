@@ -430,7 +430,7 @@
           <Avatar
             name="{author.name}"
             imgUrl="{author.imgUrl}"
-            />
+            reveal={true}/>
         {/each}
       {:else}
         <h3>An error occurred while fetching authors.</h3>

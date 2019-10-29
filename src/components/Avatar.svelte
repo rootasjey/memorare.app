@@ -2,6 +2,7 @@
   export let imgUrl = '';
   export let name = '';
   export let onClick = () => {};
+  export let reveal = false;
 </script>
 
 <style>
@@ -52,10 +53,10 @@
     justify-content: center;
     align-items: center;
 
-    opacity: 1;
+    opacity: .5;
     color: rgba(0,0,0,.5);
 
-    background-color: #eee;
+    background-color: #706fd3;
 
     height: 100%;
     width: 100%;
@@ -67,6 +68,11 @@
 
     z-index: 2;
     transition: .5s;
+  }
+
+  .reveal .avatar-component__name {
+    opacity: 1;
+    background-color: #eee;
   }
 
   .avatar-component__img {
@@ -97,8 +103,8 @@
   }
 </style>
 
-<div class="avatar-component" on:click={onClick}>
+<div class="avatar-component" class:reveal on:click={onClick}>
   <div class="avatar-component__img" style="background-image: url('{imgUrl}');"></div>
-  <div class="avatar-component__name">{name}
-  </div>
+
+  <div class="avatar-component__name">{name ? name : ''}</div>
 </div>
