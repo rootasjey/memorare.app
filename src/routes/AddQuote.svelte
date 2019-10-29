@@ -256,6 +256,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    margin-top: 140px;
   }
 
   .loading-container > p {
