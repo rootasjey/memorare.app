@@ -24,6 +24,17 @@ export const client = new ApolloClient({
   link: concat(authMiddleware, httpLink),
 });
 
+export const AUTHOR = gql`
+  query ($id: String!) {
+    author(id: $id) {
+      summary
+      imgUrl
+      name
+      url
+    }
+  }
+`;
+
 export const CREATE_QUOTIDIAN = gql`
   mutation ($lang: String!, $quoteId: String!, $targetDate: String) {
     createQuotidian(lang: $lang, quoteId: $quoteId, targetDate: $targetDate) {
@@ -158,8 +169,9 @@ export const LIST_AUTHORS = gql`
   query {
     authors(limit: 10) {
       entries {
-        name
+        id
         imgUrl
+        name
       }
     }
   }
@@ -174,6 +186,22 @@ export const PUBLISHED_QUOTES_ADMIN = gql`
         lang
         name
         topics
+      }
+      pagination {
+        hasNext
+        limit
+        skip
+        nextSkip
+      }
+    }
+  }
+`;
+
+export const QUOTES_BY_AUTHOR_ID = gql`
+  query ($authorId: String!) {
+    quotesByAuthorId(authorId: $authorId) {
+      entries {
+        name
       }
       pagination {
         hasNext

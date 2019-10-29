@@ -27,6 +27,10 @@
   function goTo(route) {
     navigate(route);
   }
+
+  function onClickAuthor(id) {
+    navigate(`/author/${id}`);
+  }
 </script>
 
 <style>
@@ -430,7 +434,8 @@
           <Avatar
             name="{author.name}"
             imgUrl="{author.imgUrl}"
-            reveal={true}/>
+            reveal={true}
+            onClick={() => onClickAuthor(author.id)} />
         {/each}
       {:else}
         <h3>An error occurred while fetching authors.</h3>

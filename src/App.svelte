@@ -14,6 +14,7 @@
 	import AccountSettings	from './routes/AccountSettings.svelte';
 	import AddQuote					from './routes/AddQuote.svelte';
 	import Apps 						from './routes/Apps.svelte';
+	import Author 					from './routes/Author.svelte';
 	import ForgetPassword		from './routes/ForgetPassword.svelte';
 	import Home 						from './routes/Home.svelte';
 	import Pricing 					from './routes/Pricing.svelte';
@@ -49,29 +50,32 @@
 
 		<div class="content">
 			<Route path="/" component="{Home}" />
-			<Route path="/apps" component="{Apps}" />
-			<Route path="/pricing" component="{Pricing}" />
-			<Route path="/signin" component="{Signin}" />
-			<Route path="/verify/email/:emailToken" let:params>
-				<VerifyEmail emailToken="{params.emailToken}"/>
-			</Route>
-			<Route path="/welcome" component="{Welcome}" />
+			<Route path="/accountsettings" component="{AccountSettings}" />
+			<Route path="/add/quote" component="{AddQuote}" />
 			<Route path="/add/quote/:id" let:params>
 				<AddQuote id="{params.id}" />
 			</Route>
-			<Route path="/add/quote" component="{AddQuote}" />
 			<Route path="/admin/tempquotes" component="{TempQuotes}" />
 			<Route path="/admin/publishedquotes" component="{PublishedQuotes}" />
 			<Route path="/admin/quotidians" component="{Quotidians}" />
-			<Route path="/random/quote" component="{RandomQuote}" />
-			<Route path="/accountsettings" component="{AccountSettings}" />
-			<Route path="/update/email/:emailToken" let:params>
-				<UpdateEmail emailToken={params.emailToken} />
+			<Route path="/apps" component="{Apps}" />
+			<Route path="/author/:id" let:params>
+				<Author id={params.id} />
 			</Route>
 			<Route path="/forget/password" component="{ForgetPassword}" />
 			<Route path="/forget/password/:emailToken" let:params>
 				<ForgetPassword emailToken={params.emailToken} />
 			</Route>
+			<Route path="/pricing" component="{Pricing}" />
+			<Route path="/random/quote" component="{RandomQuote}" />
+			<Route path="/signin" component="{Signin}" />
+			<Route path="/update/email/:emailToken" let:params>
+				<UpdateEmail emailToken={params.emailToken} />
+			</Route>
+			<Route path="/verify/email/:emailToken" let:params>
+				<VerifyEmail emailToken="{params.emailToken}"/>
+			</Route>
+			<Route path="/welcome" component="{Welcome}" />
 
 			<!-- 404 -->
 			<Route path="/*wildcard" let:params>
