@@ -1,3 +1,20 @@
+<script context="module">
+  let domHeader;
+  let hidden = false;
+
+  export function hide() {
+    if (!domHeader) { return; }
+    hidden = true; // doesn't toggle class on dom (?)
+    domHeader.classList.add('hidden');
+  }
+
+  export function show() {
+    if (!domHeader) { return; }
+    hidden = false; // doesn't toggle class on dom (?)
+    domHeader.classList.remove('hidden');
+  }
+</script>
+
 <script>
   import { fly } from 'svelte/transition';
   import { navigate } from 'svelte-routing';
@@ -44,6 +61,10 @@
     padding: 20px 80px;
     display: flex;
     justify-content: space-between;
+  }
+
+  .hidden {
+    display: none;
   }
 
   .header-title {
@@ -277,7 +298,7 @@
 
 </style>
 
-<header>
+<header class:hidden bind:this={domHeader}>
   <div class="header-title" on:click={() => goTo('/')} >
     <img src="/img/icon.png" alt="memorare icon" width="48" height="48" on:click={gotoTop}>
     <h3>memorare</h3>
