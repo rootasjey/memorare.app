@@ -244,29 +244,24 @@
     justify-content: center;
     flex-wrap: wrap;
     align-items: flex-end;
+
+    margin-top: 60px;
   }
 
+  .screenshot-img {
+    height: 600px;
+    border-radius: 25px;
+    border: 2px solid #706fd3;
+    box-shadow: 0 3px 4px 0 rgba(0,0,0,0.14), 0 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
 
-  .pres__app-screenshot-1 {
-    border-radius: 10px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-
-    background-color: #eee;
-    height: 400px;
-    width: 500px;
-    margin: 10px;
-    margin-top: 50px;
+    margin: 20px;
+    transition: .3s;
   }
 
-  .pres__app-screenshot-2 {
-    border-radius: 10px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-
-    background-color: #eee;
-    height: 300px;
-    width: 200px;
-    margin: 10px;
-    margin-top: 50px;
+  .screenshot-img:hover {
+    border-width: 3px;
+    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.20);
+    transition: .3s;
   }
 
   .pres-desc {
@@ -458,8 +453,8 @@
     </div>
 
     <div class="pres__app-screenshots-list">
-      <div class="pres__app-screenshot-1"></div>
-      <div class="pres__app-screenshot-2"></div>
+      <img class="screenshot-img" src="./img/tablet_screenshot.png" alt="idea icon" />
+      <img class="screenshot-img" src="./img/phone_screenshot.png" alt="idea icon" />
     </div>
 
     <div class="accent-color-button" style="top: 80px;" on:click={() => goTo('/apps')}>
