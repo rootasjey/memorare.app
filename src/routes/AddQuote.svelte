@@ -180,9 +180,12 @@
 
       pageState = 'success';
 
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
     } catch (error) {
       handle(error);
       pageState = 'failure';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
