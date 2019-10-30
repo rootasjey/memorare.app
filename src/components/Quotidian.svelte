@@ -1,13 +1,14 @@
 <script>
-  import { navigate }         from 'svelte-routing';
+  import { navigate } from 'svelte-routing';
 
   import {
     client,
     QUOTIDIAN
   } from '../data';
-  import { settings } from '../settings';
   import { handle }   from '../errors'
+  import { settings } from '../settings';
   import { status }   from '../utils'
+
   import IconButton   from './IconButton.svelte';
   import { show }     from './Snackbar.svelte'
 
@@ -57,13 +58,12 @@
 </script>
 
 <style>
-  .quote-container {
+  .quotidian {
 		background: #706fd3;
 		border-radius: 2px;
     color: white;
     cursor: pointer;
 
-    margin: auto;
 		padding: 0 50px;
     width: 50%;
 
@@ -73,7 +73,7 @@
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
   }
 
-  .quote-container:hover {
+  .quotidian:hover {
     transform: translateY(-5px);
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
@@ -89,19 +89,37 @@
     padding: 20px 0;
   }
 
-  .quote-loading {
+  .quotidian__loading {
     padding: 50px;
     text-transform: uppercase;
   }
+
+  .quotidian__name {
+    font-size: 2em;
+    font-weight: 600;
+  }
+
+  @media (max-width: 670px) {
+    .quotidian__name {
+      font-size: 1.5em;
+    }
+  }
+
+  @media (max-width: 310px) {
+    .quotidian__name {
+      font-size: 1em;
+      font-weight: 200;
+    }
+  }
 </style>
 
-<div class="quote-container" style="{style}">
+<div class="quotidian" style="{style}">
   {#if pageStatus === status.loading}
-     <div class="quote-loading">
-      <h1>Loading quote...</h1>
+     <div class="quotidian__loading">
+      <div class="quotidian__name">Loading quote...</div>
     </div>
   {:else if pageStatus === status.completed}
-    <div class="quote-content">
+    <div class="quotidian__content">
       <header>
         <IconButton
           margin="5px"
@@ -124,9 +142,9 @@
         </IconButton>
       </header>
 
-      <h1 class="quote-name"> {quotidian.quote.name} </h1>
+      <div class="quotidian__name"> {quotidian.quote.name} </div>
 
-      <footer class="quote-footer">
+      <footer class="quotidian__footer">
         <h4>{quotidian.quote.author.name}</h4>
 
         {#if quotidian.quote.references.length}
@@ -135,8 +153,8 @@
       </footer>
     </div>
   {:else}
-    <div class="quote-error">
-      <h1>An error occurred while loading :(</h1>
+    <div class="quotidian__error">
+      <div class="quotidian__name">An error occurred while loading :(</div>
     </div>
   {/if}
 </div>

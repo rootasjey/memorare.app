@@ -22,12 +22,13 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		align-items: center;
 	}
 </style>
 
 <div class="home">
 	<div class="hero">
-		<Quotidian top="-100px" />
+		<Quotidian top="-50px" />
 	</div>
 
 	<Presentation />
