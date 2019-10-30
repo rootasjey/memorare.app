@@ -53,8 +53,10 @@
     font-size: 1.5em;
     font-weight: 300;
 
-    max-height: 170px;
+    max-height: 250px;
     overflow-y: auto;
+
+    padding-top: 10px;
   }
 
   .quote__footer {
