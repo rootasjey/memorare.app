@@ -7,7 +7,7 @@
 <p align="middle">Read an inspirational quote each day.</p>
 
 <p align="middle">
-  <img src="./screenshot.png" title="memorare screenshot" />
+  <img src="./public/img/tablet_screenshot.png" title="memorare screenshot" />
 </p>
 
 ## Quickstart
