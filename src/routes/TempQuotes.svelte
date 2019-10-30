@@ -80,17 +80,15 @@
     skip = 0;
 
     try {
-      const queryTempQuotes2 = client.query({
+      const response = await client.query({
         query: TEMP_QUOTES_ADMIN,
         variables: { limit, skip },
         fetchPolicy: 'network-only',
       });
 
-      const resp = await queryTempQuotes2.refetch({ limit, skip: 2 });
+      tempQuotes = response.data.tempQuotesAdmin.entries;
 
-      tempQuotes = resp.data.tempQuotesAdmin.entries;
-
-      const { pagination } = resp.data.tempQuotesAdmin;
+      const { pagination } = response.data.tempQuotesAdmin;
       limit = pagination.limit;
       skip = pagination.nextSkip;
 
