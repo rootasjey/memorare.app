@@ -335,6 +335,7 @@ export const TEMP_QUOTES_ADMIN = gql`
         }
       }
       pagination {
+        hasNext
         limit
         skip
         nextSkip
