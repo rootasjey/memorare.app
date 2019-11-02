@@ -3,13 +3,14 @@
   import IconButton   from '../components/IconButton.svelte';
 
   // Props
-  export let authorName = '';
-  export let backgroundColor = '';
-  export let color = '';
-  export let content = '';
-  export let onClick = () => {};
-  export let selected = false;
-  export let tag = '';
+  export let authorName       = '';
+  export let backgroundColor  = '';
+  export let color            = '';
+  export let content          = '';
+  export let onClick          = () => {};
+  export let onClickAuthor    = () => {};
+  export let selected         = false;
+  export let tag              = '';
 
   $: backgroundColorCSS = backgroundColor ? `background-color: ${backgroundColor}`: '';
   $: colorCSS = color ? `color: ${color}`: '';
@@ -84,6 +85,14 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+
+    cursor: pointer;
+    transition: .3s;
+  }
+
+  .quote__footer__author:hover {
+    color: #f56498;
+    transition: .3s;
   }
 
   .quote__footer__author-img {
@@ -160,7 +169,7 @@
 
   <div class="quote__footer">
     {#if authorName}
-      <div class="quote__footer__author">
+      <div class="quote__footer__author" on:click={onClickAuthor}>
           <div class="quote__footer__author-img"></div>
           <span> {authorName} </span>
       </div>
