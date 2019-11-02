@@ -57,6 +57,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
 
     padding: 100px 0;
   }
@@ -132,6 +133,7 @@
     padding: 40px;
 
     width: 300px;
+    margin: 10px;
   }
 
   .quote-card-compact__content {

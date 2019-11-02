@@ -181,7 +181,7 @@ export const IS_PASSWORD_VALID = gql`
 
 export const LIST_AUTHORS = gql`
   query {
-    authors(limit: 10) {
+    authors(limit: 10, order: -1) {
       entries {
         id
         imgUrl
