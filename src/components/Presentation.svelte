@@ -14,7 +14,11 @@
     pageStatus = status.loading;
 
     try {
-      const response = await client.query({ query: LIST_AUTHORS });
+      const response = await client.query({
+        query: LIST_AUTHORS,
+        variables: { limit: 10, order: -1 },
+      });
+
       authors = response.data.authors.entries;
       pageStatus = status.completed;
 
