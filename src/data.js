@@ -35,6 +35,14 @@ export const AUTHOR = gql`
   }
 `;
 
+export const AUTHOR_BY_NAME = gql`
+  query ($name: String!) {
+    authorByName(name: $name) {
+      id
+    }
+  }
+`;
+
 export const CREATE_QUOTIDIAN = gql`
   mutation ($lang: String!, $quoteId: String!, $targetDate: String) {
     createQuotidian(lang: $lang, quoteId: $quoteId, targetDate: $targetDate) {

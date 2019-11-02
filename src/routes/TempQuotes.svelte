@@ -10,6 +10,7 @@
 
   import {
     client,
+    AUTHOR_BY_NAME,
     DELETE_TEMP_QUOTE_ADMIN,
     SET_VALIDATION_STATUS_ADMIN,
     TEMP_QUOTES_ADMIN,
@@ -77,7 +78,7 @@
     navigate(`/add/quote/${quote.id}`);
   }
 
-    async function onLoadMore() {
+  async function onLoadMore() {
     try {
       const response = await client.query({
         query: TEMP_QUOTES_ADMIN,
@@ -172,6 +173,21 @@
         text: `Temporary quote successfully validated`,
         type: 'success',
       });
+
+    } catch (error) {
+      handle(error);
+    }
+  }
+
+  async function onClickAuthor(name) {
+    try {
+      const response = await client.query({
+        query: AUTHOR_BY_NAME,
+        variables: { name }
+      });
+
+      const { id } = response.data.authorByName;
+      navigate(`/author/${id}`);
 
     } catch (error) {
       handle(error);
@@ -290,6 +306,7 @@
                   content="{quote.name}"
                   authorName="{quote.author.name}"
                   onClick={() => onSelectQuote(quote.id)}
+                  onClickAuthor={() => onClickAuthor(quote.author.name)}
                   selected={selectedQuoteId === quote.id}
                   tag="{quote.topics.length > 0 ? quote.topics[0] : ''}">
 
