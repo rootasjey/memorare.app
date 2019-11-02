@@ -10,7 +10,7 @@
   <img src="./public/img/tablet_screenshot.png" title="memorare screenshot" />
 </p>
 
-## Quickstart
+# Quickstart
 
 1. Clone this project
 
@@ -34,11 +34,11 @@ yarn run dev # or npm run dev
 
 In order the request quotes and other data, you will need to request a developer API key at [dev.memorare.app](https://dev.memorare.app).
 
-## Contibute
+# Contibute
 
 You can freely contribute to this project by opening an issue, proposing a pull request (PR), or starting a discussion.
 
-## Licence
+# Licence
 
 Custom licence. Please read the [LICENSE](./LICENSE) for more information.
 

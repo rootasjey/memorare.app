@@ -127,6 +127,7 @@
       const response = await client.query({
         query: PUBLISHED_QUOTES_ADMIN,
         variables: { lang, limit, skip },
+        fetchPolicy: 'network-only',
       });
 
       const { entries, pagination } = response.data.publishedQuotesAdmin;

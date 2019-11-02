@@ -89,6 +89,10 @@
     padding: 20px 0;
   }
 
+  .quotidian__error {
+    padding: 40px;
+  }
+
   .quotidian__loading {
     padding: 50px;
     text-transform: uppercase;
