@@ -24,10 +24,13 @@
   $: loadingSpinnerCompleted = pageState !== 'loading';
 
   const fieldsId = {
+    authorimgurl          : false,
+    authorjob             : false,
     authorname            : true,
     authorsummary         : false,
     authorsummarylanguage : false,
     authorurl             : false,
+    authorwikiurl         : false,
     comment               : false,
     lang                  : false,
     name                  : true,
@@ -39,10 +42,13 @@
   };
 
   const fieldsValue = {
+    authorImgUrl          : '',
+    authorJob             : '',
     authorName            : '',
     authorSummary         : '',
     authorSummaryLanguage : 'en',
     authorUrl             : '',
+    authorWikiUrl         : '',
     comment               : '',
     lang                  : 'en',
     name                  : '',
@@ -54,10 +60,13 @@
   };
 
   const fields = [
+    { id: 'authorimgurl',           name: 'Author Image URL'        },
+    { id: 'authorjob',              name: 'Author Job'              },
     { id: 'authorname',             name: 'Author Name'             },
     { id: 'authorsummary',          name: 'Author Summary'          },
     { id: 'authorsummarylanguage',  name: 'Author Summary Language' },
     { id: 'authorurl',              name: 'Author URL'              },
+    { id: 'authorwikiurl',          name: 'Author Wiki URL'         },
     { id: 'comment',                name: 'Comment'                 },
     { id: 'lang',                   name: 'Language'                },
     { id: 'origin',                 name: 'Origin'                  },
@@ -85,6 +94,7 @@
       const response = await client.query({
         query: TEMP_QUOTE_ADMIN,
         variables: { id },
+        fetchPolicy: 'network-only',
       });
 
       const { tempQuoteAdmin } = response.data;
@@ -106,10 +116,21 @@
         fieldsValue.origin = tempQuoteAdmin.origin;
       }
 
+      if (tqAuthor && tqAuthor.imgUrl) {
+        fieldsId.authorimgurl = true;
+        fieldsValue.authorimgUrl = tqAuthor.imgUrl;
+      }
+
+      if (tqAuthor && tqAuthor.job) {
+        fieldsId.authorjob = true;
+        fieldsValue.authorJob = tqAuthor.job;
+      }
+
       if (tqAuthor && tqAuthor.name) {
         fieldsId.authorname = true;
         fieldsValue.authorName = tqAuthor.name;
       }
+
 
       if (tqAuthor && tqAuthor.summary) {
         fieldsId.authorsummary = true;
@@ -124,6 +145,11 @@
       if (tqAuthor && tqAuthor.url) {
         fieldsId.authorurl = true;
         fieldsValue.authorUrl = tqAuthor.url;
+      }
+
+      if (tqAuthor && tqAuthor.wikiUrl) {
+        fieldsId.authorwikiurl = true;
+        fieldsValue.authorWikiUrl = tqAuthor.wikiUrl;
       }
 
       if (tempQuoteAdmin.topics && tempQuoteAdmin.topics.length > 0) {
@@ -141,45 +167,16 @@
   async function onAddQuote() {
     try {
       pageState = 'loading';
-
-      const {
-        authorName,
-        authorSummary,
-        authorSummaryLanguage,
-        authorUrl,
-        comment,
-        lang,
-        name,
-        origin,
-        refLang,
-        refName,
-        refUrl,
-        topics,
-      } = fieldsValue;
+      const variables = id && id.length > 0 ?
+        { ...fieldsValue, ...{ id } } :
+        fieldsValue;
 
       const response = await client.mutate({
         mutation: id && id.length > 0 ? UPDATE_TEMP_QUOTE_ADMIN : CREATE_TEMP_QUOTE,
-        variables: {
-          authorName,
-          authorSummary,
-          authorSummaryLanguage,
-          authorUrl,
-          comment,
-          id,
-          lang,
-          name,
-          origin,
-          refLang,
-          refName,
-          refUrl,
-          topics,
-        }
+        variables,
       });
 
-      const result = response.data.createTempQuote;
-
       pageState = 'success';
-
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
     } catch (error) {
@@ -499,11 +496,44 @@
         </div>
       {/if}
 
+      {#if fieldsId.authorimgurl}
+        <div class="input-container">
+          <span class="label">Author's Image URL</span>
+          <input type="text"
+            bind:value={fieldsValue.authorImgUrl}
+            placeholder="https://my-awesome-img.org">
+
+          <span class="cross-icon">&#10539;</span>
+        </div>
+      {/if}
+
+      {#if fieldsId.authorjob}
+        <div class="input-container">
+          <span class="label">Author's Job</span>
+          <input type="text"
+            bind:value={fieldsValue.authorJob}
+            placeholder="Super-Hero">
+
+          <span class="cross-icon">&#10539;</span>
+        </div>
+      {/if}
+
       {#if fieldsId.authorurl}
         <div class="input-container">
           <span class="label">Author's URL</span>
           <input type="text"
             bind:value={fieldsValue.authorUrl}
+            placeholder="https://www.marvel.com/characters/spider-man-peter-parker">
+
+          <span class="cross-icon">&#10539;</span>
+        </div>
+      {/if}
+
+      {#if fieldsId.authorwikiurl}
+        <div class="input-container">
+          <span class="label">Author's Wikipedia URL</span>
+          <input type="text"
+            bind:value={fieldsValue.authorWikiUrl}
             placeholder="https://en.wikipedia.org/wiki/Spider-Man">
 
           <span class="cross-icon">&#10539;</span>

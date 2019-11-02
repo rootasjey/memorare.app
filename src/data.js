@@ -54,9 +54,12 @@ export const CREATE_QUOTIDIAN = gql`
 
 export const CREATE_TEMP_QUOTE = gql`
   mutation (
+    $authorImgUrl: String,
+    $authorJob: String,
     $authorName: String,
     $authorSummary: String,
     $authorUrl: String,
+    $authorWikiUrl: String,
     $comment: String,
     $lang: String,
     $name: String!
@@ -68,9 +71,12 @@ export const CREATE_TEMP_QUOTE = gql`
   ) {
 
     createTempQuote(
+      authorImgUrl: $authorImgUrl
+      authorJob: $authorJob
       authorName: $authorName
       authorSummary: $authorSummary
       authorUrl: $authorUrl
+      authorWikiUrl: $authorWikiUrl
       comment: $comment
       lang: $lang
       name: $name
@@ -315,9 +321,12 @@ export const TEMP_QUOTE_ADMIN = gql`
     tempQuoteAdmin(id: $id) {
       id
       author {
+        imgUrl
+        job
         name
         summary
         url
+        wikiUrl
       }
       date
       lang
@@ -422,24 +431,30 @@ export const UPDATE_QUOTIDIAN = gql`
 
 export const UPDATE_TEMP_QUOTE_ADMIN = gql`
   mutation (
-    $id: String!,
-    $authorName: String,
-    $authorSummary: String,
-    $authorUrl: String,
-    $comment: String,
-    $lang: String,
+    $id: String!
+    $authorJob: String
+    $authorImgUrl: String
+    $authorName: String
+    $authorSummary: String
+    $authorUrl: String
+    $authorWikiUrl: String
+    $comment: String
+    $lang: String
     $name: String!
-    $origin: String,
-    $refName: String,
-    $refLang: String,
-    $refUrl: String,
-    $topics: [String!],
+    $origin: String
+    $refName: String
+    $refLang: String
+    $refUrl: String
+    $topics: [String!]
   ) {
     updateTempQuoteAdmin(
       id: $id
+      authorJob: $authorJob
+      authorImgUrl: $authorImgUrl
       authorName: $authorName
       authorSummary: $authorSummary
       authorUrl: $authorUrl
+      authorWikiUrl: $authorWikiUrl
       comment: $comment
       lang: $lang
       name: $name
