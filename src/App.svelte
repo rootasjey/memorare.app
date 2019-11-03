@@ -15,6 +15,7 @@
 	import AddQuote					from './routes/AddQuote.svelte';
 	import Apps 						from './routes/Apps.svelte';
 	import Author 					from './routes/Author.svelte';
+	import Authors 					from './routes/Authors.svelte';
 	import ForgetPassword		from './routes/ForgetPassword.svelte';
 	import Home 						from './routes/Home.svelte';
 	import Pricing 					from './routes/Pricing.svelte';
@@ -62,6 +63,7 @@
 			<Route path="/author/:id" let:params>
 				<Author id={params.id} />
 			</Route>
+			<Route path="/authors" component="{Authors}" />
 			<Route path="/forget/password" component="{ForgetPassword}" />
 			<Route path="/forget/password/:emailToken" let:params>
 				<ForgetPassword emailToken={params.emailToken} />

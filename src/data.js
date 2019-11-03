@@ -106,6 +106,14 @@ export const DELETE_ACCOUNT = gql`
   }
  `;
 
+ export const DELETE_AUTHOR = gql`
+  mutation ($id: String!) {
+    deleteAuthor(id: $id) {
+      name
+    }
+  }
+ `;
+
  export const DELETE_QUOTE = gql`
   mutation ($id: String!) {
     deleteQuote(id: $id) {
