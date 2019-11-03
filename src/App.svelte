@@ -1,10 +1,5 @@
 <script>
-	import ApolloClient 	from 'apollo-boost';
-	import {
-		Link,
-		Route,
-		Router
-	} from 'svelte-routing';
+	import { Route, Router } from 'svelte-routing';
 
 	import { client } 			from './data';
 	import Footer						from './components/Footer.svelte';
