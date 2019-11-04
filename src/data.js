@@ -27,10 +27,12 @@ export const client = new ApolloClient({
 export const AUTHOR = gql`
   query ($id: String!) {
     author(id: $id) {
-      summary
       imgUrl
+      job
       name
+      summary
       url
+      wikiUrl
     }
   }
 `;
@@ -379,6 +381,30 @@ export const TINY_LIST_AUTHORS = gql`
           name
         }
       }
+    }
+  }
+`;
+
+export const UPDATE_AUTHOR = gql`
+  mutation (
+    $id: String!
+    $imgUrl: String!
+    $job: String!
+    $name: String!
+    $summary: String!
+    $url: String!
+    $wikiUrl: String!
+  ) {
+    updateAuthor(
+      id: $id
+      imgUrl: $imgUrl
+      job: $job
+      name: $name
+      summary: $summary
+      url: $url
+      wikiUrl: $wikiUrl
+    ) {
+      id
     }
   }
 `;

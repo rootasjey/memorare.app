@@ -1,4 +1,6 @@
 <script>
+  import { navigate } from 'svelte-routing';
+
   import Avatar     from '../components/Avatar.svelte';
   import Button     from '../components/Button.svelte';
   import CapHeader  from '../components/CapHeader.svelte';
@@ -11,18 +13,21 @@
   import FlatInputIcon  from '../components/FlatInputIcon.svelte';
   import RectButton     from '../components/RectButton.svelte';
   import Spinner        from '../components/Spinner.svelte';
+  import SpinnerCheckmark from '../components/SpinnerCheckmark.svelte';
   import TextLink       from '../components/TextLink.svelte';
 
-  import { client, AUTHOR } from '../data';
+  import { client, AUTHOR, UPDATE_AUTHOR } from '../data';
   import { handle } from '../errors';
-  import { status } from '../utils';
+  import { scrollToTop , status } from '../utils';
 
   export let id = '';
 
-  let author = {};
-  let focusedInputId = -1;
-  let pageStatus = status.error;
-  let isImgUrlDialogActive = false;
+  let author                = {};
+  let focusedInputId        = -1;
+  let isImgUrlDialogActive  = false;
+  let isSavingCompleted     = false;
+  let isSendingData         = false;
+  let pageStatus            = status.error;
 
   let imgUrl  = '';
   let job     = '';
@@ -59,6 +64,27 @@
     } catch (error) {
       handle(error);
       pageStatus = status.error;
+    }
+  }
+
+  async function saveAuthor() {
+    isSendingData = true;
+    scrollToTop();
+
+    try {
+      const response = await client.mutate({
+        mutation: UPDATE_AUTHOR,
+        variables: { id, imgUrl, job, name, summary, url, wikiUrl },
+      });
+
+      isSavingCompleted = true;
+
+      setTimeout(() => {
+        goBack();
+      }, 3000);
+
+    } catch (error) {
+      handle(error);
     }
   }
 
@@ -190,6 +216,13 @@
     margin-top: 60px;
   }
 
+  .centered-icon {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    margin-bottom: 20px;
+  }
+
   .close-icon {
     position: absolute;
     top: 30px;
@@ -227,7 +260,6 @@
     color: #fff;
     background-color: #706fd3;
     padding-bottom: 400px;
-    padding-top: 100px;
   }
 
   .edit-author__content {
@@ -251,6 +283,7 @@
 
     max-width: 60%;
     text-align: center;
+    padding-top: 100px;
   }
 
   input[type="text"] {
@@ -291,6 +324,14 @@
     display: flex;
     flex-direction: column;
     align-self: flex-start;
+  }
+
+  .saving-data {
+    display: flex;
+    flex-direction: column;
+
+    padding: 40px 0;
+    max-width: 60%;
   }
 
   textarea {
@@ -341,73 +382,99 @@
     </svg>
   </div>
 
-  {#if pageStatus === status.loading}
-    <div class="loading">
-      <Spinner visibility={`${pageStatus === status.loading ? 'visible' : 'hidden'}`} />
-      <h3>Loading author data...</h3>
-    </div>
-  {:else if pageStatus === status.completed}
-    <div class="edit-author__content">
-      <div class="avatar" on:click={showImgUrlDialog}>
-        <div class="avatar__color-bg"></div>
-        <div class="avatar__img"
-          style="{`background-image: url('${imgUrl}');`}">
+  {#if isSendingData}
+    <div class="saving-data">
+      {#if !isSavingCompleted}
+        <SpinnerCheckmark isCompleted={isSavingCompleted} checkColor="#fff" />
+      {:else}
+        <div class="centered-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" fill="#fff" viewBox="0 0 24 24"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/></svg>
         </div>
-        <div class="avatar__add">+</div>
+      {/if}
+
+      {#if isSavingCompleted}
+        <div class="txt">The author <b>{name}</b> has been successfully updated.</div>
+        <div class="txt">
+          You can <TextLink text="go back" color="rgba(0,0,0, .5)" fontSize="1em" onClick={goBack} />
+          or <TextLink
+            text="go to the authors list"
+            color="rgba(0,0,0, .5)"
+            fontSize="1em"
+            onClick={() => navigate('/authors')} /> (or whatever).
+        </div>
+      {:else}
+        <div class="txt">Saving data about <b>{name}</b>...</div>
+      {/if}
+    </div>
+  {:else}
+    {#if pageStatus === status.loading}
+      <div class="loading">
+        <Spinner visibility={`${pageStatus === status.loading ? 'visible' : 'hidden'}`} />
+        <h3>Loading author data...</h3>
       </div>
+    {:else if pageStatus === status.completed}
+      <div class="edit-author__content">
+        <div class="avatar" on:click={showImgUrlDialog}>
+          <div class="avatar__color-bg"></div>
+          <div class="avatar__img"
+            style="{`background-image: url('${imgUrl}');`}">
+          </div>
+          <div class="avatar__add">+</div>
+        </div>
 
-      <div class="author-metadata">
-        <input type="text" class="big" value="{name}" placeholder="Add or edit the author's name...">
-        <input type="text" value="{job}" placeholder="Add a job...">
-        <textarea name="author-summary"
-          cols="40" rows="7"
-          placeholder="Add a cool summary...">{summary}</textarea>
+        <div class="author-metadata">
+          <input type="text" class="big" value="{name}" placeholder="Add or edit the author's name...">
+          <input type="text" bind:value="{job}" placeholder="Add a job...">
+          <textarea name="author-summary"
+            cols="40" rows="7"
+            placeholder="Add a cool summary...">{summary}</textarea>
 
-        <div class="input-list">
-          <FlatInputIcon
-            bind:value="{wikiUrl}"
-            placeholder="Add a Wikipedia URL...">
-
-            <div slot="icon">
-              {#if wikiUrl}
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#eee" viewBox="0 0 24 24"><path d="M21.921 2.081c2.771 2.772 2.771 7.269 0 10.042l-3.84 3.839-2.121-2.122 3.839-3.84c1.599-1.598 1.599-4.199-.001-5.797-1.598-1.599-4.199-1.599-5.797-.001l-3.84 3.839-2.121-2.121 3.84-3.839c2.771-2.773 7.267-2.773 10.041 0zm-8.082 13.879l-3.84 3.839c-1.598 1.6-4.199 1.599-5.799 0-1.598-1.598-1.598-4.2 0-5.797l3.84-3.84-2.121-2.121-3.84 3.84c-2.771 2.772-2.772 7.268 0 10.041 2.773 2.772 7.27 2.773 10.041 0l3.84-3.84-2.121-2.122z"/></svg>
-              {:else}
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#eee" viewBox="0 0 24 24"><path d="M14.9 19.143l-2.78 2.779c-2.771 2.772-7.268 2.772-10.041 0-2.772-2.773-2.771-7.269 0-10.041l2.779-2.779 2.121 2.121-2.779 2.779c-1.598 1.598-1.598 4.2 0 5.797 1.6 1.6 4.201 1.6 5.799 0l2.779-2.777 2.122 2.121zm-3.02-17.063l-2.779 2.779 2.121 2.121 2.78-2.779c1.598-1.598 4.199-1.598 5.795.001 1.602 1.598 1.602 4.199.004 5.797l-2.779 2.779 2.121 2.121 2.779-2.778c2.771-2.773 2.771-7.269 0-10.041-2.774-2.772-7.27-2.772-10.042 0zm-5.945-.795l1.44-.204.438 3.083-1.438.205-.44-3.084zm-4.855 6.09l.206-1.441 3.084.44-.206 1.44-3.084-.439zm4.793-2.521l-1.028 1.03-2.205-2.203 1.029-1.029 2.204 2.202zm12.191 17.86l-1.441.204-.438-3.083 1.439-.205.44 3.084zm4.856-6.09l-.207 1.441-3.084-.439.207-1.441 3.084.439zm-4.793 2.52l1.027-1.029 2.205 2.204-1.029 1.029-2.203-2.204z"/></svg>
-              {/if}
-            </div>
-          </FlatInputIcon>
-
-          <FlatInputIcon
-              bind:value="{url}"
-              placeholder="Add a website URL...">
+          <div class="input-list">
+            <FlatInputIcon
+              bind:value="{wikiUrl}"
+              placeholder="Add a Wikipedia URL...">
 
               <div slot="icon">
-                {#if url}
+                {#if wikiUrl}
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#eee" viewBox="0 0 24 24"><path d="M21.921 2.081c2.771 2.772 2.771 7.269 0 10.042l-3.84 3.839-2.121-2.122 3.839-3.84c1.599-1.598 1.599-4.199-.001-5.797-1.598-1.599-4.199-1.599-5.797-.001l-3.84 3.839-2.121-2.121 3.84-3.839c2.771-2.773 7.267-2.773 10.041 0zm-8.082 13.879l-3.84 3.839c-1.598 1.6-4.199 1.599-5.799 0-1.598-1.598-1.598-4.2 0-5.797l3.84-3.84-2.121-2.121-3.84 3.84c-2.771 2.772-2.772 7.268 0 10.041 2.773 2.772 7.27 2.773 10.041 0l3.84-3.84-2.121-2.122z"/></svg>
                 {:else}
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#eee" viewBox="0 0 24 24"><path d="M14.9 19.143l-2.78 2.779c-2.771 2.772-7.268 2.772-10.041 0-2.772-2.773-2.771-7.269 0-10.041l2.779-2.779 2.121 2.121-2.779 2.779c-1.598 1.598-1.598 4.2 0 5.797 1.6 1.6 4.201 1.6 5.799 0l2.779-2.777 2.122 2.121zm-3.02-17.063l-2.779 2.779 2.121 2.121 2.78-2.779c1.598-1.598 4.199-1.598 5.795.001 1.602 1.598 1.602 4.199.004 5.797l-2.779 2.779 2.121 2.121 2.779-2.778c2.771-2.773 2.771-7.269 0-10.041-2.774-2.772-7.27-2.772-10.042 0zm-5.945-.795l1.44-.204.438 3.083-1.438.205-.44-3.084zm-4.855 6.09l.206-1.441 3.084.44-.206 1.44-3.084-.439zm4.793-2.521l-1.028 1.03-2.205-2.203 1.029-1.029 2.204 2.202zm12.191 17.86l-1.441.204-.438-3.083 1.439-.205.44 3.084zm4.856-6.09l-.207 1.441-3.084-.439.207-1.441 3.084.439zm-4.793 2.52l1.027-1.029 2.205 2.204-1.029 1.029-2.203-2.204z"/></svg>
                 {/if}
               </div>
             </FlatInputIcon>
+
+            <FlatInputIcon
+                bind:value="{url}"
+                placeholder="Add a website URL...">
+
+                <div slot="icon">
+                  {#if url}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#eee" viewBox="0 0 24 24"><path d="M21.921 2.081c2.771 2.772 2.771 7.269 0 10.042l-3.84 3.839-2.121-2.122 3.839-3.84c1.599-1.598 1.599-4.199-.001-5.797-1.598-1.599-4.199-1.599-5.797-.001l-3.84 3.839-2.121-2.121 3.84-3.839c2.771-2.773 7.267-2.773 10.041 0zm-8.082 13.879l-3.84 3.839c-1.598 1.6-4.199 1.599-5.799 0-1.598-1.598-1.598-4.2 0-5.797l3.84-3.84-2.121-2.121-3.84 3.84c-2.771 2.772-2.772 7.268 0 10.041 2.773 2.772 7.27 2.773 10.041 0l3.84-3.84-2.121-2.122z"/></svg>
+                  {:else}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#eee" viewBox="0 0 24 24"><path d="M14.9 19.143l-2.78 2.779c-2.771 2.772-7.268 2.772-10.041 0-2.772-2.773-2.771-7.269 0-10.041l2.779-2.779 2.121 2.121-2.779 2.779c-1.598 1.598-1.598 4.2 0 5.797 1.6 1.6 4.201 1.6 5.799 0l2.779-2.777 2.122 2.121zm-3.02-17.063l-2.779 2.779 2.121 2.121 2.78-2.779c1.598-1.598 4.199-1.598 5.795.001 1.602 1.598 1.602 4.199.004 5.797l-2.779 2.779 2.121 2.121 2.779-2.778c2.771-2.773 2.771-7.269 0-10.041-2.774-2.772-7.27-2.772-10.042 0zm-5.945-.795l1.44-.204.438 3.083-1.438.205-.44-3.084zm-4.855 6.09l.206-1.441 3.084.44-.206 1.44-3.084-.439zm4.793-2.521l-1.028 1.03-2.205-2.203 1.029-1.029 2.204 2.202zm12.191 17.86l-1.441.204-.438-3.083 1.439-.205.44 3.084zm4.856-6.09l-.207 1.441-3.084-.439.207-1.441 3.084.439zm-4.793 2.52l1.027-1.029 2.205 2.204-1.029 1.029-2.203-2.204z"/></svg>
+                  {/if}
+                </div>
+              </FlatInputIcon>
+          </div>
+        </div>
+
+        <div class="buttons-control">
+          <RectButton value="Cancel" onClick={goBack} secondary={true} hint="Or press Escape" />
+          <RectButton value="Save" onClick={saveAuthor} />
         </div>
       </div>
+    {:else}
+      <div class="error">
+        <div class="txt">There was an error fetching data.</div>
+        <div class="txt">
+          There may be a network issue. Try refreshing the page or
+          <TextLink text="contact the support" color="rgba(0,0,0, .5)" fontSize="1em" />
+          if the problem persists.
+        </div>
 
-      <div class="buttons-control">
-        <RectButton value="Cancel" onClick={goBack} secondary={true} hint="Or press Escape" />
-        <RectButton value="Save" onClick={onCancelEditImgUrl} hint="Or press Enter" />
+        <RectButton value="Refresh" outline={true} onClick={fetchAuthor} margin="60px 0 0 0" />
       </div>
-    </div>
-  {:else}
-    <div class="error">
-      <div class="txt">There was an error fetching data.</div>
-      <div class="txt">
-        There may be a network issue. Try refreshing the page or
-        <TextLink text="contact the support" color="rgba(0,0,0, .5)" fontSize="1em" />
-         if the problem persists.
-      </div>
-
-      <RectButton value="Refresh" outline={true} onClick={fetchAuthor} margin="60px 0 0 0" />
-    </div>
+    {/if}
   {/if}
 
   <Dialog bind:active={isImgUrlDialogActive} bg="#5352ed">
