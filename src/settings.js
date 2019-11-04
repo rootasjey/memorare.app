@@ -50,3 +50,5 @@ export const logout = ({ route = '/', delay = 0 } = {}) => {
     navigate(route);
   }, delay);
 }
+
+export const userAvatarUrl = `https://api.adorable.io/avatars/90/${settings.getValue('email')}.png`;

@@ -19,12 +19,23 @@
   import { fly } from 'svelte/transition';
   import { navigate } from 'svelte-routing';
 
-  import { isUserAuthenticated, settings } from '../settings';
+  import {
+    isUserAuthenticated,
+    settings,
+    userAvatarUrl
+  } from '../settings';
 
   let username = settings.getValue('name');
 
+  let imgUrl = settings.getValue('imgUrl') ?
+    settings.getValue('imgUrl') :
+    userAvatarUrl;
+
+  let userBgImg = `background-image: url("${imgUrl}");`;
+
   $: if ($isUserAuthenticated) { username = settings.getValue('name'); }
 
+  let active = false;
   let isTinyNavVisible = false;
   let isUserMenuOpened = false;
 
@@ -71,24 +82,38 @@
     display: flex;
 
     cursor: pointer;
-    transition:.5s;
+    transition:.3s;
   }
 
   .header-title img {
     position: relative;
     top: 5px;
+
+    border-radius: 50%;
+
+    box-shadow: 4px 4px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+
     margin-right: 10px;
-    transition: .5s;
+    transition: .3s;
   }
 
   .header-title img:hover {
-    transition: .5s;
-    transform: scale(1.1);
+    top: 7px;
+    box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+
+    transition: .3s;
+  }
+
+  .header-title img:active {
+    top: 9px;
+    box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+
+    transition: .3s;
   }
 
   .header-title:hover {
     color: #f56498;
-    transition: .5s;
+    transition: .3s;
   }
 
   nav {
@@ -108,12 +133,12 @@
 
     cursor: pointer;
 
-    transition: .5s;
+    transition: .3s;
   }
 
   nav > div:hover {
     color: #706fd3;
-    transition: .5s;
+    transition: .3s;
   }
 
   nav > div.button-pink-round {
@@ -142,12 +167,12 @@
 
     cursor: pointer;
 
-    transition: .5s;
+    transition: .3s;
   }
 
   nav :global(a):hover {
     color: #720fd3;
-    transition: .5s;
+    transition: .3s;
   }
 
   .amburger-menu {
@@ -201,18 +226,35 @@
   .user-avatar {
     height: 40px;
     width: 40px;
-    border-radius: 50%;
+    /* border-radius: 50%; */
     background-color: #fff;
 
     position: relative;
     top: -10px;
 
+    box-shadow: 4px 4px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
     transition: .3s;
   }
 
   .user-avatar:hover {
-    transform: scale(1.1);
+    top: -8px;
+    box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
     transition: .3s;
+  }
+
+  .user-avatar:active,
+  .user-avatar.active {
+    top: -6px;
+    box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+    transition: .3s;
+  }
+
+  .user-avatar__img {
+    width: 100%;
+    height: 100%;
+
+    background-size: cover;
+    background-position: center center;
   }
 
   .user-nav {
@@ -310,8 +352,9 @@
     <div on:click={() => goTo('/pricing')}> Pricing </div>
 
     {#if $isUserAuthenticated}
-      <div class="user-avatar" on:click={toggleUserMenu}>
-        <img src="" alt="" height="40" width="40">
+      <div class="user-avatar" class:active={isUserMenuOpened} on:click={toggleUserMenu}>
+        <div class="user-avatar__img" style="{userBgImg}"></div>
+        <!-- <div class="user-avatar__bg"></div> -->
       </div>
     {:else}
       <div on:click={() => goTo('/signin')} class="button-pink-round">Sign  in</div>

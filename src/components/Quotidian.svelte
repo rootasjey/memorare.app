@@ -34,7 +34,7 @@
 
       authorImgUrl = quotidian.quote.author.imgUrl ?
         quotidian.quote.author.imgUrl :
-        '/img/user-avatar.png';
+        '/img/user-icon.png';
 
     bgImg = `background-image: url('${authorImgUrl}');`;
 

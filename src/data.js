@@ -308,6 +308,7 @@ export const SIGNUP = gql`
   mutation ($email: String!, $password: String!, $name: String!) {
     signup(email: $email, password: $password, name: $name) {
       id
+      imgUrl
       email
       lang,
       name
@@ -320,6 +321,7 @@ export const SIGNIN = gql`
   mutation ($email: String!, $password: String!) {
     signin(email: $email, password: $password) {
       id
+      imgUrl
       email
       lang
       name
