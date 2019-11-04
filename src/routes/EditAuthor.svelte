@@ -483,7 +483,7 @@
     {/if}
   {/if}
 
-  <Dialog bind:active={isImgUrlDialogActive} bg="#5352ed">
+  <Dialog bind:active={isImgUrlDialogActive} bg="#5352ed" on:enter={onSaveImgUrl}>
     <div slot="content" class="dialog-content">
       <CapHeader caption="Edit Author" title="Enter an image's URL"/>
 
