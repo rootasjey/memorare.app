@@ -8,8 +8,10 @@
     show as showHeader
   } from '../components/Header.svelte';
 
-  import FlatInputIcon from '../components/FlatInputIcon.svelte';
-  import Spinner    from '../components/Spinner.svelte';
+  import FlatInputIcon  from '../components/FlatInputIcon.svelte';
+  import RectButton     from '../components/RectButton.svelte';
+  import Spinner        from '../components/Spinner.svelte';
+  import TextLink       from '../components/TextLink.svelte';
 
   import { client, AUTHOR } from '../data';
   import { handle } from '../errors';
@@ -33,6 +35,7 @@
 
   async function fetchAuthor() {
     if (!id) { pageStatus = status.error; return; }
+    pageStatus = status.loading;
 
     try {
       const response = await client.query({
@@ -182,58 +185,9 @@
     margin: 30px 0;
   }
 
-  .button {
-    min-width: 80px;
-    padding: 15px 20px;
-
-    cursor: pointer;
-    border-radius: 2px;
-
-    text-align: center;
-    font-weight: 600;
-
-    text-transform: uppercase;
-    box-shadow: 6px 6px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
-    transition: .3s;
-  }
-
-  .button:hover {
-    filter: brightness(90%);
-    transform: translateY(2px);
-    box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
-
-    transition: .3s;
-  }
-
-  .button:active {
-    filter: brightness(60%);
-    transform: translateY(3px);
-    box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
-
-    transition: .3s;
-  }
-
-  .button-cancel {
-    background-color: #f56498;
-  }
-
   .buttons-control {
     display: flex;
     margin-top: 60px;
-  }
-
-  .button--hint {
-    margin: 10px;
-  }
-
-  .button-save {
-    color: #706fd3;
-    background-color: #fff;
-  }
-
-  .button__hint {
-    margin-top: 10px;
-    color: rgba(0,0,0,0.5);
   }
 
   .close-icon {
@@ -273,6 +227,7 @@
     color: #fff;
     background-color: #706fd3;
     padding-bottom: 400px;
+    padding-top: 100px;
   }
 
   .edit-author__content {
@@ -293,6 +248,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    max-width: 60%;
+    text-align: center;
   }
 
   input[type="text"] {
@@ -368,10 +326,15 @@
     transition: .3s;
   }
 
+  .txt {
+    font-size: 1.5em;
+    font-weight: 300;
+  }
+
 </style>
 
 <div class="edit-author">
-  <CapHeader caption="{author.name}" title="Edit Author" />
+  <CapHeader caption="{author.name}" title="Edit Author" titleSize="3em" />
 
   <div class="close-icon" on:click={goBack}>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="rgba(0,0,0,.5)" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"/>
@@ -430,23 +393,20 @@
       </div>
 
       <div class="buttons-control">
-        <div class="button--hint">
-          <div class="button button-cancel" on:click={goBack}>Cancel</div>
-          <div class="button__hint">Or press Escape</div>
-        </div>
-
-        <div class="button--hint">
-          <div class="button button-save">Save</div>
-          <div class="button__hint">Or press Enter</div>
-        </div>
+        <RectButton value="Cancel" onClick={goBack} secondary={true} hint="Or press Escape" />
+        <RectButton value="Save" onClick={onCancelEditImgUrl} hint="Or press Enter" />
       </div>
     </div>
   {:else}
     <div class="error">
-      <h3>There was an error fetching data.</h3>
-      <p>Try reloading the page or contact the support if the problem persists.</p>
+      <div class="txt">There was an error fetching data.</div>
+      <div class="txt">
+        There may be a network issue. Try refreshing the page or
+        <TextLink text="contact the support" color="rgba(0,0,0, .5)" fontSize="1em" />
+         if the problem persists.
+      </div>
 
-      <Button value="Refresh" outlined={true} onClick={fetchAuthor} />
+      <RectButton value="Refresh" outline={true} onClick={fetchAuthor} margin="60px 0 0 0" />
     </div>
   {/if}
 
@@ -467,13 +427,8 @@
       </div>
 
       <div class="buttons-control">
-        <div class="button--hint">
-          <div class="button button-cancel" on:click={onCancelEditImgUrl}>Cancel</div>
-        </div>
-
-        <div class="button--hint">
-          <div class="button button-save" on:click={onSaveImgUrl}>Save</div>
-        </div>
+        <RectButton value="Cancel" onClick={onCancelEditImgUrl} secondary={true} />
+        <RectButton value="Save" onClick={onSaveImgUrl} />
       </div>
     </div>
   </Dialog>
