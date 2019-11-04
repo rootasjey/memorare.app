@@ -1,12 +1,14 @@
 <script>
   export let caption = '';
-  export let title = '';
-
   export let margin = '';
+  export let title = '';
+  export let titleSize = '';
 
-  let marginCSS = margin ? `margin: ${margin}` : '';
+  let marginRule    = margin    ? `margin: ${margin};`        : '';
+  let titleSizeRule = titleSize ? `font-size: ${titleSize};`  : '';
 
-  let styles = `${marginCSS}`;
+  let style = `${marginRule}`;
+  let titleStyle = ` ${titleSizeRule}`;
 </script>
 
 <style>
@@ -24,7 +26,7 @@
   }
 </style>
 
- <header style="{styles}">
+ <header style="{style}">
     <span class="sub-header">{caption}</span>
-    <h1>{title}</h1>
+    <h1 style="{titleStyle}">{title}</h1>
   </header>
