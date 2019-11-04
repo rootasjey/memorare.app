@@ -6,15 +6,17 @@
   export let fullSize   = false;
   export let maxHeight  = -1;
   export let maxWidth   = -1;
+  export let width      = -1;
 
   const dispatch = createEventDispatcher();
   let domDialog;
 
-  $: bgCSS        = bg            ? `background: ${bg};`          : '';
-  $: maxWidthCSS  = maxWidth > 0  ? `max-width: ${maxWidth}px;`   : '';
-  $: maxHeightCSS = maxHeight > 0 ? `max-height: ${maxHeight}px;` : '';
+  $: bgRule        = bg            ? `background: ${bg};`          : '';
+  $: maxWidthRule  = maxWidth > 0  ? `max-width: ${maxWidth}px;`   : '';
+  $: maxHeightRule = maxHeight > 0 ? `max-height: ${maxHeight}px;` : '';
+  $: widthRule     = width > 0     ? `width: ${width}px;`          : '';
 
-  $: styles       = `${bgCSS} ${maxWidthCSS} ${maxHeightCSS}`;
+  $: styles       = `${bgRule} ${maxWidthRule} ${maxHeightRule} ${widthRule}`;
 
   function onClickToClose() {
     active = false;
