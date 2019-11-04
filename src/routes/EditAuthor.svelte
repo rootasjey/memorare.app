@@ -1,6 +1,11 @@
 <script>
   import { navigate } from 'svelte-routing';
 
+  import {
+    primary as primaryColor,
+    primaryAlt,
+  } from '../colors';
+
   import Avatar     from '../components/Avatar.svelte';
   import Button     from '../components/Button.svelte';
   import CapHeader  from '../components/CapHeader.svelte';
@@ -23,6 +28,7 @@
   export let id = '';
 
   let author                = {};
+  let domRoot               = {};
   let focusedInputId        = -1;
   let isImgUrlDialogActive  = false;
   let isSavingCompleted     = false;
@@ -37,6 +43,10 @@
   let wikiUrl = '';
 
   let initialImgUrl = imgUrl;
+
+  setTimeout(() => {
+      domRoot.focus();
+  }, 250);
 
   fetchAuthor();
 
@@ -118,6 +128,12 @@
   function onSaveImgUrl() {
     isImgUrlDialogActive = false;
     initialImgUrl = imgUrl;
+  }
+
+  function onKeyup(event) {
+    if (event.code === 'Escape') {
+      goBack();
+    }
   }
 </script>
 
@@ -380,7 +396,13 @@
 
 </style>
 
-<div class="edit-author">
+<div
+  class="edit-author"
+  tabindex="0"
+  bind:this={domRoot}
+  style="{`background-color: ${primaryColor}`}"
+  on:keyup={onKeyup}>
+
   <CapHeader caption="{author.name}" title="Edit Author" titleSize="3em" />
 
   <div class="close-icon" on:click={goBack}>
@@ -483,7 +505,7 @@
     {/if}
   {/if}
 
-  <Dialog bind:active={isImgUrlDialogActive} bg="#5352ed" on:enter={onSaveImgUrl}>
+  <Dialog bind:active={isImgUrlDialogActive} bg="{primaryAlt}" on:enter={onSaveImgUrl}>
     <div slot="content" class="dialog-content">
       <CapHeader caption="Edit Author" title="Enter an image's URL"/>
 
