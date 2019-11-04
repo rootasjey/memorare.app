@@ -8,14 +8,22 @@
   export let outlined         = false;
   export let secondary        = false;
   export let width            = -1;
+  export let bg               = '';
+  export let color            = '';
+  export let shadow           = '';
 
   let baseClass   = outlined ? 'button-outlined' : 'button';
   let classes     = `${baseClass} ${additionalClass}`;
+
   let marginRule  = margin.length > 0 ? `margin: ${margin};` : '';
   let heightRule  = height > -1 ? `height: ${height}px;` : '';
   let widthRule   = width > -1 ? `width: ${width}px;` : '';
+  let colorRule   = color ? `color: ${color};`: '';
+  let bgRule      = bg ? `background: ${bg};`: '';
+  let shadowRule  = shadow ? `background: ${shadow};`: '';
+
   let sizeRule    = `${widthRule} ${heightRule}`;
-  let styles      = `${marginRule} ${sizeRule}`;
+  let styles      = `${marginRule} ${sizeRule} ${bgRule} ${colorRule} ${shadowRule}`;
 </script>
 
 <style>
