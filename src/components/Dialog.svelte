@@ -1,9 +1,14 @@
 <script>
-  export let active = false;
-  export let bg = '';
-  export let fullSize = false;
-  export let maxHeight = -1;
-  export let maxWidth = -1;
+  import { createEventDispatcher } from 'svelte';
+
+  export let active     = false;
+  export let bg         = '';
+  export let fullSize   = false;
+  export let maxHeight  = -1;
+  export let maxWidth   = -1;
+
+  const dispatch = createEventDispatcher();
+  let domDialog;
 
   $: bgCSS        = bg            ? `background: ${bg};`          : '';
   $: maxWidthCSS  = maxWidth > 0  ? `max-width: ${maxWidth}px;`   : '';
@@ -14,10 +19,34 @@
   function onClickToClose() {
     active = false;
   }
+
+  function onKeyUp(event = {}) {
+    if (event.code === 'Escape') {
+      active = false;
+
+      dispatch('escape', {
+        key: 'enter'
+      });
+
+      return;
+    }
+
+    if (event.code === 'Enter') {
+      dispatch('enter');
+      return;
+    }
+  }
+
+  $: if (active) {
+    setTimeout(() => {
+      domDialog.focus();
+    }, 250);
+  }
+
 </script>
 
 <style>
-  .dialog-component {
+  .dialog {
     display: none;
     flex-direction: column;
     justify-content: center;
@@ -33,7 +62,7 @@
     z-index: 10;
   }
 
-  .dialog-component.active {
+  .dialog.active {
     display: flex;
   }
 
@@ -105,7 +134,14 @@
   }
 </style>
 
-<div class="dialog-component" class:active class:fullSize>
+<div
+  class="dialog"
+  class:active
+  class:fullSize
+  tabindex="0"
+  bind:this={domDialog}
+  on:keyup={onKeyUp} >
+
   <div class="dialog-background" on:click={onClickToClose}></div>
   <div class="dialog-content" style="{styles}">
     <slot name="content"></slot>
