@@ -244,7 +244,9 @@ export const QUOTIDIAN = gql`
       date
       quote {
         author {
+          id
           name
+          imgUrl
         }
         name
         references { name }
