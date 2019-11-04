@@ -1,12 +1,15 @@
 <script>
   export let active = false;
+  export let bg = '';
   export let fullSize = false;
   export let maxHeight = -1;
   export let maxWidth = -1;
 
-  $: maxWidthCSS  = maxWidth > 0 ? `max-width: ${maxWidth}px` : '';
-  $: maxHeightCSS = maxHeight > 0 ? `max-height: ${maxHeight}px` : '';
-  $: styles = `${maxWidthCSS} ${maxHeightCSS}`;
+  $: bgCSS        = bg            ? `background: ${bg};`          : '';
+  $: maxWidthCSS  = maxWidth > 0  ? `max-width: ${maxWidth}px;`   : '';
+  $: maxHeightCSS = maxHeight > 0 ? `max-height: ${maxHeight}px;` : '';
+
+  $: styles       = `${bgCSS} ${maxWidthCSS} ${maxHeightCSS}`;
 
   function onClickToClose() {
     active = false;
