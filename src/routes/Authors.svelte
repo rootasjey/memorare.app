@@ -68,9 +68,7 @@
   }
 
   function onGoToEditAuthor(id) {
-    show({
-      text: 'The edit action is not yet available.'
-    });
+    navigate(`/edit/author/${id}`);
   }
 
   function onShare(author = {}) {
@@ -196,7 +194,7 @@
     transition: .3s;
   }
 
-    .author-card__name {
+  .author-card__name {
     font-size: 1.5em;
     font-weight: 600;
 
