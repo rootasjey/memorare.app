@@ -34,6 +34,7 @@
   let isSavingCompleted     = false;
   let isSendingData         = false;
   let pageStatus            = status.error;
+  let timeoutId             = -1;
 
   let imgUrl  = '';
   let job     = '';
@@ -93,7 +94,7 @@
 
       isSavingCompleted = true;
 
-      setTimeout(() => {
+      timeoutId = setTimeout(() => {
         goBack();
       }, 3000);
 
@@ -103,8 +104,14 @@
   }
 
   function goBack() {
+    clearTimeout(timeoutId);
     showHeader();
     window.history.back();
+  }
+
+  function goToAuthors() {
+    clearTimeout(timeoutId);
+    navigate('/authors');
   }
 
   function onFocusInput(inputId) {
@@ -428,7 +435,7 @@
             text="go to the authors list"
             color="rgba(0,0,0, .5)"
             fontSize="1em"
-            onClick={() => navigate('/authors')} /> (or whatever).
+            onClick={goToAuthors} /> (or whatever).
         </div>
       {:else}
         <div class="txt">Saving data about <b>{name}</b>...</div>
