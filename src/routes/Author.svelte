@@ -11,6 +11,8 @@
     QUOTES_BY_AUTHOR_ID,
   } from '../data';
 
+  import { scrollToTop } from '../utils';
+
   export let id = '';
 
   let author = {};
@@ -27,7 +29,7 @@
 
     author = response.data.author;
     hideHeader();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop();
   }
 
   async function fetchAuthorQuotes() {

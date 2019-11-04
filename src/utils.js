@@ -29,3 +29,7 @@ export const onEnterNextInput = (event, domElement) => {
 
   nextInput.focus();
 }
+
+export function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
