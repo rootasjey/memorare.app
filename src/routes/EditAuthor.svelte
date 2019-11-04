@@ -36,6 +36,8 @@
   let url     = '';
   let wikiUrl = '';
 
+  let initialImgUrl = imgUrl;
+
   fetchAuthor();
 
   async function fetchAuthor() {
@@ -57,6 +59,8 @@
       summary     = author.summary  ? author.summary  : '';
       wikiUrl     = author.wikiUrl  ? author.wikiUrl  : '';
       url         = author.url      ? author.url      : '';
+
+      initialImgUrl = imgUrl;
 
       pageStatus  = status.completed;
       hideHeader();
@@ -103,15 +107,17 @@
 
   function showImgUrlDialog() {
     isImgUrlDialogActive = true;
+    initialImgUrl = imgUrl;
   }
 
   function onCancelEditImgUrl() {
     isImgUrlDialogActive = false;
-    imgUrl = '';
+    imgUrl = initialImgUrl;
   }
 
   function onSaveImgUrl() {
     isImgUrlDialogActive = false;
+    initialImgUrl = imgUrl;
   }
 </script>
 
