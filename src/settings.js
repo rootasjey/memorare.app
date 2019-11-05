@@ -1,10 +1,14 @@
 import { writable } from 'svelte/store';
 import { navigate } from 'svelte-routing';
 
+/** Current user's rights. */
+let RIGHTS = [];
+
 /** Application's data store. */
 class Settings {
   clearData() {
     localStorage.clear();
+    RIGHTS = [];
   }
 
   getValue(name = '') {
@@ -14,22 +18,35 @@ class Settings {
       return value || 'en';
     }
 
+    if (name === 'rights') {
+      return JSON.parse(value);
+    }
+
     return value;
   }
 
   setValue(name = '', value = '') {
     if (!name) { return; }
+
+    if (Array.isArray(value)) {
+      localStorage.setItem(name, JSON.stringify(value));
+      return;
+    }
+
     localStorage.setItem(name, value);
   }
 
   saveData(config = {}) {
-    const { id, email, lang, name, token } = config;
+    const { id, email, lang, name, rights, token } = config;
 
     localStorage.setItem('id', id);
     localStorage.setItem('email', email);
     localStorage.setItem('lang', lang);
     localStorage.setItem('name', name);
     localStorage.setItem('token', token);
+
+    RIGHTS.push(...rights);
+    localStorage.setItem('rights', JSON.stringify(rights));
   }
 }
 
@@ -62,4 +79,30 @@ export function getUserAvatar({ size = 'small'} = {}) {
   }
 
   return `https://api.adorable.io/avatars/200/${settings.getValue('email')}.png`;
+}
+
+/** Return true if the current user can perform the action. */
+export function canI(action = '') {
+  let matchRight = '';
+
+  if (/editAuthor/ig.test(action) ||
+    /deleteAuthor/ig.test(action)) {
+
+    matchRight = 'user:manageauthor';
+
+  } else if (/proposeQuote/ig.test(action)) {
+    matchRight = 'user:proposequote';
+
+  } else if (/deleteQuote/ig.test(action) ||
+    /validateQuote/ig.test(action)) {
+
+    matchRight = 'user:managequote';
+  }
+
+  if (RIGHTS.length < 1) {
+    const savedRights = settings.getValue('rights');
+    if (savedRights) { RIGHTS.push(...savedRights); }
+  }
+
+  return RIGHTS.some((right) => right === matchRight);
 }

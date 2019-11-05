@@ -49,9 +49,9 @@
         variables: { email, password },
       });
 
-      const { id, email: userEmail, lang, name: userName, token } = response.data.signin;
+      const { id, email: userEmail, lang, name: userName, rights, token } = response.data.signin;
 
-      settings.saveData({ id, email: userEmail, lang, name: userName, token });
+      settings.saveData({ id, email: userEmail, lang, name: userName, rights, token });
 
       isUserAuthenticated.set(true);
 
@@ -69,9 +69,9 @@
         variables: { email, name, password },
       });
 
-      const { id, email: userEmail, lang, name: userName, token } = response.data.signup;
+      const { id, email: userEmail, lang, name: userName, rights, token } = response.data.signup;
 
-      settings.saveData({ id, email: userEmail, lang, name: userName, token });
+      settings.saveData({ id, email: userEmail, lang, name: userName, rights, token });
 
       navigate(`/verify/email/0`);
 

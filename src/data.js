@@ -310,8 +310,9 @@ export const SIGNUP = gql`
       id
       imgUrl
       email
-      lang,
+      lang
       name
+      rights
       token
     }
   }
@@ -325,6 +326,7 @@ export const SIGNIN = gql`
       email
       lang
       name
+      rights
       token
     }
   }
