@@ -26,7 +26,6 @@
   export let lightcontent = false;
   export let margin       = '';
   export let noBackCheck  = false;      // value won't be checked gainst backend
-  export let onEnter      = () => {};
   export let outlined     = false;
   export let pattern      = '';         // regex for frontend check
   export let placeholder  = '';         // when value is empty
@@ -141,11 +140,8 @@
   }
 
   const onKeyUp = (event) => {
-    const reEnter = /Enter/ig;
-
-    if (reEnter.test(event.code)) {
-      onEnter(event); // TODO: Delete
-      dispatch('enter', { target: input });
+    if (event.keyCode === 13) {
+      dispatch('enter', { event, target: input });
     }
   }
 </script>

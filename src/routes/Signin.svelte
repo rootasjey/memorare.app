@@ -80,8 +80,8 @@
     }
   }
 
-  function _onEnterNextInput(event) {
-    onEnterNextInput(event, formContainer);
+  function _onEnterNextInput(customEvent) {
+    onEnterNextInput(customEvent, formContainer);
   }
 </script>
 
@@ -221,13 +221,19 @@
 
   {#if isSigninActive}
     <div class="form form-signin" transition:fly="{{ y: -20, duration: 250 }}">
-      <Input label="Email" type="email"
+      <Input
+        label="Email"
+        type="email"
         placeholder="socrate@philo.com"
-        bind:inputValue={email} onEnter={_onEnterNextInput} />
+        bind:inputValue={email}
+        on:enter={_onEnterNextInput} />
 
-      <Input label="Password" type="password"
+      <Input
+        label="Password"
+        type="password"
         placeholder="********"
-        bind:inputValue={password} onEnter={onEnterValidate} />
+        bind:inputValue={password}
+        on:enter={onEnterValidate} />
 
       <TextLink text="I forgot my password ?"
         margin="-10px 0 20px 0"
@@ -248,22 +254,25 @@
         <Input label="Name" type="name" placeholder="Socrates"
           bind:inputValue={name} checkValue={true}
           errorMessage="Your name contains invalid characters. Only letters, numbers, underscores and hypens allowed."
-          onEnter={_onEnterNextInput} />
+          on:enter={_onEnterNextInput} />
 
         <Input label="Email" type="email" placeholder="socrate@philo.com"
           errorMessage="The value entered is not an email."
           bind:inputValue={email} checkValue={true}
-          onEnter={_onEnterNextInput} />
+          on:enter={_onEnterNextInput} />
 
         <Input label="Password" type="password" placeholder="********"
           errorMessage="Your password must be at least 8 characters length and must contain at least one uppercase letter, one lowercase letter, and one number."
           bind:inputValue={password} checkValue={true}
-          onEnter={_onEnterNextInput} />
+          on:enter={_onEnterNextInput} />
 
-        <ConfirmPass label="Confirm Password" placeholder="********"
-          bind:inputValue={confirmPassword} valueToCheck={password}
+        <ConfirmPass
+          label="Confirm Password"
+          placeholder="********"
+          bind:inputValue={confirmPassword}
+          valueToCheck={password}
           errorMessage="This value doesn't match the previous entered password."
-          onEnter={onEnterValidate} />
+          on:enter={onEnterValidate} />
 
         <button class="action-button" on:click={onSignup}>Sign Up</button>
 

@@ -1,12 +1,11 @@
 <script>
-  import { onMount }  from 'svelte';
+  import { createEventDispatcher, onMount }  from 'svelte';
 
   export let errorMessage = '';
   export let inputValue   = '';
   export let isValid      = false;
   export let label        = '';
   export let margin       = '';
-  export let onEnter      = () => {};
   export let outlined     = false;
   export let placeholder  = '';
   export let valueToCheck = '';
@@ -17,16 +16,16 @@
   $: marginCSS = margin ? `margin: ${margin};` : '';
   $: styles = `${marginCSS}`;
 
+  const dispatch = createEventDispatcher();
+
   const onChange = () => {
     isDirty = true;
     isValid = (inputValue === valueToCheck) && valueToCheck.length > 0;
   }
 
   const onKeyUp = (event) => {
-    const reEnter = /Enter/ig;
-
-    if (reEnter.test(event.code)) {
-      onEnter(event);
+    if (event.keyCode === 13) {
+      dispatch('enter', { event });
     }
   }
 

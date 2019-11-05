@@ -19,7 +19,7 @@
 
   function _onKeyUp(event) {
     if (event.keyCode === 13) {
-      dispatch('enter', { originalEvent: event });
+      dispatch('enter', { event });
     }
   }
 </script>

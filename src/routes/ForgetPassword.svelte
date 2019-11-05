@@ -172,7 +172,7 @@
               noBackCheck={true}
               placeholder="My Awesome email"
               errorMessage="The value entered is not an email."
-              onEnter={sendForgetEmail}
+              on:enter={sendForgetEmail}
             />
           </div>
 
@@ -228,7 +228,7 @@
               bind:inputValue={password}
               checkValue={true}
               margin="10px 0"
-              onEnter={(event) => onEnterNextInput(event, domPasswords)}
+              on:enter={(event) => onEnterNextInput(event, domPasswords)}
             />
           </div>
 
@@ -240,7 +240,7 @@
               margin="10px 0"
               bind:inputValue={confirmPassowrd}
               valueToCheck={password}
-              onEnter={chooseNewPassword}
+              on:enter={chooseNewPassword}
               errorMessage="This value doesn't match the previous entered password."
             />
           </div>

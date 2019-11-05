@@ -566,7 +566,7 @@
           margin="10px 0"
           bind:inputValue={confirmNewPassword}
           valueToCheck={newPassword}
-          onEnter={onEnterValidateUpdatePassword}
+          on:enter={onEnterValidateUpdatePassword}
           errorMessage="This value doesn't match the previous entered password."
         />
       </div>
