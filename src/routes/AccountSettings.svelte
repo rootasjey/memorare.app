@@ -78,7 +78,7 @@
   $: isInitialName = name === initialName;
   $: isInitialEmail = email === initialEmail;
 
-  async function updateEmail() {
+  async function onUpdateEmail() {
     try {
       const response = await client.query({
         query: UPDATE_EMAIL_STEP_ONE,
@@ -119,7 +119,7 @@
     }
   }
 
-  async function updateName() {
+  async function onUpdateName() {
     try {
       const response = await client.mutate({
         mutation: UPDATE_NAME,
@@ -209,7 +209,7 @@
   }
 
   function onResendEmail() {
-    updateEmail();
+    onUpdateEmail();
   }
 
   function onEnterValidateDeleteAccount() {
@@ -475,13 +475,13 @@
             height="50px"
             bind:inputValue={name}
             checkValue={true}
-            on:enter={updateName}
+            on:enter={onUpdateName}
             errorMessage="Your name contains invalid characters. Only letters, numbers, underscores and hypens allowed." />
 
           <RectButton
             value="Save"
             hide={isInitialName}
-            on:click={updateName}
+            on:click={onUpdateName}
             margin="4px 0 0 20px" />
         </div>
       </div>
@@ -494,13 +494,13 @@
             height="50px"
             bind:inputValue={email}
             checkValue={true}
-            on:enter={updateEmail}
+            on:enter={onUpdateEmail}
             errorMessage="The value entered is not an email." />
 
           <RectButton
             value="Save"
             hide={isInitialEmail}
-            on:click={updateEmail}
+            on:click={onUpdateEmail}
             margin="4px 0 0 20px" />
         </div>
 
@@ -607,7 +607,7 @@
               bind:inputValue={passConfirmDelUser}
               type="password"
               placeholder="My Awesomee Password"
-              onEnter={onEnterValidateDeleteAccount}
+              on:enter={onEnterValidateDeleteAccount}
               outlined={true} />
           </div>
         </div>
