@@ -9,11 +9,11 @@
     UPDATE_TEMP_QUOTE_ADMIN,
   } from '../data';
 
-  import Checkbox         from '../components/Checkbox.svelte';
-  import SpinnerCheckmark from '../components/SpinnerCheckmark.svelte';
-  import Tags             from '../components/Tags.svelte';
+  import Checkbox     from '../components/Checkbox.svelte';
+  import SpinnerCheck from '../components/SpinnerCheck.svelte';
+  import Tags         from '../components/Tags.svelte';
 
-  import { handle }       from '../errors';
+  import { handle }   from '../errors';
 
   // Props
   export let id = ''; // Quote's id to edit
@@ -647,7 +647,7 @@
   {:else if pageState === 'success'}
     <!--loading-->
     <div class="loading-container">
-      <SpinnerCheckmark isCompleted={loadingSpinnerCompleted} />
+      <SpinnerCheck isCompleted={loadingSpinnerCompleted} />
 
       {#if pageState === 'loading'}
          <p>Sending your quote through the wire...</p>

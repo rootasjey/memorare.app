@@ -18,7 +18,7 @@
   import FlatInputIcon  from '../components/FlatInputIcon.svelte';
   import RectButton     from '../components/RectButton.svelte';
   import Spinner        from '../components/Spinner.svelte';
-  import SpinnerCheckmark from '../components/SpinnerCheckmark.svelte';
+  import SpinnerCheck   from '../components/SpinnerCheck.svelte';
   import TextLink       from '../components/TextLink.svelte';
 
   import { client, AUTHOR, UPDATE_AUTHOR } from '../data';
@@ -420,7 +420,7 @@
   {#if isSendingData}
     <div class="saving-data">
       {#if !isSavingCompleted}
-        <SpinnerCheckmark isCompleted={isSavingCompleted} checkColor="#fff" />
+        <SpinnerCheck isCompleted={isSavingCompleted} checkColor="#fff" />
       {:else}
         <div class="centered-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" fill="#fff" viewBox="0 0 24 24"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/></svg>

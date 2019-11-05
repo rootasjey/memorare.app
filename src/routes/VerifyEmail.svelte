@@ -1,6 +1,6 @@
 <script>
-  import { navigate }       from 'svelte-routing';
-  import { fly }            from 'svelte/transition';
+  import { navigate }  from 'svelte-routing';
+  import { fly }       from 'svelte/transition';
 
   import {
     client,
@@ -8,9 +8,9 @@
     SEND_EMAIL_VERIFICATION
   } from '../data';
 
-  import SpinnerCheckmark   from '../components/SpinnerCheckmark.svelte';
-  import TextLink           from '../components/TextLink.svelte';
-  import { handle }         from '../errors';
+  import SpinnerCheck   from '../components/SpinnerCheck.svelte';
+  import TextLink       from '../components/TextLink.svelte';
+  import { handle }     from '../errors';
 
   // External props
   export let emailToken = '';
@@ -121,7 +121,7 @@
 <div class="verify-email">
   {#if isEmailVerified}
     <div class="verify-email--verified" transition:fly={{ y: 20, duration: 500 }}>
-      <SpinnerCheckmark isCompleted={isEmailVerified} />
+      <SpinnerCheck isCompleted={isEmailVerified} />
 
       <div class="verify-email__content">
         <h1>Your email is now verified :)</h1>

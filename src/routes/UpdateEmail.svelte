@@ -6,12 +6,12 @@
     UPDATE_EMAIL_STEP_TWO,
   } from '../data';
 
-  import { show }         from '../components/Snackbar.svelte';
-  import SpinnerCheckmark from '../components/SpinnerCheckmark.svelte';
+  import { show }     from '../components/Snackbar.svelte';
+  import SpinnerCheck from '../components/SpinnerCheck.svelte';
 
-  import { handle }       from '../errors';
-  import { settings }     from '../settings';
-  import { status }       from '../utils';
+  import { handle }   from '../errors';
+  import { settings } from '../settings';
+  import { status }   from '../utils';
 
   export let emailToken = '';
   let pageStatus = emailToken ? status.loading : status.error;
@@ -64,7 +64,7 @@
 <div class="update-email__page">
   <h1>Email Verification</h1>
   {#if pageStatus !== status.error}
-    <SpinnerCheckmark isCompleted={pageStatus === status.completed}/>
+    <SpinnerCheck isCompleted={pageStatus === status.completed}/>
   {/if}
 
   {#if pageStatus === status.loading}

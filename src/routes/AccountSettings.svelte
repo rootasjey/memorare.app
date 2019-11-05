@@ -1,21 +1,21 @@
 <script>
-  import { navigate }       from 'svelte-routing';
+  import { navigate }   from 'svelte-routing';
 
-  import { primary }        from '../colors';
+  import { primary }    from '../colors';
 
-  import Button             from '../components/Button.svelte';
-  import CapHeader          from '../components/CapHeader.svelte';
-  import ConfirmPass        from '../components/ConfirmPass.svelte';
-  import Dialog             from '../components/Dialog.svelte';
-  import FlatInputIcon      from '../components/FlatInputIcon.svelte';
-  import Input              from '../components/Input.svelte';
-  import RectButton         from '../components/RectButton.svelte';
-  import Select             from '../components/Select.svelte';
-  import SpinnerCheckmark   from '../components/SpinnerCheckmark.svelte';
-  import { show }           from '../components/Snackbar.svelte';
-  import TextLink           from '../components/TextLink.svelte';
+  import Button         from '../components/Button.svelte';
+  import CapHeader      from '../components/CapHeader.svelte';
+  import ConfirmPass    from '../components/ConfirmPass.svelte';
+  import Dialog         from '../components/Dialog.svelte';
+  import FlatInputIcon  from '../components/FlatInputIcon.svelte';
+  import Input          from '../components/Input.svelte';
+  import RectButton     from '../components/RectButton.svelte';
+  import Select         from '../components/Select.svelte';
+  import SpinnerCheck   from '../components/SpinnerCheck.svelte';
+  import { show }       from '../components/Snackbar.svelte';
+  import TextLink       from '../components/TextLink.svelte';
 
-  import { status }         from '../utils';
+  import { status }     from '../utils';
 
   import {
     client,
@@ -633,7 +633,7 @@
         </header>
 
         <div class="delete-account-dialog__body--centered">
-          <SpinnerCheckmark isCompleted={delUserStatus === status.completed} />
+          <SpinnerCheck isCompleted={delUserStatus === status.completed} />
 
           {#if delUserStatus === status.completed}
             <p>

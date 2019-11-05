@@ -1,14 +1,14 @@
 <script>
   import { navigate } from 'svelte-routing';
 
-  import Button           from '../components/Button.svelte';
-  import CapHeader        from '../components/CapHeader.svelte';
-  import ConfirmPass      from '../components/ConfirmPass.svelte';
-  import Input            from '../components/Input.svelte';
-  import Label            from '../components/Label.svelte';
-  import { show }         from '../components/Snackbar.svelte';
-  import SpinnerCheckmark from '../components/SpinnerCheckmark.svelte';
-  import TextLink         from '../components/TextLink.svelte';
+  import Button       from '../components/Button.svelte';
+  import CapHeader    from '../components/CapHeader.svelte';
+  import ConfirmPass  from '../components/ConfirmPass.svelte';
+  import Input        from '../components/Input.svelte';
+  import Label        from '../components/Label.svelte';
+  import { show }     from '../components/Snackbar.svelte';
+  import SpinnerCheck from '../components/SpinnerCheck.svelte';
+  import TextLink     from '../components/TextLink.svelte';
 
   import {
     client,
@@ -182,7 +182,7 @@
         </div>
       {:else if pageStatus === status.loading}
         <div class="flex-centered">
-          <SpinnerCheckmark isCompleted={pageStatus !== status.loading} />
+          <SpinnerCheck isCompleted={pageStatus !== status.loading} />
           <h3 class="sub-title">Sending you the email...</h3>
         </div>
       {:else if pageStatus === status.completed}
@@ -257,7 +257,7 @@
       </div>
     {:else if pageStatus === status.loading}
       <div class="flex-centered">
-        <SpinnerCheckmark isCompleted={pageStatus !== status.loading} />
+        <SpinnerCheck isCompleted={pageStatus !== status.loading} />
         <h3 class="sub-title">Updating your new password...</h3>
       </div>
     {:else if pageStatus === status.completed}
