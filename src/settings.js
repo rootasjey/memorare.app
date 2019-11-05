@@ -37,6 +37,7 @@ class Settings {
 export const settings = new Settings();
 
 export const isUserAuthenticated = writable(false);
+export const isAvatarUpdated = writable(0);
 
 if (settings.getValue('name')) {
   isUserAuthenticated.set(true);
@@ -51,4 +52,14 @@ export const logout = ({ route = '/', delay = 0 } = {}) => {
   }, delay);
 }
 
-export const userAvatarUrl = `https://api.adorable.io/avatars/90/${settings.getValue('email')}.png`;
+export function getUserAvatar({ size = 'small'} = {}) {
+  const imgUrl = settings.getValue('imgUrl');
+
+  if (imgUrl) { return imgUrl; }
+
+  if (size === 'small') {
+    return `https://api.adorable.io/avatars/90/${settings.getValue('email')}.png`;
+  }
+
+  return `https://api.adorable.io/avatars/200/${settings.getValue('email')}.png`;
+}

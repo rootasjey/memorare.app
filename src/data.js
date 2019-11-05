@@ -428,6 +428,14 @@ export const UPDATE_EMAIL_STEP_TWO = gql`
   }
 `;
 
+export const UPDATE_IMG_URL = gql`
+  mutation ($imgUrl: String!) {
+    updateImgUrl(imgUrl: $imgUrl) {
+      imgUrl
+    }
+  }
+`;
+
 export const UPDATE_LANG = gql`
   mutation($lang: String!) {
     updateLang(lang: $lang) {

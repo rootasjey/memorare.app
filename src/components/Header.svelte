@@ -20,20 +20,19 @@
   import { navigate } from 'svelte-routing';
 
   import {
+    getUserAvatar,
+    isAvatarUpdated,
     isUserAuthenticated,
     settings,
-    userAvatarUrl
+    userAvatarUrl,
   } from '../settings';
 
   let username = settings.getValue('name');
 
-  let imgUrl = settings.getValue('imgUrl') ?
-    settings.getValue('imgUrl') :
-    userAvatarUrl;
-
-  let userBgImg = `background-image: url("${imgUrl}");`;
+  let userBgImg = `background-image: url("${getUserAvatar()}");`;
 
   $: if ($isUserAuthenticated) { username = settings.getValue('name'); }
+  $: if ($isAvatarUpdated) { userBgImg = `background-image: url("${getUserAvatar()}");`; }
 
   let active = false;
   let isTinyNavVisible = false;
