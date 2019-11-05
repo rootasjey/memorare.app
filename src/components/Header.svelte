@@ -24,7 +24,6 @@
     isAvatarUpdated,
     isUserAuthenticated,
     settings,
-    userAvatarUrl,
   } from '../settings';
 
   let username = settings.getValue('name');
