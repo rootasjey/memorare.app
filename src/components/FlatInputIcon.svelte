@@ -1,9 +1,13 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
+
   export let value = '';
   export let placeholder = '';
 
   let bigText = false;
   let focused = false;
+
+  const dispatch = createEventDispatcher();
 
   function _onFocus() {
     focused = true;
@@ -11,6 +15,12 @@
 
   function _onBlur() {
     focused = false;
+  }
+
+  function _onKeyUp(event) {
+    if (event.keyCode === 13) {
+      dispatch('enter', { originalEvent: event });
+    }
   }
 </script>
 
@@ -81,6 +91,7 @@
     class:bigText
     bind:value="{value}"
     placeholder="{placeholder}"
+    on:keyup={_onKeyUp}
     on:focus={_onFocus}
     on:blur={_onBlur}>
 </div>
