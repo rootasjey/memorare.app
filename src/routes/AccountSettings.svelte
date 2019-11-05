@@ -105,6 +105,7 @@
 
       const { lang: userLang } = response.data.updateLang;
 
+      initialLang = userLang;
       settings.setValue('lang', userLang);
       show({ text: 'Your new language has been saved.', type: 'success' });
 
