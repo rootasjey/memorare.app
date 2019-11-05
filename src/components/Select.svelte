@@ -1,10 +1,16 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
+
   export let defaultLabel = 'Select your language';
   export let items = [];
-  export let onClickItem = () => {}
+  export let width = '';
 
   let active = false;
   let activeItem = { label: defaultLabel, value: '' };
+
+  let widthRule = width ? `width: ${width};` : '';
+
+  const dispatch = createEventDispatcher();
 
   function onClickComponent() {
     active = !active;
@@ -12,7 +18,10 @@
 
   function _onClickItem(item) {
     activeItem = item;
-    onClickItem(activeItem);
+
+    dispatch('clickitem', {
+      activeItem,
+    });
   }
 </script>
 
@@ -20,9 +29,10 @@
   .select-component {
     display: block;
     margin: 10px 0 8px 0;
+    min-width: 180px;
+
     padding-bottom: 2px;
     position: relative;
-    min-width: 180px;
   }
 
   .select-component *,
@@ -32,85 +42,98 @@
   }
 
   .select-component [type=button] {
-    background: #fff;
-    border-color: rgba(0, 0, 0, 0.12);
-    border-width: 0 0 1px 0;
     color: rgba(0, 0, 0, 0.73);
-    cursor: default;
+    background: #fff;
+
+    box-shadow: 6px 6px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+
+    cursor: pointer;
+
     display: block;
-    line-height: 48px;
-    padding: 2px 0 1px 16px;
     position: relative;
+    top: 0;
+
     text-align: left;
     text-shadow: none;
-    width: 100%;
-    z-index: 1;
+    padding: 20px;
+
     outline: none;
     overflow: hidden;
+    z-index: 1;
+    transition: .3s;
   }
 
-  .select-component [type=button]:focus,
   .select-component [type=button]:hover {
-    background: rgba(0, 0, 0, 0.1);
+    top: 2px;
+    filter: brightness(95%);
+    box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
   }
 
-  .select-component [type=button]:after {
-    content: '\25be';
-    float: right;
-    padding-right: 16px;
+  .select-component [type=button]:focus {
+    top: 4px;
+    filter: brightness(90%);
+    box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
   }
-
 
   .select-component ul[role=listbox] {
+    cursor: pointer;
     background-color: white;
-    cursor: default;
+
     list-style: none;
-    line-height: 26px;
+
     overflow: hidden;
     margin: 0;
-    max-height: 0;
-    position: absolute;
     padding: 0;
+    max-height: 0;
+
+    position: absolute;
+
     -webkit-transform: translateY(-50%);
             transform: translateY(-50%);
     transition: all 0.15s cubic-bezier(0.35, 0, 0.25, 1);
-    width: 100%;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
+
+    box-shadow: 6px 6px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
   }
 
 
   .select-component ul[role=listbox] li {
-    height: 48px;
     margin: 0;
-    padding: 10px 16px;
+    padding: 25px;
     outline: none;
     overflow: hidden;
+
+    top: 0;
+    position: relative;
+    transition: .3s;
   }
 
   .select-component ul[role=listbox] li:focus,
   .select-component ul[role=listbox] li:hover,
   .select-component ul[role=listbox] li.active {
     background: rgba(0, 0, 0, 0.1);
+    top: 2px;
   }
 
   .select-component.active ul {
     max-height: 200px;
     overflow: auto;
-    padding: 8px 0 16px 0px;
     z-index: 2;
     transition: all 0.2s ease;
   }
-
 </style>
 
 <div class="select-component" class:active
   on:click={onClickComponent}>
   <label for="ul-id">
-    <button type="button" class="ng-binding">{activeItem.label}</button>
+    <button type="button" class="ng-binding" style="{widthRule}">
+      {activeItem.label}
+    </button>
   </label>
 
-  <ul role="listbox"
+  <ul
+    role="listbox"
     class="md-whiteframe-z1"
+    style="{widthRule}"
     aria-activedescendant="{activeItem.value}"
     name="ul-id">
 

@@ -182,8 +182,9 @@
     showPasswordDialog = true;
   }
 
-  function onSelectLang(item) {
-    const { value } = item;
+  function onSelectLang(event) {
+    const { activeItem } = event.detail;
+    const { value } = activeItem;
 
     if (value === initialLang) { return; }
 
@@ -511,7 +512,7 @@
         <Select
           defaultLabel={defaultLabel}
           items={selectItems}
-          onClickItem={onSelectLang} />
+          on:clickitem={onSelectLang} />
       </div>
 
       <div class="input-container">
