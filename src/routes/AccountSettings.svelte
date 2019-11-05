@@ -291,6 +291,14 @@
     margin: 20px 0;
   }
 
+  .buttons-list {
+    display: flex;
+    flex-direction: column;
+
+    margin: 50px 0;
+    margin-bottom: 100px;
+  }
+
   .delete-account-dialog__body {
     margin: 40px 0 80px 0;
   }
@@ -515,12 +523,9 @@
           on:clickitem={onSelectLang} />
       </div>
 
-      <div class="input-container">
-        <Button value="Change password" onClick={onClickUpdatePassword} />
-      </div>
-
-      <div class="input-container">
-        <Button value="Delete my account" secondary={true} onClick={() => showDelUserDialog = true} />
+      <div class="buttons-list">
+        <RectButton value="Change password" on:click={onClickUpdatePassword} />
+        <RectButton value="Delete my account" secondary={true} on:click={() => showDelUserDialog = true} />
       </div>
     </div>
   </div>

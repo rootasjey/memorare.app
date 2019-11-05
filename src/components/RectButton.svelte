@@ -17,7 +17,7 @@
   let widthRule   = width   ? `width: ${width};`  : '';
   let heightRule  = height  ? `height: ${height};`: '';
 
-  let style = `${bgRule} ${colorRule} ${marginRule} ${widthRule} ${heightRule}`;
+  let style = `${bgRule} ${colorRule} ${marginRule} ${widthRule} ${heightRule}`.trim();
 </script>
 
 <style>
