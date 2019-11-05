@@ -494,8 +494,8 @@
         </div>
 
         <div class="buttons-control">
-          <RectButton value="Cancel" onClick={goBack} secondary={true} hint="Or press Escape" />
-          <RectButton value="Save" onClick={saveAuthor} />
+          <RectButton value="Cancel" on:click={goBack} secondary={true} hint="Or press Escape" />
+          <RectButton value="Save" on:click={saveAuthor} />
         </div>
       </div>
     {:else}
@@ -507,7 +507,7 @@
           if the problem persists.
         </div>
 
-        <RectButton value="Refresh" outline={true} onClick={fetchAuthor} margin="60px 0 0 0" />
+        <RectButton value="Refresh" outline={true} on:click={fetchAuthor} margin="60px 0 0 0" />
       </div>
     {/if}
   {/if}
@@ -529,8 +529,8 @@
       </div>
 
       <div class="buttons-control">
-        <RectButton value="Cancel" onClick={onCancelEditImgUrl} secondary={true} />
-        <RectButton value="Save" onClick={onSaveImgUrl} />
+        <RectButton value="Cancel" on:click={onCancelEditImgUrl} secondary={true} />
+        <RectButton value="Save" on:click={onSaveImgUrl} />
       </div>
     </div>
   </Dialog>

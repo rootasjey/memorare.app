@@ -2,9 +2,9 @@
   export let bg         = '';
   export let color      = '';
   export let height     = '';
+  export let hide       = false;
   export let hint       = '';
   export let margin     = '';
-  export let onClick    = () => {};
   export let outline    = false;
   export let primary    = false;
   export let secondary  = false;
@@ -65,6 +65,10 @@
     background-color: #f56498;
   }
 
+  .hide {
+    display: none;
+  }
+
   .outline {
     color: #fff;
     background-color: transparent;
@@ -91,13 +95,14 @@
 <div
   class="rect-button"
   style="{style}"
-  on:click={onClick}>
+  on:click>
 
   <slot></slot>
   <div class="button"
     class:primary
     class:secondary
-    class:outline>
+    class:outline
+    class:hide>
     {value}
   </div>
 

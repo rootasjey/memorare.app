@@ -469,14 +469,15 @@
         <div class="row">
           <Input type="name"
             outlined={true}
+            height="50px"
             bind:inputValue={name} checkValue={true}
             errorMessage="Your name contains invalid characters. Only letters, numbers, underscores and hypens allowed." />
 
-          <Button
+          <RectButton
             value="Save"
             hide={isInitialName}
-            onClick={updateName}
-            width={50} height={10} margin="0 0 0 20px"/>
+            on:click={updateName}
+            margin="4px 0 0 20px" />
         </div>
       </div>
 
@@ -485,14 +486,15 @@
         <div class="row">
           <Input type="email"
             outlined={true}
+            height="50px"
             bind:inputValue={email} checkValue={true}
             errorMessage="The value entered is not an email." />
 
-          <Button
-              value="Save"
-              hide={isInitialEmail}
-              onClick={updateEmail}
-              width={50} height={10} margin="0 0 0 20px" />
+          <RectButton
+            value="Save"
+            hide={isInitialEmail}
+            on:click={updateEmail}
+            margin="4px 0 0 20px" />
         </div>
 
         {#if emailSent}
@@ -671,8 +673,8 @@
       </div>
 
       <div class="buttons-row">
-        <RectButton value="Cancel" onClick={onCancelEditImgUrl} secondary={true} />
-        <RectButton value="Save" onClick={onSaveImgUrl} />
+        <RectButton value="Cancel" on:click={onCancelEditImgUrl} secondary={true} />
+        <RectButton value="Save" on:click={onSaveImgUrl} />
       </div>
     </div>
   </Dialog>
