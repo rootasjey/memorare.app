@@ -281,6 +281,12 @@
     align-items: center;
   }
 
+  .account-settings__page > header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .account-settings__content {
     margin-top: 30px;
     width: 350px;
@@ -353,9 +359,6 @@
     margin-bottom: 10px;
     padding: 5px 10px;
 
-    border: 1px solid #706fd3;
-    border-radius: 5px;
-
     text-transform: uppercase;
   }
 
@@ -367,9 +370,11 @@
     margin-bottom: 40px;
   }
 
-  .row-reverse {
+  .dialog-footer {
     display: flex;
     flex-direction: row-reverse;
+
+    margin: 30px 0;
   }
 
   .row {
@@ -573,16 +578,15 @@
         />
       </div>
 
-      <div class="row-reverse">
-        <Button
+      <div class="dialog-footer">
+        <RectButton
         value="Confirm"
-        onClick={updatePassword}/>
+        on:click={updatePassword}/>
 
-        <Button
+        <RectButton
           value="Cancel"
-          margin="0 10px"
           secondary={true}
-          onClick={() => showPasswordDialog = false }/>
+          on:click={() => showPasswordDialog = false }/>
       </div>
     </div>
   </Dialog>
@@ -616,8 +620,8 @@
         </div>
 
         <footer>
-          <Button value="Cancel" margin="0 10px" onClick={() => showDelUserDialog = false} />
-          <Button value="Delete" secondary={true} onClick={deleteAccount} />
+          <RectButton value="Cancel" on:click={() => showDelUserDialog = false} />
+          <RectButton value="Delete" secondary={true} on:click={deleteAccount} />
         </footer>
       {:else if delUserStatus === status.error}
         <header>
