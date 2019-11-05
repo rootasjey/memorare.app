@@ -98,6 +98,7 @@
 
   .header-title img:hover {
     top: 7px;
+    filter: brightness(95%);
     box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
 
     transition: .3s;
@@ -105,6 +106,7 @@
 
   .header-title img:active {
     top: 9px;
+    filter: brightness(90%);
     box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
 
     transition: .3s;
@@ -225,7 +227,6 @@
   .user-avatar {
     height: 40px;
     width: 40px;
-    /* border-radius: 50%; */
     background-color: #fff;
 
     position: relative;
@@ -237,6 +238,7 @@
 
   .user-avatar:hover {
     top: -8px;
+    filter: brightness(95%);
     box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
     transition: .3s;
   }
@@ -244,6 +246,7 @@
   .user-avatar:active,
   .user-avatar.active {
     top: -6px;
+    filter: brightness(90%);
     box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
     transition: .3s;
   }
@@ -353,7 +356,6 @@
     {#if $isUserAuthenticated}
       <div class="user-avatar" class:active={isUserMenuOpened} on:click={toggleUserMenu}>
         <div class="user-avatar__img" style="{userBgImg}"></div>
-        <!-- <div class="user-avatar__bg"></div> -->
       </div>
     {:else}
       <div on:click={() => goTo('/signin')} class="button-pink-round">Sign  in</div>
