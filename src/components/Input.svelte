@@ -1,7 +1,10 @@
 <script>
-  import { onMount }  from 'svelte';
+  import {
+    createEventDispatcher,
+    onMount
+  }  from 'svelte';
 
-  import Spinner      from '../components/Spinner.svelte';
+  import Spinner from '../components/Spinner.svelte';
 
   import {
     client,
@@ -56,6 +59,8 @@
   $: styles = `${borderColorCSS} ${bgColorCSS} ${colorCSS} ${heightRule} ${marginCSS}`;
 
   let input; // bind this
+
+  const dispatch = createEventDispatcher();
 
   onMount(() => {
     // Re-check (fetch) input's value if not empty.
@@ -139,7 +144,8 @@
     const reEnter = /Enter/ig;
 
     if (reEnter.test(event.code)) {
-      onEnter(event);
+      onEnter(event); // TODO: Delete
+      dispatch('enter', { target: input });
     }
   }
 </script>

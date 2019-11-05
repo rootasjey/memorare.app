@@ -15,7 +15,7 @@
   import { show }       from '../components/Snackbar.svelte';
   import TextLink       from '../components/TextLink.svelte';
 
-  import { status }     from '../utils';
+  import { onEnterNextInput, status }     from '../utils';
 
   import {
     client,
@@ -218,31 +218,6 @@
 
   function onEnterValidateUpdatePassword() {
     updatePassword();
-  }
-
-  function onEnterNextInput (event) {
-    const { target } = event;
-    const inputs = domPassDialog.querySelectorAll('input');
-
-    let indexMatch;
-
-    Array
-      .from(inputs)
-      .some((input, index) => {
-        if (input === target) {
-          indexMatch = index;
-          return true;
-        }
-
-        return false;
-    });
-
-    if (indexMatch >= inputs.length) { return; }
-
-    const nextInput = inputs[indexMatch + 1];
-    if (!nextInput || !nextInput.focus) { return; }
-
-    nextInput.focus();
   }
 
   function onOpenImgUrlDialog() {
@@ -498,7 +473,9 @@
           <Input type="name"
             outlined={true}
             height="50px"
-            bind:inputValue={name} checkValue={true}
+            bind:inputValue={name}
+            checkValue={true}
+            on:enter={updateName}
             errorMessage="Your name contains invalid characters. Only letters, numbers, underscores and hypens allowed." />
 
           <RectButton
@@ -515,7 +492,9 @@
           <Input type="email"
             outlined={true}
             height="50px"
-            bind:inputValue={email} checkValue={true}
+            bind:inputValue={email}
+            checkValue={true}
+            on:enter={updateEmail}
             errorMessage="The value entered is not an email." />
 
           <RectButton
@@ -563,8 +542,8 @@
           errorMessage="Your password must be at least 8 characters length and must contain at least one uppercase letter, one lowercase letter, and one number."
           bind:inputValue={oldPassword}
           checkValue={true}
-          margin="10px 0"
-        />
+          on:enter={(event) => onEnterNextInput(event, domPassDialog)}
+          margin="10px 0" />
       </div>
 
       <div>
@@ -574,6 +553,7 @@
           errorMessage="Your password must be at least 8 characters length and must contain at least one uppercase letter, one lowercase letter, and one number."
           bind:inputValue={newPassword}
           checkValue={true}
+          on:enter={(event) => onEnterNextInput(event, domPassDialog)}
           margin="10px 0"
         />
       </div>

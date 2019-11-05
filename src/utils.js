@@ -6,7 +6,12 @@ export const status = {
 }
 
 export const onEnterNextInput = (event, domElement) => {
-  const { target } = event;
+  let { target } = event;
+
+  if (!target) {
+    target = event && event.detail ? event.detail.target : target;
+  }
+
   const inputs = domElement.querySelectorAll('input');
 
   let indexMatch;
