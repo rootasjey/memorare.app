@@ -58,6 +58,7 @@
   // -------------
   let defaultLabel        = lang ? lang.toUpperCase() : '';
   let delUserStatus       = status.idle;
+  let domDelUserDialog;
   let domPassDialog;
   let domAvatarDialog;
   let emailSent           = false;
@@ -179,8 +180,22 @@
     }
   }
 
-  function onClickUpdatePassword() {
+  function onOpenDelAccountDialog() {
+    showDelUserDialog = true;
+
+    setTimeout(() => {
+      const input = domDelUserDialog.querySelector('input');
+      if (input) { input.focus(); }
+    }, 500);
+  }
+
+  function onOpenPassDialog() {
     showPasswordDialog = true;
+
+    setTimeout(() => {
+      const input = domPassDialog.querySelector('input');
+      if (input) { input.focus(); }
+    }, 500);
   }
 
   function onSelectLang(event) {
@@ -237,9 +252,7 @@
     // input disapear until focused again
     setTimeout(() => {
       let input = domAvatarDialog.querySelector('input');
-      if (!input) { return; }
-
-      input.focus();
+      if (input) { input.focus(); }
     }, 500);
   }
 
@@ -530,8 +543,8 @@
       </div>
 
       <div class="buttons-list">
-        <RectButton value="Change password" on:click={onClickUpdatePassword} />
-        <RectButton value="Delete my account" secondary={true} on:click={() => showDelUserDialog = true} />
+        <RectButton value="Change password" on:click={onOpenPassDialog} />
+        <RectButton value="Delete my account" secondary={true} on:click={onOpenDelAccountDialog} />
       </div>
     </div>
   </div>
@@ -592,7 +605,7 @@
   </Dialog>
 
   <Dialog bind:active={showDelUserDialog} fullSize={true}>
-    <div slot="content" class="delete-account-dialog-content">
+    <div slot="content" bind:this={domDelUserDialog} class="delete-account-dialog-content">
       {#if delUserStatus === status.idle}
         <header>
           <span class="sub-header">Delete account</span>
