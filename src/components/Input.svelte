@@ -16,6 +16,7 @@
   export let checkValue   = false;       // activate front + back checks
   export let color        = '';
   export let errorMessage = '';
+  export let height       = '';
   export let inputValue   = '';         // actual value
   export let isValid      = true;       // frontend + backend checks
   export let label        = '';         // text displayed on top
@@ -50,8 +51,9 @@
   $: bgColorCSS     = bgColor     ? `background-color: ${bgColor};` : '';
   $: colorCSS       = color       ? `color: ${color};`              : '';
   $: marginCSS      = margin      ? `margin: ${margin};`            : '';
+  let heightRule = height ? `height: ${height};` : '';
 
-  $: styles = `${borderColorCSS} ${bgColorCSS} ${colorCSS} ${marginCSS}`;
+  $: styles = `${borderColorCSS} ${bgColorCSS} ${colorCSS} ${heightRule} ${marginCSS}`;
 
   let input; // bind this
 
@@ -203,7 +205,23 @@
     border: 1px solid #706fd3;
     background-color: #eee;
 
+    position: relative;
+    top: 0;
+
+    box-shadow: 6px 6px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
     margin-right: 10px;
+    transition: .3s;
+  }
+
+  input.outlined:hover {
+    top: 2px;
+    box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+  }
+
+  input.outlined:active,
+  input.outlined:focus {
+    top: 4px;
+    box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
   }
 
   input.lightcontent {
