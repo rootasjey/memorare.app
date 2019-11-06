@@ -19,7 +19,7 @@
 <style>
   .spinner {
     display: inline-block;
-    border: 3px solid #716fd39c;
+    border: 3px solid rgba(0, 0, 0, .5);
     border-radius: 50%;
     animation: spin 1s ease-in-out infinite;
     -webkit-animation: spin 1s ease-in-out infinite;
