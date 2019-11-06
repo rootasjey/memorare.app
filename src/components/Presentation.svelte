@@ -227,12 +227,6 @@
     transition: .3s;
   }
 
-  .screenshot-img:hover {
-    border-width: 3px;
-    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.20);
-    transition: .3s;
-  }
-
   .pres-icon-title {
     position: relative;
   }
