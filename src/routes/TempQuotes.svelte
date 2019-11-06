@@ -18,16 +18,33 @@
   } from '../data';
 
   import { handle } from '../errors';
+  import { canI }   from '../settings';
   import { status } from '../utils';
 
   let hasMoreData     = true;
   let limit           = 10;
-  let pageStatus      = status.idle; // loading || completed || error
+  let pageStatus      = status.loading;
   let selectedQuoteId = -1;
   let skip            = 0;
   let tempQuotes      = [];
 
-  (async function fetchTempQuotes() {
+  main();
+
+  function main() {
+    const canIManageQuote = canI('validateQuote');
+
+    if (!canIManageQuote) {
+      setTimeout(() => {
+        navigate('/shallnotpass');
+      }, 500);
+
+      return;
+    }
+
+    fetchTempQuotes();
+  }
+
+  async function fetchTempQuotes() {
     pageStatus = status.loading;
 
     try {
@@ -48,7 +65,7 @@
       pageStatus = status.error;
       handle(error);
     }
-  })();
+  }
 
   async function onDelete(quote) {
     const { id } = quote;
@@ -290,7 +307,7 @@
   <div class="temp-quotes-page__content">
       {#if pageStatus === status.loading}
         <div>
-          <Spinner visibility={pageStatus === status.loading} />
+          <Spinner color="#f56498" visibility={pageStatus === status.loading} />
           <span>Loading temporary quotes...</span>
         </div>
       {:else if pageStatus === status.completed}

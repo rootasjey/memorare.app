@@ -12,6 +12,7 @@
   import Dialog     from '../components/Dialog.svelte';
   import {
     hide as hideHeader,
+    hideAsync as hideHeaderAsync,
     show as showHeader
   } from '../components/Header.svelte';
 
@@ -23,6 +24,7 @@
 
   import { client, AUTHOR, UPDATE_AUTHOR } from '../data';
   import { handle } from '../errors';
+  import { canI } from '../settings';
   import { scrollToTop , status } from '../utils';
 
   export let id = '';
@@ -33,7 +35,7 @@
   let isImgUrlDialogActive  = false;
   let isSavingCompleted     = false;
   let isSendingData         = false;
-  let pageStatus            = status.error;
+  let pageStatus            = status.loading;
   let timeoutId             = -1;
 
   let imgUrl  = '';
@@ -45,11 +47,28 @@
 
   let initialImgUrl = imgUrl;
 
-  setTimeout(() => {
-      domRoot.focus();
-  }, 250);
+  main();
 
-  fetchAuthor();
+  function main() {
+    const canIEditAuthor = canI('editAuthor');
+
+    if (!canIEditAuthor) {
+      showHeader();
+
+      setTimeout(() => {
+        navigate('/shallnotpass');
+      }, 500);
+
+      return;
+    }
+
+    setTimeout(() => {
+        domRoot.focus();
+    }, 250);
+
+    hideHeaderAsync();
+    fetchAuthor();
+  }
 
   async function fetchAuthor() {
     if (!id) { pageStatus = status.error; return; }
@@ -74,7 +93,6 @@
       initialImgUrl = imgUrl;
 
       pageStatus  = status.completed;
-      hideHeader();
 
     } catch (error) {
       handle(error);
@@ -444,7 +462,11 @@
   {:else}
     {#if pageStatus === status.loading}
       <div class="loading">
-        <Spinner visibility={`${pageStatus === status.loading ? 'visible' : 'hidden'}`} />
+        <Spinner
+          color="#fff"
+          height="20px"
+          width="20px"
+          visibility={`${pageStatus === status.loading ? 'visible' : 'hidden'}`} />
         <h3>Loading author data...</h3>
       </div>
     {:else if pageStatus === status.completed}

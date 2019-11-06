@@ -97,6 +97,10 @@ export function canI(action = '') {
     /validateQuote/ig.test(action)) {
 
     matchRight = 'user:managequote';
+
+  } else if (/manageQuotidian/ig.test(action)) {
+
+    matchRight = 'user:managequotidian';
   }
 
   if (RIGHTS.length < 1) {

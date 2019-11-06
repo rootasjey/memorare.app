@@ -18,6 +18,7 @@
   } from '../data';
 
   import { handle } from '../errors';
+  import { canI } from '../settings';
 
   let domQuotidians;
   let hasMoreData     = true;
@@ -25,9 +26,24 @@
   let quotidians      = [];
   let selectedQuoteId = -1;
   let skip            = 0;
-  let pageStatus      = status.idle;
+  let pageStatus      = status.loading;
 
-  (async function fetchQuotidians() {
+  main();
+
+  function main() {
+    const canIManageQuotidian = canI('manageQuotidian');
+
+    if (!canIManageQuotidian) {
+      setTimeout(() => {
+        navigate('/shallnotpass');
+        return;
+      }, 500);
+    }
+
+    fetchQuotidians();
+  }
+
+  async function fetchQuotidians() {
     pageStatus = status.loading;
 
     try {
@@ -54,7 +70,7 @@
       pageStatus = status.error;
       handle(error);
     }
-  })();
+  }
 
   async function onRefresh() {
     pageStatus = status.loading;
@@ -251,7 +267,7 @@
   <div class="quotidians-page__content">
     {#if pageStatus === status.loading}
       <div>
-        <Spinner visibility={pageStatus === status.loading} />
+        <Spinner color="#f56498" visibility={pageStatus === status.loading} />
         <span>Loading published quotes...</span>
       </div>
     {:else if  pageStatus === status.completed}

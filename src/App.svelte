@@ -19,6 +19,7 @@
 	import Quotidians 			from './routes/Quotidians.svelte';
 	import RandomQuote 			from './routes/RandomQuote.svelte';
 	import Route404 				from './routes/Route404.svelte';
+	import RouteNotPass 		from './routes/RouteNotPass.svelte';
 	import Signin 					from './routes/Signin.svelte';
 	import TempQuotes 			from './routes/TempQuotes.svelte';
 	import UpdateEmail 			from './routes/UpdateEmail.svelte';
@@ -69,6 +70,7 @@
 			</Route>
 			<Route path="/pricing" component="{Pricing}" />
 			<Route path="/random/quote" component="{RandomQuote}" />
+			<Route path="/shallnotpass" component="{RouteNotPass}" />
 			<Route path="/signin" component="{Signin}" />
 			<Route path="/update/email/:emailToken" let:params>
 				<UpdateEmail emailToken={params.emailToken} />
