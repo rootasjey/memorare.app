@@ -3,6 +3,7 @@
 
   import ProfileCircle  from '../components/ProfileCircle.svelte';
   import RectButton     from '../components/RectButton.svelte';
+  import Tape           from '../components/Tape.svelte';
 
   import { client, LIST_AUTHORS } from '../data';
   import { handle } from '../errors';
@@ -232,25 +233,6 @@
     transition: .3s;
   }
 
-  .pres-desc {
-    font-size: 1.3em;
-    margin: auto;
-    color: rgba(0,0,0,0.5);
-
-    max-width: 600px;
-
-    position: relative;
-    z-index: 2;
-  }
-
-  .pres-desc > span {
-    color: white;
-    background-color: #f56498;
-    padding: 5px;
-    line-height: 1.6em;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  }
-
   .pres-icon-title {
     position: relative;
   }
@@ -387,12 +369,10 @@
 
     <h1 class="pres-title"><span class="text-accent-color">Inspiration</span> comes from observation</h1>
 
-    <div class="pres-desc">
-      <span>
-        Ever wanted to do something ambitious ? <br>
-        Motivation is contagious. Let visionary people inspire you.
-      </span>
-    </div>
+    <Tape>
+      Ever wanted to do something ambitious ? <br>
+      Motivation is contagious. Let visionary people inspire you.
+    </Tape>
 
     <div class="authors-wall">
       {#if pageStatus === status.loading}
@@ -419,11 +399,7 @@
     </div>
 
     <h1 class="pres-title">Nice designs look good. <br>Great designs <span class="text-accent-color">adapt</span> to you</h1>
-    <div class="pres-desc">
-      <span>
-        From your TV to your watch, your quotes will follow you through your journey.
-      </span>
-    </div>
+    <Tape value="From your TV to your watch, your quotes will follow you through your journey."/>
 
     <div class="pres__app-screenshots-list">
       <img class="screenshot-img" src="./img/tablet_screenshot.png" alt="idea icon" />
@@ -444,9 +420,7 @@
     </div>
 
     <h1 class="pres-title">All you <span class="text-accent-color">need</span></h1>
-    <div class="pres-desc">
-      <span>Don't wait to try out the cool features. They will make your life easier.</span>
-    </div>
+    <Tape value="Don't wait to try out the cool features. They will make your life easier."/>
 
     <div class="pres-subsection-list">
       <div class="pres-subsection">
@@ -538,13 +512,8 @@
     </div>
 
     <h1 class="pres-title">The <span class="text-accent-color">power</span> to build great things</h1>
-
-    <div class="pres-desc">
-      <span>
-        Elegant ways to integrate quotes into your application.
-        Use either the GraphQL API or the available SDKs.
-      </span>
-    </div>
+    <Tape value="Elegant ways to integrate quotes into your application.
+        Use either the GraphQL API or the available SDKs."/>
 
     <div class="code-card">
     </div>
