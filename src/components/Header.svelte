@@ -1,11 +1,30 @@
 <script context="module">
   let domHeader;
   let hidden = false;
+  let attempts = 0;
+  let maxAttempts = 10;
 
   export function hide() {
     if (!domHeader) { return; }
     hidden = true; // doesn't toggle class on dom (?)
     domHeader.classList.add('hidden');
+    attempts = 0;
+  }
+
+  export function hideAsync() {
+    if (attempts > maxAttempts) { return; }
+
+    attempts++;
+
+    if (!domHeader) {
+      setTimeout(() => {
+        hideAsync();
+      }, 200);
+
+      return;
+    }
+
+    hide();
   }
 
   export function show() {
