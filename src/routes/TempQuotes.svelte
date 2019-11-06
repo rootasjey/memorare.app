@@ -92,7 +92,7 @@
   }
 
   async function onEditTempQuote(quote) {
-    navigate(`/add/quote/${quote.id}`);
+    navigate(`/edit/quote/${quote.id}`);
   }
 
   async function onLoadMore() {

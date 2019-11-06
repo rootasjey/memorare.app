@@ -50,9 +50,6 @@
 			<Route path="/" component="{Home}" />
 			<Route path="/accountsettings" component="{AccountSettings}" />
 			<Route path="/add/quote" component="{AddQuote}" />
-			<Route path="/add/quote/:id" let:params>
-				<AddQuote id="{params.id}" />
-			</Route>
 			<Route path="/admin/tempquotes" component="{TempQuotes}" />
 			<Route path="/admin/publishedquotes" component="{PublishedQuotes}" />
 			<Route path="/admin/quotidians" component="{Quotidians}" />
@@ -62,6 +59,9 @@
 			</Route>
 			<Route path="/edit/author/:id" let:params>
 				<EditAuthor id={params.id} />
+			</Route>
+			<Route path="/edit/quote/:id" let:params>
+				<AddQuote id="{params.id}" />
 			</Route>
 			<Route path="/authors" component="{Authors}" />
 			<Route path="/forget/password" component="{ForgetPassword}" />
