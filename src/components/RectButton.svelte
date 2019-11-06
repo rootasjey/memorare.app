@@ -1,4 +1,5 @@
 <script>
+  export let alignSelf  = '';
   export let bg         = '';
   export let color      = '';
   export let height     = '';
@@ -11,17 +12,21 @@
   export let value      = '';
   export let width      = '';
 
-  let bgRule      = bg      ? `background: ${bg};`: '';
-  let colorRule   = color   ? `color: ${color};`  : '';
-  let marginRule  = margin  ? `margin: ${margin};`: '';
-  let widthRule   = width   ? `width: ${width};`  : '';
-  let heightRule  = height  ? `height: ${height};`: '';
+  let alignSelfRule = alignSelf ? `align-self: ${alignSelf};` : '';
+  let bgRule        = bg        ? `background: ${bg};`        : '';
+  let colorRule     = color     ? `color: ${color};`          : '';
+  let marginRule    = margin    ? `margin: ${margin};`        : '';
+  let widthRule     = width     ? `width: ${width};`          : '';
+  let heightRule    = height    ? `height: ${height};`        : '';
 
-  let style = `${bgRule} ${colorRule} ${marginRule} ${widthRule} ${heightRule}`.trim();
+  let style = `${alignSelfRule} ${bgRule} ${colorRule} ${marginRule} ${widthRule} ${heightRule}`.trim();
 </script>
 
 <style>
   .button {
+    display: flex;
+    align-items: center;
+
     min-width: 80px;
     padding: 15px 20px;
 
@@ -90,6 +95,14 @@
   .rect-button {
     margin: 10px;
   }
+
+  .afterText {
+    margin-left: 10px;
+  }
+
+  .beforeText {
+    margin-right: 10px;
+  }
 </style>
 
 <div
@@ -97,14 +110,23 @@
   style="{style}"
   on:click>
 
-  <slot></slot>
   <div class="button"
     class:primary
     class:secondary
     class:outline
     class:hide>
+
+    <div class="beforeText">
+      <slot name="beforeText"></slot>
+    </div>
+
     {value}
+
+    <div class="afterText" >
+      <slot name="afterText"></slot>
+    </div>
   </div>
+
 
   <div class="hint">{hint}</div>
 </div>
