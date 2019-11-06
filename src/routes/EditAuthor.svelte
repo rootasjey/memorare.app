@@ -6,7 +6,6 @@
     primaryAlt,
   } from '../colors';
 
-  import Avatar     from '../components/Avatar.svelte';
   import Button     from '../components/Button.svelte';
   import CapHeader  from '../components/CapHeader.svelte';
   import Dialog     from '../components/Dialog.svelte';
@@ -163,7 +162,7 @@
 </script>
 
 <style>
-  .avatar {
+  .profile-circle {
     height: 150px;
     width: 150px;
 
@@ -180,21 +179,21 @@
     transition: .3s;
   }
 
-  .avatar:hover {
+  .profile-circle:hover {
     filter: brightness(90%);
     transform: translateY(2px);
     box-shadow: 4px 4px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
     transition: .3s;
   }
 
-  .avatar:active {
+  .profile-circle:active {
     filter: brightness(80%);
     transform: translateY(2px);
     box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
     transition: .3s;
   }
 
-  .avatar__color-bg {
+  .profile-circle__color-bg {
     width: 100%;
     height: 100%;
 
@@ -209,7 +208,7 @@
     z-index: 2;
   }
 
-  .avatar__img {
+  .profile-circle__img {
     width: 100%;
     height: 100%;
 
@@ -233,7 +232,7 @@
 
   }
 
-  .avatar__add {
+  .profile-circle__add {
     font-size: 3em;
     font-weight: 600;
 
@@ -245,7 +244,7 @@
     transition: .3s;
   }
 
-  .avatar:hover .avatar__add {
+  .profile-circle:hover .profile-circle__add {
     opacity: 1;
     transition: .3s;
   }
@@ -471,12 +470,12 @@
       </div>
     {:else if pageStatus === status.completed}
       <div class="edit-author__content">
-        <div class="avatar" on:click={showImgUrlDialog}>
-          <div class="avatar__color-bg"></div>
-          <div class="avatar__img"
+        <div class="profile-circle" on:click={showImgUrlDialog}>
+          <div class="profile-circle__color-bg"></div>
+          <div class="profile-circle__img"
             style="{`background-image: url('${imgUrl}');`}">
           </div>
-          <div class="avatar__add">+</div>
+          <div class="profile-circle__add">+</div>
         </div>
 
         <div class="author-metadata">

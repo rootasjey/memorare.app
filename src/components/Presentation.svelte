@@ -1,7 +1,8 @@
 <script>
   import { navigate } from 'svelte-routing';
 
-  import Avatar from '../components/Avatar.svelte';
+  import ProfileCircle  from '../components/ProfileCircle.svelte';
+  import RectButton     from '../components/RectButton.svelte';
 
   import { client, LIST_AUTHORS } from '../data';
   import { handle } from '../errors';
@@ -10,7 +11,13 @@
   let authors = [];
   let pageStatus = status.idle;
 
-  (async function fetchAuthors() {
+  main();
+
+  function main() {
+    fetchAuthors();
+  }
+
+  async function fetchAuthors() {
     pageStatus = status.loading;
 
     try {
@@ -26,7 +33,7 @@
       handle(error);
       pageStatus = status.error;
     }
-  })();
+  };
 
   function goTo(route) {
     navigate(route);
@@ -38,49 +45,6 @@
 </script>
 
 <style>
-  .accent-color-button {
-    background: white;
-    padding: 15px;
-    margin: auto;
-    border-radius: 2px;
-    cursor: pointer;
-    position: relative;
-
-    display: flex;
-    align-items: center;
-
-    text-transform: uppercase;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-  }
-
-  .accent-color-button:hover {
-    color: white;
-    background: #706fd3;
-
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-
-    transform: translateY(-5px);
-  }
-
-  .accent-color-button > svg {
-    margin-right: 10px;
-    margin-left: 10px;
-  }
-
-  .accent-color-button > svg:first-child {
-    margin-right: 10px;
-  }
-
-  .accent-color-button > svg:last-child {
-    margin-left: 10px;
-  }
-
-  .accent-color-button:hover > svg {
-    fill: white;
-  }
-
   .authors-wall {
     display: flex;
     flex-wrap: wrap;
@@ -392,6 +356,11 @@
     margin-right: 10px;
   }
 
+  .svg-rect-button {
+    position: relative;
+    top: 2px;
+  }
+
   .text-accent-color {
     color: #706fd3;
   }
@@ -430,7 +399,7 @@
          <!-- content here -->
       {:else if pageStatus === status.completed}
          {#each authors as author}
-          <Avatar
+          <ProfileCircle
             name="{author.name}"
             imgUrl="{author.imgUrl}"
             reveal={true}
@@ -461,12 +430,11 @@
       <img class="screenshot-img" src="./img/phone_screenshot.png" alt="idea icon" />
     </div>
 
-    <div class="accent-color-button" style="top: 80px;" on:click={() => goTo('/apps')}>
-      <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
-        <path d="M6 16h-5v6h22v-6h-5v-1h6v8h-24v-8h6v1zm14 2c.552 0 1 .448 1 1s-.448 1-1 1-1-.448-1-1 .448-1 1-1zm-7.5-17v14.884l4.736-5.724.764.645-5.979 7.195-6.021-7.205.765-.644 4.735 5.732v-14.883h1z"/>
-      </svg>
-      <span>Download Now</span>
-    </div>
+    <RectButton value="Download Now" alignSelf="center" >
+      <div slot="beforeText">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#706fd3" viewBox="0 0 24 24"><path d="M15 10h4l-7 8-7-8h4v-10h6v10zm6 9v5h-18v-5h18zm-6 2h-1v1h1v-1zm2 0h-1v1h1v-1zm2 0h-1v1h1v-1z"/></svg>
+      </div>
+    </RectButton>
   </div>
 
   <div class="pres-section all-you-need">
@@ -581,11 +549,10 @@
     <div class="code-card">
     </div>
 
-    <div class="accent-color-button" style="top: 80px;">
-      <span>Get Your API key</span>
-      <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
-        <path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z"/>
-      </svg>
-    </div>
+    <RectButton value="Get Your API Key" alignSelf="center">
+      <div slot="afterText">
+        <svg class="svg-rect-button" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#706fd3" viewBox="0 0 24 24"><path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg>
+      </div>
+    </RectButton>
   </div>
 </div>

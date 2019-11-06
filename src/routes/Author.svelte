@@ -1,12 +1,13 @@
 <script>
   import { navigate } from 'svelte-routing';
 
-  import Avatar from '../components/Avatar.svelte';
 
   import {
     hide as hideHeader,
     show as showHeader
   } from '../components/Header.svelte';
+
+  import ProfileCircle from '../components/ProfileCircle.svelte';
 
   import {
     client,
@@ -203,7 +204,7 @@
     {/if}
 
     <div class="header__content">
-      <Avatar imgUrl="{author.imgUrl}" />
+      <ProfileCircle imgUrl="{author.imgUrl}" />
 
       <div class="header__text">
         <h1 class="header__title">{author.name}</h1>

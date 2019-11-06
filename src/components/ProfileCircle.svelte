@@ -6,7 +6,7 @@
 </script>
 
 <style>
-  .avatar-component {
+  .profile-circle {
     height: 150px;
     width: 150px;
     margin: 10px;
@@ -14,6 +14,7 @@
     border-radius: 50%;
 
     position: relative;
+    top: 0;
     overflow: hidden;
 
     display: flex;
@@ -24,28 +25,35 @@
 
     cursor: pointer;
 
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    transition: .5s;
+    box-shadow: 6px 6px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+    transition: .3s;
   }
 
-  .avatar-component:hover {
+  .profile-circle:hover {
+    top: 2px;
     background-color: #706fd3;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
   }
 
-  .avatar-component:hover .avatar-component__name {
+  .profile-circle:active {
+    top: 4px;
+    background-color: #706fd3;
+    box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+  }
+
+  .profile-circle:hover .profile-circle__name {
     background-color: #706fd3;
     opacity: .5;
     transition: .5s;
   }
 
-  .avatar-component:hover .avatar-component__img {
+  .profile-circle:hover .profile-circle__img {
     background-color: #706fd3;
     opacity: 1;
     transition: .5s;
   }
 
-  .avatar-component__name {
+  .profile-circle__name {
     font-size: 1.2em;
     font-weight: bold;
 
@@ -70,12 +78,12 @@
     transition: .5s;
   }
 
-  .reveal .avatar-component__name {
+  .reveal .profile-circle__name {
     opacity: 1;
     background-color: #eee;
   }
 
-  .avatar-component__img {
+  .profile-circle__img {
     height: 100%;
     width: 100%;
 
@@ -97,14 +105,14 @@
   }
 
     @media (max-width: 380px) {
-    .avatar-component:nth-of-type(1n+4) {
+    .profile-circle:nth-of-type(1n+4) {
       display: none;
     }
   }
 </style>
 
-<div class="avatar-component" class:reveal on:click={onClick}>
-  <div class="avatar-component__img" style="background-image: url('{imgUrl}');"></div>
+<div class="profile-circle" class:reveal on:click={onClick}>
+  <div class="profile-circle__img" style="background-image: url('{imgUrl}');"></div>
 
-  <div class="avatar-component__name">{name ? name : ''}</div>
+  <div class="profile-circle__name">{name ? name : ''}</div>
 </div>
