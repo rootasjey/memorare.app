@@ -39,7 +39,8 @@
     align-items: center;
 
     background-color: white;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.20);
+    box-shadow: 6px 6px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+
     border: 2px solid transparent;
     border-radius: 10px;
 
@@ -48,8 +49,17 @@
   }
 
   .quote:hover {
-    transform: scale(1.050);
-    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.20);
+    transform: translateY(2px);
+    filter: brightness(95%);
+    box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+    transition: .3s;
+  }
+
+  .quote:active,
+  .quote.selected {
+    transform: translateY(4px);
+    filter: brightness(90%);
+    box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
     transition: .3s;
   }
 
