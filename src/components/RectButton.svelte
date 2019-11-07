@@ -75,15 +75,20 @@
   }
 
   .outline {
-    color: #fff;
     background-color: transparent;
-    border: 3px solid #fff;
+    border: 3px solid;
+  }
+
+  .outline.primary {
+    color: #706fd3;
+    background-color: transparent;
+    border: 3px solid;
   }
 
   .outline.secondary {
     color: #f56498;
     background-color: transparent;
-    border: 3px solid #f56498;
+    border: 3px solid;
   }
 
 
