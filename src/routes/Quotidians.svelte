@@ -36,8 +36,9 @@
     if (!canIManageQuotidian) {
       setTimeout(() => {
         navigate('/shallnotpass');
-        return;
       }, 500);
+
+      return;
     }
 
     fetchQuotidians();
