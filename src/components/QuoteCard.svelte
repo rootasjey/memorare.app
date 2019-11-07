@@ -90,7 +90,6 @@
     display: flex;
     width: 100%;
 
-    overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 
