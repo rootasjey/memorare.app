@@ -322,7 +322,7 @@
                 <QuoteCard
                   content="{quote.name}"
                   authorName="{quote.author.name}"
-                  onClick={() => onSelectQuote(quote.id)}
+                  on:click={() => onSelectQuote(quote.id)}
                   on:clickauthor={() => onClickAuthor(quote.author.name)}
                   selected={selectedQuoteId === quote.id}
                   tag="{quote.topics.length > 0 ? quote.topics[0] : ''}">

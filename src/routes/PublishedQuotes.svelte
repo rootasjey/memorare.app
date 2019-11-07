@@ -236,7 +236,7 @@
                 content="{quote.name}"
                 authorName="{quote.author.name}"
                 tag="{quote.topics.length > 0 ? quote.topics[0] : ''}"
-                onClick={() => onSelectQuote(quote.id)}
+                on:click={() => onSelectQuote(quote.id)}
                 selected={selectedQuoteId === quote.id}>
 
                 <div slot="quoteHeaderIcons" class="quote__header__icons__slot">

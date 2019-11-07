@@ -8,7 +8,6 @@
   export let backgroundColor  = '';
   export let color            = '';
   export let content          = '';
-  export let onClick          = () => {};
   export let selected         = false;
   export let tag              = '';
 
@@ -156,7 +155,7 @@
   }
 </style>
 
-<div class="quote" class:selected on:click={onClick} style="{styles}">
+<div class="quote" class:selected on:click style="{styles}">
   <header class="quote__header">
     <div class="quote__header__icons">
       <slot name="quoteHeaderIcons"></slot>

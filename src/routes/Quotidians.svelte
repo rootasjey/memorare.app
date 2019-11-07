@@ -284,7 +284,7 @@
                 color="white"
                 content="{quotidian.quote.name}"
                 authorName="{quotidian.quote.author.name}"
-                onClick={() => onSelectQuote(quotidian.id)}
+                on:click={() => onSelectQuote(quotidian.id)}
                 selected={selectedQuoteId === quotidian.id}
                 tag="{(new Date(quotidian.date)).toLocaleDateString()}">
 
