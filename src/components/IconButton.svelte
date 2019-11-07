@@ -2,7 +2,6 @@
   export let backgroundColor = '#706fd3';
   export let elevation = 0;
   export let margin = '0';
-  export let onClick = () => {};
 
   const elevationClass = {
     0: '',
@@ -72,7 +71,7 @@
   }
 </style>
 
-<div class="{classes}" style={styles} on:click={onClick}>
+<div class="{classes}" style={styles} on:click>
   <slot name="txt"><!-- optional fallback --></slot>
 
   <div class="svg-container">

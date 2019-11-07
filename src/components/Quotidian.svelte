@@ -191,7 +191,7 @@
       <header>
         <IconButton
           margin="5px"
-          onClick={() => onLike(quotidian)}
+          on:click={() => onLike(quotidian)}
           backgroundColor="#f56498"
           elevation={2} >
           <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
@@ -201,7 +201,7 @@
 
         <IconButton
           margin="5px"
-          onClick={() => onShare(quotidian)}
+          on:click={() => onShare(quotidian)}
           backgroundColor="#f56498"
           elevation={2} >
           <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
