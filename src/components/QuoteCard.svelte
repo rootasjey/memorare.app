@@ -4,6 +4,7 @@
   import IconButton   from '../components/IconButton.svelte';
 
   // Props
+  export let authorImg        = '';
   export let authorName       = '';
   export let backgroundColor  = '';
   export let color            = '';
@@ -11,9 +12,11 @@
   export let selected         = false;
   export let tag              = '';
 
-  $: backgroundColorCSS = backgroundColor ? `background-color: ${backgroundColor}`: '';
-  $: colorCSS = color ? `color: ${color}`: '';
-  $: styles = `${backgroundColorCSS}; ${colorCSS}`;
+  let authorImgRule = authorImg ? `background-img: ${authorImg};` : '';
+  let backgroundColorCSS = backgroundColor ? `background-color: ${backgroundColor}`: '';
+  let colorCSS = color ? `color: ${color}`: '';
+
+  let styles = `${backgroundColorCSS}; ${colorCSS}`;
 
   const dispatch = createEventDispatcher();
 
@@ -82,7 +85,7 @@
     transition: .3s;
   }
 
-  .quote__footer__author {
+  .profile-circle {
     align-items: center;
     display: flex;
     width: 100%;
@@ -95,19 +98,43 @@
     transition: .3s;
   }
 
-  .quote__footer__author:hover {
+  .profile-circle:hover {
     color: #f56498;
     transition: .3s;
   }
 
-  .quote__footer__author-img {
+  .profile-circle-img {
     height: 30px;
     width: 30px;
 
     border-radius: 50%;
     background-color: #353b48;
+    background-size: cover;
 
     margin-right: 10px;
+
+    -moz-filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+    -o-filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+    -webkit-filter: grayscale(100%);
+    filter: gray;
+    filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+
+    box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+    transition: .3s;
+  }
+
+  .profile-circle-img:hover {
+    filter: brightness(98%);
+    transform: translateY(1px);
+    box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+    transition: .3s;
+  }
+
+  .profile-circle-img:active {
+    filter: brightness(96%);
+    transform: translateY(2px);
+    box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+    transition: .3s;
   }
 
   .quote__header {
@@ -174,8 +201,8 @@
 
   <div class="quote__footer">
     {#if authorName}
-      <div class="quote__footer__author" on:click={onClickAuthor}>
-          <div class="quote__footer__author-img"></div>
+      <div class="profile-circle" on:click={onClickAuthor}>
+          <div class="profile-circle-img" style="${authorImgRule}"></div>
           <span> {authorName} </span>
       </div>
     {/if}
