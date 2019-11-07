@@ -206,7 +206,10 @@ export const PUBLISHED_QUOTES_ADMIN = gql`
     publishedQuotesAdmin(lang: $lang, limit: $limit, skip: $skip) {
       entries {
         id
-        author { name }
+        author {
+          id
+          name
+        }
         lang
         name
         topics

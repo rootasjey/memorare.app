@@ -29,7 +29,13 @@
 
   $: spinnerVisibility = queryStatus === status.loading ? 'visible' : 'hidden';
 
-  (async function fetchPublishedQuotes() {
+  main();
+
+  function main() {
+    fetchPublishedQuotes();
+  }
+
+  async function fetchPublishedQuotes() {
     queryStatus = status.loading;
 
     try {
@@ -50,7 +56,7 @@
       queryStatus = status.error;
       handle(error);
     }
-  })();
+  }
 
   async function onRefresh() {
     queryStatus = status.loading;
@@ -152,6 +158,10 @@
   function onSelectQuote(id) {
     selectedQuoteId = id;
   }
+
+  function onClickAuthor(id) {
+    navigate(`/author/${id}`);
+  }
 </script>
 
 <style>
@@ -237,6 +247,7 @@
                 authorName="{quote.author.name}"
                 tag="{quote.topics.length > 0 ? quote.topics[0] : ''}"
                 on:click={() => onSelectQuote(quote.id)}
+                on:clickauthor={() => onClickAuthor(quote.author.id)}
                 selected={selectedQuoteId === quote.id}>
 
                 <div slot="quoteHeaderIcons" class="quote__header__icons__slot">
