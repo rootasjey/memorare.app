@@ -198,6 +198,10 @@
   function onSelectQuote(id) {
     selectedQuoteId = id;
   }
+
+  function onClickAuthor(id) {
+    navigate(`/author/${id}`);
+  }
 </script>
 
 <style>
@@ -285,6 +289,7 @@
                 content="{quotidian.quote.name}"
                 authorName="{quotidian.quote.author.name}"
                 on:click={() => onSelectQuote(quotidian.id)}
+                on:clickauthor={() => onClickAuthor(quotidian.quote.author.id)}
                 selected={selectedQuoteId === quotidian.id}
                 tag="{(new Date(quotidian.date)).toLocaleDateString()}">
 

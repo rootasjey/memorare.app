@@ -245,8 +245,8 @@ export const QUOTIDIAN = gql`
       quote {
         author {
           id
-          name
           imgUrl
+          name
         }
         name
         references { name }
@@ -263,7 +263,11 @@ export const QUOTIDIANS = gql`
         date
         quote {
           id
-          author { name }
+          author {
+            id
+            imgUrl
+            name
+          }
           name
         }
       }
