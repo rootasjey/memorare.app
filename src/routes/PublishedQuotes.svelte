@@ -53,6 +53,7 @@
       const response = await client.query({
         query: PUBLISHED_QUOTES_ADMIN,
         variables: { lang: settings.getValue('lang'), limit, skip },
+        fetchPolicy: 'network-only',
       });
 
       publishedQuotes = response.data.publishedQuotesAdmin.entries;
@@ -70,29 +71,9 @@
   }
 
   async function onRefresh() {
-    queryStatus = status.loading;
     skip = 0;
-
-    try {
-      const response = await client.query({
-        query: PUBLISHED_QUOTES_ADMIN,
-        variables: { lang: settings.getValue('lang'), limit, skip },
-        fetchPolicy: 'network-only',
-      });
-
-      publishedQuotes = [];
-
-      const { pagination } = response.data.publishedQuotesAdmin;
-      limit = pagination.limit;
-      skip = pagination.nextSkip;
-
-      publishedQuotes = response.data.publishedQuotesAdmin.entries;
-      queryStatus = status.completed;
-
-    } catch (error) {
-      queryStatus = status.error;
-      handle(error);
-    }
+    selectedQuoteId = -1;
+    main();
   }
 
   async function onDelete(id) {
