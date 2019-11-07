@@ -2,10 +2,10 @@
   import { fly }      from 'svelte/transition';
   import { navigate } from 'svelte-routing';
 
-  import Button       from '../components/Button.svelte';
   import IconButton   from '../components/IconButton.svelte';
   import QuoteCard    from '../components/QuoteCard.svelte';
   import { show }     from '../components/Snackbar.svelte';
+  import RectButton   from '../components/RectButton.svelte';
   import Spinner      from '../components/Spinner.svelte';
   import TextLink     from '../components/TextLink.svelte';
   import { settings } from '../settings';
@@ -227,7 +227,7 @@
       </div>
     {:else if queryStatus === status.completed}
       <div class="content__buttons-container">
-        <Button outlined={true} value="refresh" onClick={() => onRefresh()} />
+        <RectButton outline={true} value="refresh" on:click={onRefresh} />
       </div>
 
       <div class="list-published-quotes">
