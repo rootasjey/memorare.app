@@ -6,7 +6,7 @@
   export let hide       = false;
   export let hint       = '';
   export let margin     = '';
-  export let outline    = false;
+  export let outlined   = false;
   export let primary    = false;
   export let secondary  = false;
   export let value      = '';
@@ -74,18 +74,18 @@
     display: none;
   }
 
-  .outline {
+  .outlined {
     background-color: transparent;
     border: 3px solid;
   }
 
-  .outline.primary {
+  .outlined.primary {
     color: #706fd3;
     background-color: transparent;
     border: 3px solid;
   }
 
-  .outline.secondary {
+  .outlined.secondary {
     color: #f56498;
     background-color: transparent;
     border: 3px solid;
@@ -118,7 +118,7 @@
   <div class="button"
     class:primary
     class:secondary
-    class:outline
+    class:outlined
     class:hide>
 
     <div class="beforeText">

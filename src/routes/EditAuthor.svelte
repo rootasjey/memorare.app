@@ -528,7 +528,7 @@
           if the problem persists.
         </div>
 
-        <RectButton value="Refresh" outline={true} on:click={fetchAuthor} margin="60px 0 0 0" />
+        <RectButton value="Refresh" outlined={true} on:click={fetchAuthor} margin="60px 0 0 0" />
       </div>
     {/if}
   {/if}

@@ -312,7 +312,7 @@
         </div>
       {:else if pageStatus === status.completed}
         <div class="content__buttons-container">
-          <RectButton outline={true} value="refresh" on:click={onRefresh} />
+          <RectButton outlined={true} value="refresh" on:click={onRefresh} />
         </div>
 
         <div class="list-temp-quote">
