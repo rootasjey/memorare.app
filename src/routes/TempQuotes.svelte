@@ -1,9 +1,9 @@
 <script>
   import { navigate } from 'svelte-routing';
 
-  import Button     from '../components/Button.svelte';
   import IconButton from '../components/IconButton.svelte';
   import QuoteCard  from '../components/QuoteCard.svelte';
+  import RectButton from '../components/RectButton.svelte';
   import { show }   from '../components/Snackbar.svelte';
   import Spinner    from '../components/Spinner.svelte';
   import TextLink   from '../components/TextLink.svelte';
@@ -312,7 +312,7 @@
         </div>
       {:else if pageStatus === status.completed}
         <div class="content__buttons-container">
-          <Button outlined={true} value="refresh" onClick={() => onRefresh()} />
+          <RectButton outline={true} value="refresh" on:click={onRefresh} />
         </div>
 
         <div class="list-temp-quote">
