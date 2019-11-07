@@ -323,7 +323,7 @@
                   content="{quote.name}"
                   authorName="{quote.author.name}"
                   onClick={() => onSelectQuote(quote.id)}
-                  onClickAuthor={() => onClickAuthor(quote.author.name)}
+                  on:clickauthor={() => onClickAuthor(quote.author.name)}
                   selected={selectedQuoteId === quote.id}
                   tag="{quote.topics.length > 0 ? quote.topics[0] : ''}">
 

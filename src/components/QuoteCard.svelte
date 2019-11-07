@@ -1,4 +1,5 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
   import { fly }      from 'svelte/transition';
   import IconButton   from '../components/IconButton.svelte';
 
@@ -8,13 +9,18 @@
   export let color            = '';
   export let content          = '';
   export let onClick          = () => {};
-  export let onClickAuthor    = () => {};
   export let selected         = false;
   export let tag              = '';
 
   $: backgroundColorCSS = backgroundColor ? `background-color: ${backgroundColor}`: '';
   $: colorCSS = color ? `color: ${color}`: '';
   $: styles = `${backgroundColorCSS}; ${colorCSS}`;
+
+  const dispatch = createEventDispatcher();
+
+  function onClickAuthor(event) {
+    dispatch('clickauthor', { event });
+  }
 </script>
 
 <style>
