@@ -10,13 +10,15 @@
   export let color            = '';
   export let content          = '';
   export let selected         = false;
+  export let margin           = '';
   export let tag              = '';
 
-  let authorImgRule = authorImg ? `background-img: ${authorImg};` : '';
-  let backgroundColorCSS = backgroundColor ? `background-color: ${backgroundColor}`: '';
-  let colorCSS = color ? `color: ${color}`: '';
+  let authorImgRule       = authorImg ? `background-img: ${authorImg};` : '';
+  let backgroundColorRule  = backgroundColor ? `background-color: ${backgroundColor};`: '';
+  let colorRule            = color ? `color: ${color};`: '';
+  let marginRule          = margin ? `margin: ${margin};` : '' ;
 
-  let styles = `${backgroundColorCSS}; ${colorCSS}`;
+  let style = `${backgroundColorRule} ${colorRule} ${marginRule}`.trim() ;
 
   const dispatch = createEventDispatcher();
 
@@ -191,7 +193,7 @@
   }
 </style>
 
-<div class="quote" class:selected on:click style="{styles}">
+<div class="quote" class:selected on:click style="{style}">
   <header class="quote__header">
     <div class="quote__header__icons">
       <slot name="quoteHeaderIcons"></slot>

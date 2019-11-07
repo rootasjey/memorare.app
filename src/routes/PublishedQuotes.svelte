@@ -237,6 +237,7 @@
               <QuoteCard
                 content="{quote.name}"
                 authorName="{quote.author.name}"
+                margin="20px"
                 tag="{quote.topics.length > 0 ? quote.topics[0] : ''}"
                 on:click={() => onSelectQuote(quote.id)}
                 on:clickauthor={() => onClickAuthor(quote.author.id)}
