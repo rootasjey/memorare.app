@@ -2,6 +2,8 @@
 	import { Route, Router } from 'svelte-routing';
 
 	import { client } 			from './data';
+
+	import FAB							from './components/FAB.svelte';
 	import Footer						from './components/Footer.svelte';
 	import Header 					from './components/Header.svelte';
 	import Snackbar 				from './components/Snackbar.svelte';
@@ -43,6 +45,7 @@
 
 <Router>
 	<div class="background">
+		<FAB />
 		<Header />
 		<Snackbar />
 
