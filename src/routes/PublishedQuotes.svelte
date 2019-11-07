@@ -18,6 +18,7 @@
   } from '../data';
 
   import { handle } from '../errors';
+  import { canI }   from '../settings';
   import { status } from '../utils';
 
   let hasMoreData     = true;
@@ -32,6 +33,16 @@
   main();
 
   function main() {
+    const canIManageQuotes = canI('manageQuote');
+
+    if (!canIManageQuotes) {
+      setTimeout(() => {
+        navigate('/shallnotpass');
+      }, 500);
+
+      return;
+    }
+
     fetchPublishedQuotes();
   }
 

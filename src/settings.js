@@ -94,7 +94,8 @@ export function canI(action = '') {
     matchRight = 'user:proposequote';
 
   } else if (/deleteQuote/ig.test(action) ||
-    /validateQuote/ig.test(action)) {
+    /validateQuote/ig.test(action) ||
+    /manageQuote/ig.test(action)) {
 
     matchRight = 'user:managequote';
 
