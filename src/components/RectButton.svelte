@@ -27,7 +27,6 @@
     display: flex;
     align-items: center;
 
-    min-width: 80px;
     padding: 15px 20px;
 
     color: #706fd3;
