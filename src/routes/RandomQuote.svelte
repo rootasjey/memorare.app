@@ -6,9 +6,9 @@
     RANDOM_QUOTE,
   } from '../data'
 
-  import Button       from '../components/Button.svelte';
   import QuoteCard    from '../components/QuoteCard.svelte';
   import IconButton   from '../components/IconButton.svelte';
+  import RectButton   from '../components/RectButton.svelte';
   import Spinner      from '../components/Spinner.svelte';
   import { handle }   from '../errors';
   import { settings } from '../settings';
@@ -139,7 +139,7 @@
     </div>
 
     <div class="refresh-container">
-      <Button value="Bring me another..." outlined="{true}" onClick={onGetAnother} />
+      <RectButton value="Bring me another..." outlined="{true}" on:click={onGetAnother} />
     </div>
   {/if}
 </div>

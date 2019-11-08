@@ -1,7 +1,7 @@
 <script>
   import { navigate } from 'svelte-routing';
 
-  import Button       from '../components/Button.svelte';
+  import RectButton   from '../components/RectButton.svelte';
   import CapHeader    from '../components/CapHeader.svelte';
   import ConfirmPass  from '../components/ConfirmPass.svelte';
   import Input        from '../components/Input.svelte';
@@ -177,7 +177,7 @@
           </div>
 
           <footer>
-            <Button value="Send me an email" onClick={sendForgetEmail} />
+            <RectButton value="Send me an email" on:click={sendForgetEmail} />
           </footer>
         </div>
       {:else if pageStatus === status.loading}
@@ -246,12 +246,12 @@
           </div>
 
           <footer class="row">
-            <Button value="Cancel"
+            <RectButton value="Cancel"
               secondary={true}
               margin="0 10px"
-              onClick={() => navigate('/')}
+              on:click={() => navigate('/')}
             />
-            <Button value="Confirm" onClick={chooseNewPassword} />
+            <RectButton value="Confirm" onC:cick={chooseNewPassword} />
           </footer>
         </div>
       </div>

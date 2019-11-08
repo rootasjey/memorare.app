@@ -6,7 +6,6 @@
     primaryAlt,
   } from '../colors';
 
-  import Button     from '../components/Button.svelte';
   import CapHeader  from '../components/CapHeader.svelte';
   import Dialog     from '../components/Dialog.svelte';
   import {
