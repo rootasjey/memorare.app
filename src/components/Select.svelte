@@ -80,6 +80,7 @@
     background-color: transparent;
     border: 3px solid #fff;
     color: #fff;
+    font-weight: 700;
   }
 
   .select-component [type=button].round {
