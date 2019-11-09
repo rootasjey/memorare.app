@@ -3,6 +3,8 @@
 
   export let defaultLabel = 'Select your language';
   export let items = [];
+  export let outlined = false;
+  export let round = false;
   export let width = '';
 
   let active = false;
@@ -29,7 +31,6 @@
   .select-component {
     display: block;
     margin: 10px 0 8px 0;
-    min-width: 180px;
 
     padding-bottom: 2px;
     position: relative;
@@ -73,6 +74,16 @@
     top: 4px;
     filter: brightness(90%);
     box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+  }
+
+  .select-component [type=button].outlined {
+    background-color: transparent;
+    border: 3px solid #fff;
+    color: #fff;
+  }
+
+  .select-component [type=button].round {
+    border-radius: 50%;
   }
 
   .select-component ul[role=listbox] {
@@ -125,7 +136,13 @@
 <div class="select-component" class:active
   on:click={onClickComponent}>
   <label for="ul-id">
-    <button type="button" class="ng-binding" style="{widthRule}">
+    <button
+      type="button"
+      class="ng-binding"
+      class:outlined
+      class:round
+      style="{widthRule}">
+
       {activeItem.label}
     </button>
   </label>
