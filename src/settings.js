@@ -90,7 +90,8 @@ export function canI(action = '') {
 
     matchRight = 'user:manageauthor';
 
-  } else if (/proposeQuote/ig.test(action)) {
+  } else if (/proposeQuote/ig.test(action) ||
+    /addQuote/ig.test(action)) {
     matchRight = 'user:proposequote';
 
   } else if (/deleteQuote/ig.test(action) ||
