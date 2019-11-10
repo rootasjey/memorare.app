@@ -41,7 +41,6 @@
 
     color: #fff;
     background-color: transparent;
-    text-align: center;
     text-overflow: ellipsis;
 
     transition: .3s;
