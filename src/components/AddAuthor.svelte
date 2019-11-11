@@ -6,6 +6,7 @@
   import Select           from '../components/Select.svelte';
   import RectButton       from '../components/RectButton.svelte';
   import { primaryAlt }   from '../colors';
+  import { scrollToTop }  from '../utils';
 
   export let autofocus      = false;
   export let authorImgUrl   = '';
@@ -17,7 +18,9 @@
 
   let authorInitialImgUrl = '';
   let domAuthorName;
+  let domAuthorSummary;
   let isAuthorImgDialogActive = false;
+  let show = false;
 
   onMount(() => {
     if (autofocus && domAuthorName) {
@@ -28,6 +31,19 @@
   function onCancelEditAuthorImg() {
     isAuthorImgDialogActive = false;
     authorImgUrl = authorInitialImgUrl;
+  }
+
+  function onClearInput() {
+    authorSummary = '';
+    show = false;
+
+    domAuthorSummary.style.height = '300px';
+    domAuthorSummary.focus();
+    scrollToTop();
+  }
+
+  function onKeyUp(keyEvent) {
+    show = authorSummary.length > 0 ? true : false;
   }
 
   function onOpenAuthorImgDialog() {
@@ -55,6 +71,23 @@
     align-items: center;
 
     margin: 30px 0;
+  }
+
+  .clear-input-icon {
+    display: none;
+    margin: 10px;
+
+    cursor: pointer;
+
+    position: absolute;
+    right: -40px;
+    top: 10px;
+
+    transition: .3s;
+  }
+
+  .clear-input-icon:hover {
+    transform: scale(1.1);
   }
 
   .dialog-title {
@@ -103,6 +136,12 @@
   input.big[type="text"] {
     font-size: 2em;
     font-weight: 700;
+  }
+
+  .input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
   }
 
   .input-list {
@@ -218,10 +257,20 @@
     margin: 30px 0;
   }
 
+  .show {
+    display: block;
+  }
+
   @media screen and (max-width: 570px) {
     .ghost-author-area {
       font-size: 1.5em;
       min-height: 150px;
+      min-width: 400px;
+    }
+
+    .clear-input-icon {
+      top: 0;
+      right: -30px;
     }
   }
 
@@ -234,9 +283,18 @@
     .input-list {
       align-self: auto;
     }
+
+    .clear-input-icon {
+      top: -5px;
+      right: -50px;
+    }
   }
 
   @media screen and (max-width: 350px) {
+    .clear-input-icon {
+      top: -16px;
+    }
+
     .ghost-author-area {
       font-size: 1em;
       min-width: 70%;
@@ -255,13 +313,45 @@
   </div>
 
   <div class="author-metadata">
-    <input bind:this={domAuthorName} type="text" class="big" bind:value="{authorName}" placeholder="Spider-Man...">
-    <input type="text" class="job-input" bind:value="{authorJob}" placeholder="Super-Hero...">
-    <textarea
-      class="ghost-author-area"
-      name="author-summary"
-      oninput='this.style.height = ""; this.style.height = this.scrollHeight + "px"'
-      placeholder="Spider-Man is a fictional superhero created by writer-editor Stan Lee and writer-artist Steve Ditko. He first appeared in the anthology comic book Amazing Fantasy #15 in the Silver Age of Comic Books....">{authorSummary}</textarea>
+    <input
+      bind:this={domAuthorName}
+      type="text"
+      class="big"
+      bind:value="{authorName}"
+      placeholder="Uncle Ben...">
+
+    <input
+      type="text"
+      class="job-input"
+      bind:value="{authorJob}"
+      placeholder="Civilian...">
+
+    <div class="input-container">
+      <textarea
+        bind:this={domAuthorSummary}
+        class="ghost-author-area"
+        name="author-summary"
+        on:keyup={onKeyUp}
+        oninput='this.style.height = ""; this.style.height = this.scrollHeight + "px"'
+        placeholder="Benjamin Franklin Parker, usually called Uncle Ben, is a fictional character appearing in American comic books published by Marvel Comics. He is the husband of May Parker and paternal uncle of Peter Parker (Spider-Man)..."
+        bind:value={authorSummary}/>
+
+      <div
+        class="clear-input-icon"
+        class:show
+        on:click={onClearInput}>
+        <svg
+          width="32"
+          height="32"
+          fill="rgba(0,0,0,0.5)"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill-rule="evenodd"
+          clip-rule="evenodd">
+          <path d="M5.662 23l-5.369-5.365c-.195-.195-.293-.45-.293-.707 0-.256.098-.512.293-.707l14.929-14.928c.195-.194.451-.293.707-.293.255 0 .512.099.707.293l7.071 7.073c.196.195.293.451.293.708 0 .256-.097.511-.293.707l-11.216 11.219h5.514v2h-12.343zm3.657-2l-5.486-5.486-1.419 1.414 4.076 4.072h2.829zm.456-11.429l-4.528 4.528 5.658 5.659 4.527-4.53-5.657-5.657z"/>
+        </svg>
+      </div>
+    </div>
 
     <div class="input-list">
       <FlatInputIcon

@@ -7,7 +7,7 @@
 
   export let autofocus    = false;
   export let defaultLabel = '';
-  export let placeholder  = "With great power, comes great responsibility...";
+  export let placeholder  = "With great power comes great responsibility...";
   export let quoteName    = '';
   export let lang         = '';
 
