@@ -61,6 +61,8 @@
     color: #fff;
     font-size: 3em;
     text-align: center;
+
+    margin-bottom: 50px;
     resize: none;
   }
 
@@ -101,6 +103,31 @@
 
     position: relative;
     top: -30px;
+  }
+
+  @media screen and (max-width: 570px) {
+    .clear-input-icon {
+      top: 5px;
+    }
+
+    .ghost-area {
+      font-size: 2em;
+      min-height: 130px;
+    }
+
+    .select-container {
+      align-self: auto;
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    .clear-input-icon {
+      top: -5px;
+    }
+
+    .ghost-area {
+      font-size: 1.5em;
+    }
   }
 </style>
 
