@@ -217,6 +217,32 @@
     display: flex;
     margin: 30px 0;
   }
+
+  @media screen and (max-width: 570px) {
+    .ghost-author-area {
+      font-size: 1.5em;
+      min-height: 150px;
+    }
+  }
+
+  @media screen and (max-width: 530px) {
+    .ghost-author-area {
+      min-width: 90%;
+      min-height: 250px;
+    }
+
+    .input-list {
+      align-self: auto;
+    }
+  }
+
+  @media screen and (max-width: 350px) {
+    .ghost-author-area {
+      font-size: 1em;
+      min-width: 70%;
+      min-height: 150px;
+    }
+  }
 </style>
 
 <div class="add-author">
