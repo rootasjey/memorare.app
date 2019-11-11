@@ -74,7 +74,7 @@
     text-align: center;
   }
 
-  input[type="text"] {
+  .title-input {
     height: 50px;
     border: 0;
 
@@ -85,16 +85,16 @@
     transition: .3s;
   }
 
-  input[type="text"]:hover {
+  .title-input:hover {
     transform: translateY(1px);
     transition: .3s;
   }
 
-  input[type="text"]::placeholder {
+  .title-input::placeholder {
     color: #eee;
   }
 
-  input.big[type="text"] {
+  .title-input.big {
     font-size: 2em;
     font-weight: 700;
   }
@@ -197,6 +197,18 @@
     display: flex;
     margin: 30px 0;
   }
+
+  @media screen and (max-width: 450px) {
+    .title-input.big {
+      font-size: 1.5em;
+    }
+  }
+
+  @media screen and (max-width: 350px) {
+    .title-input.big {
+      max-width: 80%;
+    }
+  }
 </style>
 
 <div class="add-reference">
@@ -209,7 +221,12 @@
   </div>
 
   <div class="ref-metadata">
-    <input bind:this={domRefTitle} type="text" class="big" bind:value="{refName}" placeholder="Spider-Man (2002 film)...">
+    <input
+      bind:this={domRefTitle}
+      type="text"
+      class="title-input big"
+      bind:value="{refName}"
+      placeholder="Spider-Man (2002 film)..."/>
 
     <div class="input-list">
       <FlatInputIcon
