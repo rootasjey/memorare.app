@@ -24,11 +24,21 @@
     top: ${top};
   `;
 
-  (async function fetchQuotidian() {
+  main();
+
+  function main() {
+    fetchQuotidian();
+  }
+
+  async function fetchQuotidian() {
     pageStatus = status.loading;
 
     try {
-      const response = await client.query({ query: QUOTIDIAN });
+      const response = await client.query({
+        query: QUOTIDIAN,
+        fetchPolicy: 'network-only',
+      });
+
       quotidian = response.data.quotidian;
       pageStatus = status.completed;
 
@@ -36,13 +46,13 @@
         quotidian.quote.author.imgUrl :
         '/img/user-icon.png';
 
-    bgImg = `background-image: url('${authorImgUrl}');`;
+      bgImg = `background-image: url('${authorImgUrl}');`;
 
     } catch (error) {
       pageStatus = status.error;
-
+      handle(error);
     }
-  })();
+  };
 
   async function onLike(quote) {
     if (!settings.getValue('id')) {
@@ -58,11 +68,11 @@
       return;
     }
 
-    console.log(`like quote ${quote}`);
+    // console.log(`like quote ${quote}`);
   }
 
   async function onShare(quote) {
-    console.log('show share ui');
+    // console.log('show share ui');
   }
 
   function onClickAuthor() {
@@ -137,7 +147,6 @@
     height: 30px;
 
     background-color: #fff;
-    border: 1px solid #fff;
     border-radius: 50%;
     background-size: cover;
 
