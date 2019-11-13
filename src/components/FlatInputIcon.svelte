@@ -20,6 +20,11 @@
   function _onKeyUp(event) {
     if (event.keyCode === 13) {
       dispatch('enter', { event });
+      return;
+    }
+
+    if (event.keyCode === 27) {
+      dispatch('escape', { event });
     }
   }
 </script>
