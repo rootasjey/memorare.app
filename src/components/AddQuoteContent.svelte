@@ -1,5 +1,8 @@
 <script>
-  import { onMount }      from 'svelte';
+  import {
+    createEventDispatcher,
+    onMount,
+  } from 'svelte';
 
   import Select           from '../components/Select.svelte';
   import { settings }     from '../settings';
@@ -19,6 +22,8 @@
   let domInput;
   let show = false;
 
+  const dispatch = createEventDispatcher();
+
   onMount(() => {
     if (autofocus && domInput) {
       domInput.focus();
@@ -34,8 +39,21 @@
     scrollToTop();
   }
 
-  function onKeyUp(keyEvent) {
+  function onKeyUp(keyboardEvent) {
     show = quoteName.length > 0 ? true : false;
+
+    if (keyboardEvent.keyCode === 13 &&
+      !keyboardEvent.shiftKey) {
+
+      quoteName = quoteName.trim();
+
+      dispatch('enter', { event: keyboardEvent });
+      return;
+    }
+
+    if (keyboardEvent.keyCode === 27) {
+      dispatch('escape', { event: keyboardEvent });
+    }
   }
 
   function onSelectLang(event) {
