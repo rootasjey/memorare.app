@@ -1,5 +1,9 @@
 <script>
-  import { onMount } from 'svelte';
+  import {
+    createEventDispatcher,
+    onMount,
+  } from 'svelte';
+
   import { fly } from 'svelte/transition';
 
   export let autofocus    = false;
@@ -14,6 +18,8 @@
 
   let marginRule = margin ? `margin: ${margin};` : '';
   let style = `${marginRule}`.trim();
+
+  const dispatch = createEventDispatcher();
 
   onMount(() => {
     if (autofocus && domInput) {
@@ -41,11 +47,21 @@
     tagValue = name;
   }
 
-  function onKeyup(keyEvent) {
-    if (keyEvent.keyCode === 186 || keyEvent.keyCode === 188 ||
-        keyEvent.keyCode === 9 || keyEvent.keyCode === 13) {
+  function onKeyUp(keyboardEvent) {
+    const { keyCode } = keyboardEvent;
+
+    if (keyCode === 186 || keyCode === 188 ||
+        keyCode === 9 || keyCode === 13) {
 
         onAddTag(tagValue);
+    }
+
+    if (keyCode === 13 && tagValue.length === 0) {
+      dispatch('enter', { event: keyboardEvent });
+    }
+
+    if (keyCode === 27) {
+      dispatch('escape',{ event: keyboardEvent });
     }
 
     show = tagValue.length > 0 ? true : false;
@@ -238,7 +254,7 @@
       class:big
       bind:value={tagValue}
       placeholder="{placeholder}"
-      on:keyup={onKeyup} />
+      on:keyup={onKeyUp} />
 
     <div class="clear-input-icon" class:show on:click={onClearInput}>
       <svg
