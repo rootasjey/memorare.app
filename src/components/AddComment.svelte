@@ -1,5 +1,8 @@
 <script>
-  import { onMount }      from 'svelte';
+  import {
+    createEventDispatcher,
+    onMount,
+  } from 'svelte';
 
   import { scrollToTop }  from '../utils';
 
@@ -10,6 +13,8 @@
 
   let domInput;
   let show = false;
+
+  const dispatch = createEventDispatcher();
 
   onMount(() => {
     if (autofocus && domInput) {
@@ -26,8 +31,20 @@
     scrollToTop();
   }
 
-  function onKeyUp(keyEvent) {
+  function onKeyUp(keyboardEvent) {
     show = inputValue.length > 0 ? true : false;
+
+    const { keyCode } = keyboardEvent;
+
+    if (keyCode === 13 && !keyboardEvent.shiftKey) {
+      inputValue = inputValue.trim();
+      dispatch('enter', { event: keyboardEvent });
+      return;
+    }
+
+    if (keyCode === 27) {
+      dispatch('escape', { event: keyboardEvent });
+    }
   }
 </script>
 
