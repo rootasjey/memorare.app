@@ -1,5 +1,8 @@
 <script>
-  import { onMount } from 'svelte';
+  import {
+    createEventDispatcher,
+    onMount,
+  } from 'svelte';
 
   import Dialog           from '../components/Dialog.svelte';
   import FlatInputIcon    from '../components/FlatInputIcon.svelte';
@@ -22,6 +25,8 @@
   let isAuthorImgDialogActive = false;
   let show = false;
 
+  const dispatch = createEventDispatcher();
+
   onMount(() => {
     if (autofocus && domAuthorName) {
       domAuthorName.focus();
@@ -42,8 +47,39 @@
     scrollToTop();
   }
 
-  function onKeyUp(keyEvent) {
+  function onEnter(keyboardEvent) {
+    dispatch('enter', { event: keyboardEvent });
+  }
+
+  function onEscape(keyboardEvent) {
+    dispatch('escape', { event: keyboardEvent });
+  }
+
+  function onKeyUp(keyboardEvent) {
     show = authorSummary.length > 0 ? true : false;
+
+    if (keyboardEvent.keyCode === 13) {
+      dispatch('enter', { event: keyboardEvent });
+      return;
+    }
+
+    if (keyboardEvent.keyCode === 27) {
+      dispatch('escape', { event: keyboardEvent });
+    }
+  }
+
+  function onKeyUpTextArea(keyboardEvent) {
+    show = authorSummary.length > 0 ? true : false;
+
+    if (keyboardEvent.keyCode === 13 && !keyboardEvent.shiftKey) {
+      authorSummary = authorSummary.trim();
+      dispatch('enter', { event: keyboardEvent });
+      return;
+    }
+
+    if (keyboardEvent.keyCode === 27) {
+      dispatch('escape', { event: keyboardEvent });
+    }
   }
 
   function onOpenAuthorImgDialog() {
@@ -55,7 +91,6 @@
     isAuthorImgDialogActive = false;
     authorInitialImgUrl = authorImgUrl;
   }
-
 </script>
 
 <style>
@@ -318,11 +353,13 @@
       type="text"
       class="big"
       bind:value="{authorName}"
+      on:keyup={onKeyUp}
       placeholder="Uncle Ben...">
 
     <input
       type="text"
       class="job-input"
+      on:keyup={onKeyUp}
       bind:value="{authorJob}"
       placeholder="Civilian...">
 
@@ -331,7 +368,7 @@
         bind:this={domAuthorSummary}
         class="ghost-author-area"
         name="author-summary"
-        on:keyup={onKeyUp}
+        on:keyup={onKeyUpTextArea}
         oninput='this.style.height = ""; this.style.height = this.scrollHeight + "px"'
         placeholder="Benjamin Franklin Parker, usually called Uncle Ben, is a fictional character appearing in American comic books published by Marvel Comics. He is the husband of May Parker and paternal uncle of Peter Parker (Spider-Man)..."
         bind:value={authorSummary}/>
@@ -356,6 +393,8 @@
     <div class="input-list">
       <FlatInputIcon
         bind:value="{authorWikiUrl}"
+        on:enter={onEnter}
+        on:escape={onEscape}
         placeholder="Add a Wikipedia URL...">
 
         <div slot="icon">
@@ -369,6 +408,8 @@
 
       <FlatInputIcon
         bind:value="{authorUrl}"
+        on:enter={onEnter}
+        on:escape={onEscape}
         placeholder="Add a website URL...">
 
         <div slot="icon">
