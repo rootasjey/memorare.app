@@ -1,5 +1,8 @@
 <script>
-  import { onMount }      from 'svelte';
+  import {
+    createEventDispatcher,
+    onMount,
+  } from 'svelte';
 
   import Dialog           from '../components/Dialog.svelte';
   import FlatInputIcon    from '../components/FlatInputIcon.svelte';
@@ -28,6 +31,8 @@
     { label: 'FR', value: 'fr' },
   ];
 
+  const dispatch = createEventDispatcher();
+
   onMount(() => {
     if (autofocus && domRefTitle) {
       domRefTitle.focus();
@@ -40,14 +45,33 @@
     canIManageQuote = canI('manageQuote');
   }
 
-  function onOpenRefImgDialog() {
-    isRefImgDialogActive = true;
-    refInitialImgUrl = refImgUrl;
-  }
-
   function onCancelEditRefImg() {
     isRefImgDialogActive = false;
     refImgUrl = refInitialImgUrl;
+  }
+
+  function onEnter(keyboardEvent) {
+    dispatch('enter', { event: keyboardEvent });
+  }
+
+  function onEscape(keyboardEvent) {
+    dispatch('escape', { event: keyboardEvent });
+  }
+
+  function onKeyUp(keyboardEvent) {
+    if (keyboardEvent.keyCode === 13) {
+      dispatch('enter', { event: keyboardEvent });
+      return;
+    }
+
+    if (keyboardEvent.keyCode === 27) {
+      dispatch('escape', { event: keyboardEvent });
+    }
+  }
+
+  function onOpenRefImgDialog() {
+    isRefImgDialogActive = true;
+    refInitialImgUrl = refImgUrl;
   }
 
   function onSaveRefImg() {
@@ -226,12 +250,16 @@
       type="text"
       class="title-input big"
       bind:value="{refName}"
-      placeholder="Spider-Man (2002 film)..."/>
+      placeholder="Spider-Man (2002 film)..."
+      on:keyup={onKeyUp}
+    />
 
     <div class="input-list">
       <FlatInputIcon
         bind:value="{refUrl}"
-        placeholder="Add an URL...">
+        placeholder="Add an URL..."
+        on:enter={onEnter}
+        on:escape={onEscape}>
 
         <div slot="icon">
           {#if refUrl}
@@ -245,7 +273,9 @@
       {#if canIManageQuote}
         <FlatInputIcon
           bind:value="{refPromoUrl}"
-          placeholder="Add an affiliated URL...">
+          placeholder="Add an affiliated URL..."
+          on:enter={onEnter}
+          on:escape={onEscape}>
 
           <div slot="icon">
             {#if refPromoUrl}
