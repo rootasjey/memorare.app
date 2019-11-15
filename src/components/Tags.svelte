@@ -50,14 +50,15 @@
   function onKeyUp(keyboardEvent) {
     const { keyCode } = keyboardEvent;
 
+    if (keyCode === 13 && tagValue.length === 0) {
+      dispatch('enter', { event: keyboardEvent });
+      return;
+    }
+
     if (keyCode === 186 || keyCode === 188 ||
         keyCode === 9 || keyCode === 13) {
 
         onAddTag(tagValue);
-    }
-
-    if (keyCode === 13 && tagValue.length === 0) {
-      dispatch('enter', { event: keyboardEvent });
     }
 
     if (keyCode === 27) {
