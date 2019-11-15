@@ -18,13 +18,13 @@
 
     if (!domHeader) {
       setTimeout(() => {
-        hideAsync();
+        hideHeaderAsync();
       }, 200);
 
       return;
     }
 
-    hide();
+    hideHeader();
   }
 
   export function showHeader() {
