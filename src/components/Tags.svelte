@@ -276,7 +276,7 @@
       <div
         class="tag"
         on:click={(event) => onEditTag(tag, event)}
-        transition:fly="{{ y: 10, duration: 500 }}">
+        in:fly="{{ y: 10, duration: 500 }}">
 
         <div class="tag-name"> {tag} </div>
 
