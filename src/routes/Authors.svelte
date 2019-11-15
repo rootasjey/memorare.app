@@ -277,7 +277,7 @@
       <div class="author-card">
         <div class="author-card__bg" on:click={() => onClickAuthor(author.id)}></div>
         <div class="author-card__img"
-          style="{`background-image: url('${author.imgUrl ? author.imgUrl : '/img/user-icon.png'}');`}">
+          style="{`background-image: url('${author.imgUrl ? author.imgUrl : '/img/monk.png'}');`}">
         </div>
 
         <div class="author-card__content">
