@@ -6,13 +6,9 @@
     primaryAlt,
   } from '../colors';
 
-  import CapHeader  from '../components/CapHeader.svelte';
-  import Dialog     from '../components/Dialog.svelte';
-  import {
-    hide as hideHeader,
-    hideAsync as hideHeaderAsync,
-    show as showHeader
-  } from '../components/Header.svelte';
+  import CapHeader      from '../components/CapHeader.svelte';
+  import Dialog         from '../components/Dialog.svelte';
+  import { hideHeaderAsync, showHeader } from '../components/Header.svelte';
 
   import FlatInputIcon  from '../components/FlatInputIcon.svelte';
   import RectButton     from '../components/RectButton.svelte';

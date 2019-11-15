@@ -4,14 +4,14 @@
   let attempts = 0;
   let maxAttempts = 10;
 
-  export function hide() {
+  export function hideHeader() {
     if (!domHeader) { return; }
     hidden = true; // doesn't toggle class on dom (?)
     domHeader.classList.add('hidden');
     attempts = 0;
   }
 
-  export function hideAsync() {
+  export function hideHeaderAsync() {
     if (attempts > maxAttempts) { return; }
 
     attempts++;
@@ -27,7 +27,7 @@
     hide();
   }
 
-  export function show() {
+  export function showHeader() {
     if (!domHeader) { return; }
     hidden = false; // doesn't toggle class on dom (?)
     domHeader.classList.remove('hidden');

@@ -12,10 +12,7 @@
   import Tags             from '../components/Tags.svelte';
   import TextLink         from '../components/TextLink.svelte';
 
-  import {
-    hideAsync as hideHeaderAsync,
-    show as showHeader
-  } from '../components/Header.svelte';
+  import { hideHeaderAsync, showHeader } from '../components/Header.svelte';
 
   import RectButton  from '../components/RectButton.svelte';
 

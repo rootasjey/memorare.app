@@ -1,12 +1,7 @@
 <script>
   import { navigate } from 'svelte-routing';
 
-
-  import {
-    hide as hideHeader,
-    show as showHeader
-  } from '../components/Header.svelte';
-
+  import { hideHeader, showHeader } from '../components/Header.svelte';
   import ProfileCircle from '../components/ProfileCircle.svelte';
 
   import {
