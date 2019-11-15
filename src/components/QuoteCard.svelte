@@ -22,6 +22,8 @@
 
   const dispatch = createEventDispatcher();
 
+  content = content.length > 90 ? `${content.substr(0, 90)}...`: content;
+
   function onClickAuthor(event) {
     dispatch('clickauthor', { event });
   }
@@ -70,12 +72,13 @@
   }
 
   .quote__content {
-    text-align: center;
     font-size: 1.5em;
     font-weight: 300;
+    line-height: var(--lh);
+    text-align: center;
 
-    max-height: 250px;
-    overflow-y: auto;
+    max-height: calc(var(--lh) * var(--max-lines));
+    overflow: hidden;
 
     padding-top: 10px;
   }
