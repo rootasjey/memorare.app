@@ -28,7 +28,17 @@
     if (autofocus && domInput) {
       domInput.focus();
     }
+
+    if (quoteName) {
+      setGhostAreaHeight();
+      show = true;
+    }
   });
+
+
+  function setGhostAreaHeight() {
+    domInput.style.height = `${400 * Math.floor(quoteName.length / 84)}px`;
+  }
 
   function onClearInput() {
     quoteName = '';
