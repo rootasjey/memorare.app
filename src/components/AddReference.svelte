@@ -11,6 +11,7 @@
 
   import { primaryAlt }   from '../colors';
   import { canI }         from '../settings';
+  import { scrollToTop }  from '../utils';
 
   export let defaultLabel = '';
 
@@ -18,13 +19,18 @@
   export let refImgUrl    = '';
   export let refLang      = '';
   export let refName      = '';
-  export let refUrl       = '';
   export let refPromoUrl  = '';
+  export let refSummary   = '';
+  export let refType      = '';
+  export let refSubType   = '';
+  export let refUrl       = '';
 
   let canIManageQuote = false;
+  let domRefSummary;
   let domRefTitle;
   let isRefImgDialogActive = false;
   let refInitialImgUrl = '';
+  let show = false;
 
   const selectItems = [
     { label: 'EN', value: 'en' },
@@ -50,6 +56,15 @@
     refImgUrl = refInitialImgUrl;
   }
 
+  function onClearInput() {
+    refSummary = '';
+    show = false;
+
+    domRefSummary.style.height = '300px';
+    domRefSummary.focus();
+    scrollToTop();
+  }
+
   function onEnter(keyboardEvent) {
     dispatch('enter', { event: keyboardEvent });
   }
@@ -60,6 +75,20 @@
 
   function onKeyUp(keyboardEvent) {
     if (keyboardEvent.keyCode === 13) {
+      dispatch('enter', { event: keyboardEvent });
+      return;
+    }
+
+    if (keyboardEvent.keyCode === 27) {
+      dispatch('escape', { event: keyboardEvent });
+    }
+  }
+
+  function onKeyUpTextArea(keyboardEvent) {
+    show = refSummary.length > 0 ? true : false;
+
+    if (keyboardEvent.keyCode === 13 && !keyboardEvent.shiftKey) {
+      refSummary = refSummary.trim();
       dispatch('enter', { event: keyboardEvent });
       return;
     }
@@ -93,9 +122,50 @@
     align-items: center;
   }
 
+  .clear-input-icon {
+    display: none;
+    margin: 10px;
+
+    cursor: pointer;
+
+    position: absolute;
+    right: -40px;
+    top: 10px;
+
+    transition: .3s;
+  }
+
+  .clear-input-icon:hover {
+    transform: scale(1.1);
+  }
+
   .dialog-title {
     color: #fff;
     text-align: center;
+  }
+
+  .ghost-text-area {
+    min-width: 500px;
+    min-height: 240px;
+
+    background-color: transparent;
+    border: 0;
+
+    color: #fff;
+    font-size: 2em;
+    text-align: center;
+    resize: none;
+  }
+
+  .ghost-text-area::placeholder {
+    color: #eee;
+    opacity: .8;
+  }
+
+  .input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
   }
 
   .title-input {
@@ -222,6 +292,35 @@
     margin: 30px 0;
   }
 
+  @media screen and (max-width: 570px) {
+    .ghost-text-area {
+      font-size: 1.5em;
+      min-height: 150px;
+      min-width: 400px;
+    }
+
+    .clear-input-icon {
+      top: 0;
+      right: -30px;
+    }
+  }
+
+  @media screen and (max-width: 530px) {
+    .ghost-text-area {
+      min-width: 90%;
+      min-height: 250px;
+    }
+
+    .input-list {
+      align-self: auto;
+    }
+
+    .clear-input-icon {
+      top: -5px;
+      right: -50px;
+    }
+  }
+
   @media screen and (max-width: 450px) {
     .title-input.big {
       font-size: 1.5em;
@@ -229,9 +328,20 @@
   }
 
   @media screen and (max-width: 350px) {
+    .clear-input-icon {
+      top: -16px;
+    }
+
+    .ghost-text-area {
+      font-size: 1em;
+      min-width: 70%;
+      min-height: 150px;
+    }
+
     .title-input.big {
       max-width: 80%;
     }
+
   }
 </style>
 
@@ -253,6 +363,50 @@
       placeholder="Spider-Man (2002 film)..."
       on:keyup={onKeyUp}
     />
+
+    <input
+      type="text"
+      class="title-input"
+      bind:value={refType}
+      placeholder="Film..."
+      on:keyup={onKeyUp}
+    />
+
+    <input
+      type="text"
+      style="position: relative; top: -25px;"
+      class="title-input"
+      bind:value={refSubType}
+      placeholder="American superhero film..."
+      on:keyup={onKeyUp}
+    />
+
+    <div class="input-container">
+      <textarea
+        bind:this={domRefSummary}
+        class="ghost-text-area"
+        name="ref-summary"
+        on:keyup={onKeyUpTextArea}
+        oninput='this.style.height = ""; this.style.height = this.scrollHeight + "px"'
+        placeholder="Spider-Man is a 2002 American superhero film based on the Marvel Comics character of the same name..."
+        bind:value={refSummary}/>
+
+      <div
+        class="clear-input-icon"
+        class:show
+        on:click={onClearInput}>
+        <svg
+          width="32"
+          height="32"
+          fill="rgba(0,0,0,0.5)"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill-rule="evenodd"
+          clip-rule="evenodd">
+          <path d="M5.662 23l-5.369-5.365c-.195-.195-.293-.45-.293-.707 0-.256.098-.512.293-.707l14.929-14.928c.195-.194.451-.293.707-.293.255 0 .512.099.707.293l7.071 7.073c.196.195.293.451.293.708 0 .256-.097.511-.293.707l-11.216 11.219h5.514v2h-12.343zm3.657-2l-5.486-5.486-1.419 1.414 4.076 4.072h2.829zm.456-11.429l-4.528 4.528 5.658 5.659 4.527-4.53-5.657-5.657z"/>
+        </svg>
+      </div>
+    </div>
 
     <div class="input-list">
       <FlatInputIcon
