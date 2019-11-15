@@ -126,7 +126,7 @@
       <div class="verify-email__content">
         <h1>Your email is now verified :)</h1>
         <span>You'll be redirected in a few moment.</span>
-        <TextLink text="Bring me to the welcome page" margin="0" />
+        <TextLink text="Bring me to the welcome page" margin="0" on:click={() => onGotoWelcomePage()} />
       </div>
     </div>
   {:else}
