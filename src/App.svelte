@@ -10,6 +10,7 @@
 
 	import AccountSettings	from './routes/AccountSettings.svelte';
 	import AddQuote					from './routes/AddQuote.svelte';
+	import AddQuote2				from './routes/AddQuote2.svelte';
 	import Apps 						from './routes/Apps.svelte';
 	import Author 					from './routes/Author.svelte';
 	import Authors 					from './routes/Authors.svelte';
@@ -52,7 +53,7 @@
 		<div class="content">
 			<Route path="/" component="{Home}" />
 			<Route path="/accountsettings" component="{AccountSettings}" />
-			<Route path="/add/quote" component="{AddQuote}" />
+			<Route path="/add/quote" component="{AddQuote2}" />
 			<Route path="/admin/tempquotes" component="{TempQuotes}" />
 			<Route path="/admin/publishedquotes" component="{PublishedQuotes}" />
 			<Route path="/admin/quotidians" component="{Quotidians}" />
@@ -64,7 +65,7 @@
 				<EditAuthor id={params.id} />
 			</Route>
 			<Route path="/edit/quote/:id" let:params>
-				<AddQuote id="{params.id}" />
+				<AddQuote2 id="{params.id}" />
 			</Route>
 			<Route path="/authors" component="{Authors}" />
 			<Route path="/forget/password" component="{ForgetPassword}" />
