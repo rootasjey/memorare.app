@@ -129,7 +129,7 @@
         </div>
       </QuoteCard>
 
-      <TextLink text="Go back on track" onClick={goToHome} />
+      <TextLink text="Go back on track" on:click={goToHome} />
     {:else}
       <h3>Error</h3>
       <p>There was an error while fetching a random quote.</p>

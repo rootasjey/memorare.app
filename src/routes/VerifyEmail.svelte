@@ -141,7 +141,7 @@
           Check your spam folder as sometimes the way is paved with wrong signs.
         </p>
 
-        <TextLink text="{textLinkValue}" margin="0" onClick={onResendEmail} disabled={emailSent} />
+        <TextLink text="{textLinkValue}" margin="0" on:click={onResendEmail} disabled={emailSent} />
       </div>
     </div>
   {/if}

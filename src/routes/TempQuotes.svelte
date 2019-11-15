@@ -374,7 +374,7 @@
 
           {#if hasMoreData}
             <div class="list-temp-quote__footer">
-              <TextLink text="Load more..." onClick={onLoadMore} />
+              <TextLink text="Load more..." on:click={onLoadMore} />
             </div>
           {/if}
         </div>

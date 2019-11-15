@@ -446,12 +446,12 @@
       {#if isSavingCompleted}
         <div class="txt">The author <b>{name}</b> has been successfully updated.</div>
         <div class="txt">
-          You can <TextLink text="go back" color="rgba(0,0,0, .5)" fontSize="1em" onClick={goBack} />
+          You can <TextLink text="go back" color="rgba(0,0,0, .5)" fontSize="1em" on:click={goBack} />
           or <TextLink
             text="go to the authors list"
             color="rgba(0,0,0, .5)"
             fontSize="1em"
-            onClick={goToAuthors} /> (or whatever).
+            on:click={goToAuthors} /> (or whatever).
         </div>
       {:else}
         <div class="txt">Saving data about <b>{name}</b>...</div>

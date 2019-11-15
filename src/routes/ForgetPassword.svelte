@@ -196,7 +196,7 @@
         <div>
           <span>If the email address you entered is valid, you should soon receive a message in your inbox.</span>
           <p>Look into your spam folder if nothing comes in your inbox.</p>
-          <TextLink text="Re-send email" onClick={sendForgetEmail}/>
+          <TextLink text="Re-send email" on:click={sendForgetEmail}/>
         </div>
       {:else}
         <div>
@@ -211,7 +211,7 @@
           <span>Please refresh the page and try again</span>
         </div>
 
-        <TextLink text="Refresh" fontSize="1em" margin="10px 0" onClick={onRefresh}/>
+        <TextLink text="Refresh" fontSize="1em" margin="10px 0" on:click={onRefresh}/>
       {/if}
     </div>
   {:else}
@@ -271,7 +271,7 @@
 
         <div>
           <p>You can now connect with your new password.</p>
-          <TextLink text="Go to login page" onClick={() => navigate('/signin')}/>
+          <TextLink text="Go to login page" on:click={() => navigate('/signin')}/>
         </div>
       </div>
     {:else}
@@ -286,7 +286,7 @@
           <span>Please refresh the page and try again or contact the support.</span>
         </div>
 
-        <TextLink text="Refresh" fontSize="1em" margin="10px 0" onClick={onRefresh}/>
+        <TextLink text="Refresh" fontSize="1em" margin="10px 0" on:click={onRefresh}/>
       </div>
     {/if}
 

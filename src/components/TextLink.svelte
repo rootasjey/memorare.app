@@ -3,7 +3,6 @@
   export let disabled = false;
   export let fontSize = '.8em';
   export let margin   = '';
-  export let onClick  = () => {}
   export let text     = '';
 
   let classes = 'text-link';
@@ -65,6 +64,6 @@
 
 </style>
 
-<div class="{classes}" style="{styles}" on:click={onClick}>
+<div class="{classes}" style="{styles}" on:click>
   <span>{text}</span>
 </div>

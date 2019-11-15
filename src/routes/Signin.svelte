@@ -237,7 +237,7 @@
 
       <TextLink text="I forgot my password ?"
         margin="-10px 0 20px 0"
-        onClick={() => navigate('/forget/password')}
+        on:click={() => navigate('/forget/password')}
       />
 
       <br>
@@ -247,7 +247,7 @@
 
       <button class="action-button" on:click={onSignin}>Sign In</button>
 
-      <TextLink text="I don't have an account ?" margin="0 auto" onClick={toggleFormType} />
+      <TextLink text="I don't have an account ?" margin="0 auto" on:click={toggleFormType} />
     </div>
   {:else}
       <div class="form form-signup" transition:fly="{{ y: 20, duration: 250 }}">
@@ -276,7 +276,7 @@
 
         <button class="action-button" on:click={onSignup}>Sign Up</button>
 
-        <TextLink text="I already have an account ?" margin="0 auto" onClick={toggleFormType} />
+        <TextLink text="I already have an account ?" margin="0 auto" on:click={toggleFormType} />
       </div>
   {/if}
 </div>
