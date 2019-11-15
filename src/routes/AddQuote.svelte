@@ -63,6 +63,8 @@
   let canIManageQuote = false;
   let defaultLabel = lang ? lang.toUpperCase() : '';
   let pageStatus = status.idle;
+
+  let sendButtonContent = id ? 'Save' : 'Propose';
   let sendingMsg = id ? 'Saving your changes...' : 'Sending your new quote...';
 
   main();
@@ -444,7 +446,7 @@
 
   {:else}
     <div class="skip-and-propose">
-      <TextLink text="Propose" fontSize="1em" color="rgba(255,255,255, .7)" on:click={onProposeQuote} />
+      <TextLink text="{sendButtonContent}" fontSize="1em" color="rgba(255,255,255, .7)" on:click={onProposeQuote} />
     </div>
 
     <div class="dot-marker">
@@ -554,7 +556,7 @@
 
         <div class="row-buttons">
           <RectButton value="Previous" on:click={onGoToPreviousStep} secondary={true} hint="Or press Escape" />
-          <RectButton value="Propose" on:click={onProposeQuote} />
+          <RectButton value="{sendButtonContent}" on:click={onProposeQuote} />
         </div>
       </div>
     {/if}
