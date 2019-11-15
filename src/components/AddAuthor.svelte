@@ -130,7 +130,7 @@
     text-align: center;
   }
 
-  .ghost-author-area {
+  .ghost-text-area {
     min-width: 500px;
     min-height: 300px;
 
@@ -143,7 +143,7 @@
     resize: none;
   }
 
-  .ghost-author-area::placeholder {
+  .ghost-text-area::placeholder {
     color: #eee;
     opacity: .8;
   }
@@ -297,7 +297,7 @@
   }
 
   @media screen and (max-width: 570px) {
-    .ghost-author-area {
+    .ghost-text-area {
       font-size: 1.5em;
       min-height: 150px;
       min-width: 400px;
@@ -310,7 +310,7 @@
   }
 
   @media screen and (max-width: 530px) {
-    .ghost-author-area {
+    .ghost-text-area {
       min-width: 90%;
       min-height: 250px;
     }
@@ -330,7 +330,7 @@
       top: -16px;
     }
 
-    .ghost-author-area {
+    .ghost-text-area {
       font-size: 1em;
       min-width: 70%;
       min-height: 150px;
@@ -366,7 +366,7 @@
     <div class="input-container">
       <textarea
         bind:this={domAuthorSummary}
-        class="ghost-author-area"
+        class="ghost-text-area"
         name="author-summary"
         on:keyup={onKeyUpTextArea}
         oninput='this.style.height = ""; this.style.height = this.scrollHeight + "px"'
