@@ -131,6 +131,10 @@
     font-weight: 700;
   }
 
+  .select-component [type=button].outlined:focus {
+    border-color: #f56098;
+  }
+
   .select-component [type=button].round {
     border-radius: 50%;
   }
