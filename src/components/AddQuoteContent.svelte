@@ -191,6 +191,8 @@
   <div class="select-container">
     <Select
         defaultLabel={defaultLabel}
+        width="70px"
+        height="70px"
         items={selectItems}
         outlined={true}
         on:clickitem={onSelectLang} />

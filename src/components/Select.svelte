@@ -1,29 +1,78 @@
 <script>
   import { createEventDispatcher } from 'svelte';
 
+  import {
+    disableBodyScroll,
+    enableBodyScroll,
+  } from '../utils';
+
   export let defaultLabel = 'Select your language';
-  export let items = [];
+  export let items    = [];
   export let outlined = false;
-  export let round = false;
-  export let width = '';
+  export let round    = false;
+  export let width    = '';
+  export let height   = '';
 
-  let active = false;
-  let activeItem = { label: defaultLabel, value: '' };
+  let active          = false;
+  let activeIndex     = 0;
+  let activeItem      = items.length > 0 ? items[0] : { label: defaultLabel, value: '' };
+  let initialIndex    = 0;
 
-  let widthRule = width ? `width: ${width};` : '';
+  let heightRule  = height  ? `height: ${height};`  : '';
+  let widthRule   = width   ? `width: ${width};`    : '';
+  let style       = `${widthRule}; ${heightRule};`.trim();
 
   const dispatch = createEventDispatcher();
 
   function onClickComponent() {
     active = !active;
+    active ? disableBodyScroll() : enableBodyScroll();
   }
 
-  function _onClickItem(item) {
+  function onClickItem(item, index) {
     activeItem = item;
+    activeIndex = index;
+    initialIndex = activeIndex;
 
     dispatch('clickitem', {
       activeItem,
     });
+  }
+
+  function onKeyUp(keyboardEvent) {
+    if (!active) {
+      return;
+    }
+
+    switch (keyboardEvent.keyCode) {
+      case 13: // enter
+        initialIndex = activeIndex;
+        break;
+      case 27: // escape
+        active = false;
+        activeIndex = initialIndex;
+        activeItem = items[activeIndex];
+        break;
+      case 37: // left
+        activeIndex = 0;
+        activeItem = items[activeIndex];
+        break;
+      case 38: // up
+        activeIndex = (activeIndex - 1) % items.length;
+        if (activeIndex < 0) { activeIndex = items.length - 1; }
+        activeItem = items[activeIndex];
+        break;
+      case 39: // right
+        activeIndex = items.length - 1;
+        activeItem = items[activeIndex];
+        break;
+      case 40: // down
+        activeIndex = (activeIndex + 1) % items.length;
+        activeItem = items[activeIndex];
+        break;
+      default:
+        break;
+    }
   }
 </script>
 
@@ -54,7 +103,6 @@
     position: relative;
     top: 0;
 
-    text-align: left;
     text-shadow: none;
     padding: 20px;
 
@@ -123,18 +171,22 @@
   .select-component ul[role=listbox] li:hover,
   .select-component ul[role=listbox] li.active {
     background: rgba(0, 0, 0, 0.1);
-    top: 2px;
+    /* top: 2px; */
   }
 
   .select-component.active ul {
     max-height: 200px;
+    margin-top: -10px;
     overflow: auto;
     z-index: 2;
     transition: all 0.2s ease;
   }
 </style>
 
-<div class="select-component" class:active
+<div
+  class="select-component"
+  class:active
+  on:keyup={onKeyUp}
   on:click={onClickComponent}>
   <label for="ul-id">
     <button
@@ -142,7 +194,7 @@
       class="ng-binding"
       class:outlined
       class:round
-      style="{widthRule}">
+      style="{style}">
 
       {activeItem.label}
     </button>
@@ -155,10 +207,10 @@
     aria-activedescendant="{activeItem.value}"
     name="ul-id">
 
-    {#each items as item}
+    {#each items as item, i}
       <li role="option"
         id="{item.value}"
-        on:click={() => _onClickItem(item)}
+        on:click={() => onClickItem(item, i)}
         data-value="{item.value}"
         class="ng-binding ng-scope"
         class:active={activeItem.value === item.value}
