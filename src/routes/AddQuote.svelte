@@ -479,8 +479,22 @@
         />
 
         <div class="row-buttons">
-          <RectButton value="Cancel" on:click={onGoBack} secondary={true} hint="Or Press Escape" />
-          <RectButton value="Next" on:click={onGoToNextStep} hint="Or Press Enter" />
+          <RectButton
+            value="Cancel"
+            on:click={onGoBack}
+            on:enter={onGoToNextStep}
+            on:escape={onGoBack}
+            on:space={onGoBack}
+            secondary={true}
+            hint="Or Press Escape" />
+
+          <RectButton
+            value="Next"
+            on:click={onGoToNextStep}
+            on:enter={onGoToNextStep}
+            on:escape={onGoBack}
+            on:space={onGoToNextStep}
+            hint="Or Press Enter" />
         </div>
       </div>
     {/if}
@@ -500,8 +514,22 @@
         />
 
         <div class="row-buttons">
-          <RectButton value="Previous" on:click={onGoToPreviousStep} secondary={true} hint="Or press Escape" />
-          <RectButton value="Next" on:click={onGoToNextStep} />
+          <RectButton
+            value="Previous"
+            on:click={onGoToPreviousStep}
+            on:enter={onGoToNextStep}
+            on:escape={onGoToPreviousStep}
+            on:space={onGoToPreviousStep}
+            secondary={true}
+            hint="Or press Escape" />
+
+          <RectButton
+            value="Next"
+            on:click={onGoToNextStep}
+            on:enter={onGoToNextStep}
+            on:escape={onGoToPreviousStep}
+            on:space={onGoToNextStep}
+            hint="Or Press Enter" />
         </div>
       </div>
     {/if}
@@ -520,8 +548,22 @@
         />
 
         <div class="row-buttons">
-          <RectButton value="Previous" on:click={onGoToPreviousStep} secondary={true} hint="Or press Escape" />
-          <RectButton value="Next" on:click={onGoToNextStep} />
+          <RectButton
+            value="Previous"
+            on:click={onGoToPreviousStep}
+            on:enter={onGoToNextStep}
+            on:escape={onGoToPreviousStep}
+            on:space={onGoToPreviousStep}
+            secondary={true}
+            hint="Or press Escape" />
+
+          <RectButton
+            value="Next"
+            on:click={onGoToNextStep}
+            on:enter={onGoToNextStep}
+            on:escape={onGoToPreviousStep}
+            on:space={onGoToNextStep}
+            hint="Or Press Enter" />
         </div>
       </div>
     {/if}
@@ -538,8 +580,22 @@
         />
 
         <div class="row-buttons">
-          <RectButton value="Previous" on:click={onGoToPreviousStep} secondary={true} hint="Or press Escape" />
-          <RectButton value="Next" on:click={onGoToNextStep} />
+          <RectButton
+            value="Previous"
+            on:click={onGoToPreviousStep}
+            on:enter={onGoToNextStep}
+            on:escape={onGoToPreviousStep}
+            on:space={onGoToPreviousStep}
+            secondary={true}
+            hint="Or press Escape" />
+
+          <RectButton
+            value="Next"
+            on:click={onGoToNextStep}
+            on:enter={onGoToNextStep}
+            on:escape={onGoToPreviousStep}
+            on:space={onGoToNextStep}
+            hint="Or Press Enter" />
         </div>
       </div>
     {/if}
@@ -555,8 +611,22 @@
         />
 
         <div class="row-buttons">
-          <RectButton value="Previous" on:click={onGoToPreviousStep} secondary={true} hint="Or press Escape" />
-          <RectButton value="{sendButtonContent}" on:click={onProposeQuote} />
+          <RectButton
+            value="Previous"
+            on:click={onGoToPreviousStep}
+            on:enter={onGoToNextStep}
+            on:escape={onGoToPreviousStep}
+            on:space={onGoToPreviousStep}
+            secondary={true}
+            hint="Or press Escape" />
+
+          <RectButton
+            value="{sendButtonContent}"
+            on:click={onProposeQuote}
+            on:enter={onProposeQuote}
+            on:escape={onGoToPreviousStep}
+            on:space={onProposeQuote}
+            hint="Or Press Enter" />
         </div>
       </div>
     {/if}
