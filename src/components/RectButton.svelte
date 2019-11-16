@@ -1,4 +1,6 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
+
   export let alignSelf  = '';
   export let bg         = '';
   export let color      = '';
@@ -19,7 +21,32 @@
   let widthRule     = width     ? `width: ${width};`          : '';
   let heightRule    = height    ? `height: ${height};`        : '';
 
-  let style = `${alignSelfRule} ${bgRule} ${colorRule} ${marginRule} ${widthRule} ${heightRule}`.trim();
+  let style = `
+    ${alignSelfRule}
+    ${bgRule}
+    ${colorRule}
+    ${marginRule}
+    ${widthRule}
+    ${heightRule}
+  `.trim();
+
+  const dispatch = createEventDispatcher();
+
+  function onKeyUp(keyboardEvent) {
+    switch (keyboardEvent.keyCode) {
+      case 13:
+        dispatch('enter', { event: keyboardEvent });
+        break;
+      case 27:
+        dispatch('escape', { event: keyboardEvent });
+        break;
+      case 32:
+        dispatch('space', { event: keyboardEvent });
+        break;
+      default:
+        break;
+    }
+  }
 </script>
 
 <style>
@@ -44,12 +71,11 @@
     transition: .3s;
   }
 
-  .button:hover {
+  .button:hover,
+  .rect-button:focus .button {
     filter: brightness(90%);
     transform: translateY(2px);
     box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
-
-    transition: .3s;
   }
 
   .button:active {
@@ -99,6 +125,7 @@
 
   .rect-button {
     margin: 10px;
+    outline: none;
   }
 
   .afterText {
@@ -113,7 +140,9 @@
 <div
   class="rect-button"
   style="{style}"
-  on:click>
+  tabindex="0"
+  on:click
+  on:keyup={onKeyUp}>
 
   <div class="button"
     class:primary
@@ -131,7 +160,6 @@
       <slot name="afterText"></slot>
     </div>
   </div>
-
 
   <div class="hint">{hint}</div>
 </div>
