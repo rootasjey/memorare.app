@@ -5,6 +5,18 @@ export const status = {
   loading   : 'loading',
 }
 
+export function disableBodyScroll() {
+  const body = document.querySelector('body');
+  if (!body) { return; }
+  body.style.overflow = 'hidden';
+}
+
+export function enableBodyScroll() {
+  const body = document.querySelector('body');
+  if (!body) { return; }
+  body.style.overflow = 'auto';
+}
+
 export const onEnterNextInput = (event, domElement) => {
   let { target } = event;
 
