@@ -57,8 +57,10 @@
       tempQuotes = response.data.tempQuotesAdmin.entries;
 
       const { pagination } = response.data.tempQuotesAdmin;
-      limit = pagination.limit;
-      skip = pagination.nextSkip;
+
+      hasMoreData = pagination.hasNext;
+      limit       = pagination.limit;
+      skip        = pagination.nextSkip;
 
       pageStatus = status.completed;
 
@@ -96,7 +98,7 @@
     navigate(`/edit/quote/${quote.id}`);
   }
 
-  async function onLoadMore() {
+  async function onFetchMore() {
     try {
       const response = await client.query({
         query: TEMP_QUOTES_ADMIN,
@@ -124,28 +126,8 @@
   }
 
   async function onRefresh() {
-    pageStatus = status.loading;
     skip = 0;
-
-    try {
-      const response = await client.query({
-        query: TEMP_QUOTES_ADMIN,
-        variables: { limit, order, skip },
-        fetchPolicy: 'network-only',
-      });
-
-      tempQuotes = response.data.tempQuotesAdmin.entries;
-
-      const { pagination } = response.data.tempQuotesAdmin;
-      limit = pagination.limit;
-      skip = pagination.nextSkip;
-
-      pageStatus = status.completed;
-
-    } catch (error) {
-      pageStatus = status.error;
-      handle(error);
-    }
+    main();
   }
 
   function onSelectQuote(id) {
@@ -416,7 +398,7 @@
 
           {#if hasMoreData}
             <div class="list-temp-quote__footer">
-              <TextLink text="Load more..." on:click={onLoadMore} />
+              <TextLink text="Load more..." on:click={onFetchMore} />
             </div>
           {/if}
         </div>
