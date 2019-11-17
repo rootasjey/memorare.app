@@ -1,6 +1,11 @@
 <script>
   import { createEventDispatcher } from 'svelte';
 
+  import {
+    disableBodyScroll,
+    enableBodyScroll
+  } from '../utils';
+
   export let active     = false;
   export let bg         = '';
   export let fullSize   = false;
@@ -16,7 +21,7 @@
   $: maxHeightRule = maxHeight > 0 ? `max-height: ${maxHeight}px;` : '';
   $: widthRule     = width > 0     ? `width: ${width}px;`          : '';
 
-  $: styles       = `${bgRule} ${maxWidthRule} ${maxHeightRule} ${widthRule}`;
+  $: style        = `${bgRule} ${maxWidthRule} ${maxHeightRule} ${widthRule}`;
 
   function onClickToClose() {
     active = false;
@@ -40,9 +45,14 @@
   }
 
   $: if (active) {
+    disableBodyScroll();
+
     setTimeout(() => {
       domDialog.focus();
     }, 250);
+
+  } else {
+    enableBodyScroll();
   }
 
 </script>
@@ -144,7 +154,7 @@
   on:keyup={onKeyUp} >
 
   <div class="dialog-background" on:click={onClickToClose}></div>
-  <div class="dialog-content" style="{styles}">
+  <div class="dialog-content" style="{style}">
     <slot name="content"></slot>
   </div>
 </div>
