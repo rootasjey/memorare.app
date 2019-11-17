@@ -119,7 +119,7 @@
     }
   }
 
-  async function onLoadMore() {
+  async function onFetchMore() {
     try {
       const lang = settings.getValue('lang');
 
@@ -316,7 +316,7 @@
 
         {#if hasMoreData}
           <div class="list-published-quotes__footer">
-            <TextLink text="Load more..." on:click={onLoadMore} />
+            <TextLink text="Load more..." on:click={onFetchMore} />
           </div>
         {/if}
       </div>
