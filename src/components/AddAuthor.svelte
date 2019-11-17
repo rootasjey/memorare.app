@@ -132,7 +132,7 @@
 
   .ghost-text-area {
     min-width: 500px;
-    min-height: 300px;
+    min-height: 400px;
 
     background-color: transparent;
     border: 0;
