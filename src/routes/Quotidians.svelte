@@ -133,10 +133,9 @@
   }
 
   async function onRefresh() {
-    pageStatus = status.loading;
     skip = 0;
 
-    fetchQuotidians();
+    main();
   }
 
   async function onResetDate(quotidian, index) {
