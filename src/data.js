@@ -202,8 +202,8 @@ export const LIST_AUTHORS = gql`
 `;
 
 export const PUBLISHED_QUOTES_ADMIN = gql`
-  query ($lang: String, $limit: Float, $skip: Float) {
-    publishedQuotesAdmin(lang: $lang, limit: $limit, skip: $skip) {
+  query ($lang: String, $limit: Float, $order: Float, $skip: Float) {
+    publishedQuotesAdmin(lang: $lang, limit: $limit, order: $order, skip: $skip) {
       entries {
         id
         author {
@@ -259,8 +259,8 @@ export const QUOTIDIAN = gql`
 `;
 
 export const QUOTIDIANS = gql`
-  query ($limit: Float, $skip: Float) {
-    quotidians(limit: $limit, skip: $skip) {
+  query ($limit: Float, $order: Float, $skip: Float) {
+    quotidians(limit: $limit, order: $order, skip: $skip) {
       entries {
         id
         date
@@ -361,8 +361,8 @@ export const TEMP_QUOTE_ADMIN = gql`
 `;
 
 export const TEMP_QUOTES_ADMIN = gql`
-  query ($limit: Float, $skip: Float) {
-    tempQuotesAdmin(limit: $limit, skip: $skip) {
+  query ($limit: Float, $order: Float, $skip: Float) {
+    tempQuotesAdmin(limit: $limit, order: $order, skip: $skip) {
       entries {
         id
         name
