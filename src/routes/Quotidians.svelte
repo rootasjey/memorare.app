@@ -76,6 +76,61 @@
     }
   }
 
+  function onClickAuthor(id) {
+    navigate(`/author/${id}`);
+  }
+
+  async function onDelete(id) {
+    try {
+      const response = await client.mutate({
+        mutation: DELETE_QUOTIDIAN,
+        variables: { id },
+      });
+
+      const { deleteQuotidian } = response.data;
+
+      quotidians = quotidians.filter((quotidian) => quotidian.id !== id);
+
+      show({ text: `Quotidian successfully deleted.`, type: 'success' });
+
+    } catch (error) {
+      show({
+        actions: [ {text: 'retry'} ],
+        text: `Couldn't delete quotidian.`,
+        type: 'error',
+      });
+
+      handle(error);
+    }
+  }
+
+  async function onLoadMore() {
+    try {
+      const response = await client.query({
+        query: QUOTIDIANS,
+        variables: { limit, order, skip },
+        fetchPolicy: 'network-only',
+      });
+
+      const { entries, pagination } = response.data.quotidians;
+
+      hasMoreData = pagination.hasNext;
+      limit       = pagination.limit;
+      skip        = pagination.nextSkip;
+
+      quotidians = [...quotidians, ...entries];
+
+    } catch (error) {
+      show({
+        actions: [ {text: 'retry'} ],
+        text: `Couldn't fetch more quotidians.`,
+        type: 'error',
+      });
+
+      handle(error);
+    }
+  }
+
   async function onRefresh() {
     pageStatus = status.loading;
     skip = 0;
@@ -109,28 +164,22 @@
     }
   }
 
-  async function onDelete(id) {
-    try {
-      const response = await client.mutate({
-        mutation: DELETE_QUOTIDIAN,
-        variables: { id },
-      });
+  async function onResetDate(quotidian, index) {
+    const dateInput = domQuotidians
+      .querySelector(`.quotidian[data-id="${quotidian.id}"] .date-input`);
 
-      const { deleteQuotidian } = response.data;
+    if (!dateInput) { return; }
 
-      quotidians = quotidians.filter((quotidian) => quotidian.id !== id);
+    dateInput.value = quotidian.date;
+  }
 
-      show({ text: `Quotidian successfully deleted.`, type: 'success' });
+  function onSelectQuote(id) {
+    selectedQuoteId = id;
+  }
 
-    } catch (error) {
-      show({
-        actions: [ {text: 'retry'} ],
-        text: `Couldn't delete quotidian.`,
-        type: 'error',
-      });
-
-      handle(error);
-    }
+  function onToggleOrder() {
+    order = order === 1 ? -1 : 1;
+    onRefresh();
   }
 
   async function onValidateNewDate(quotidian, index) {
@@ -161,55 +210,6 @@
       dateInput.value = prevDate;
       handle(error);
     }
-  }
-
-  async function onResetDate(quotidian, index) {
-    const dateInput = domQuotidians
-      .querySelector(`.quotidian[data-id="${quotidian.id}"] .date-input`);
-
-    if (!dateInput) { return; }
-
-    dateInput.value = quotidian.date;
-  }
-
-  async function onLoadMore() {
-    try {
-      const response = await client.query({
-        query: QUOTIDIANS,
-        variables: { limit, order, skip },
-        fetchPolicy: 'network-only',
-      });
-
-      const { entries, pagination } = response.data.quotidians;
-
-      hasMoreData = pagination.hasNext;
-      limit       = pagination.limit;
-      skip        = pagination.nextSkip;
-
-      quotidians = [...quotidians, ...entries];
-
-    } catch (error) {
-      show({
-        actions: [ {text: 'retry'} ],
-        text: `Couldn't fetch more quotidians.`,
-        type: 'error',
-      });
-
-      handle(error);
-    }
-  }
-
-  function onSelectQuote(id) {
-    selectedQuoteId = id;
-  }
-
-  function onClickAuthor(id) {
-    navigate(`/author/${id}`);
-  }
-
-  function onToggleOrder() {
-    order = order === 1 ? -1 : 1;
-    onRefresh();
   }
 </script>
 
