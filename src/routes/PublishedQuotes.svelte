@@ -23,6 +23,7 @@
 
   let hasMoreData     = true;
   let limit           = 10;
+  let order           = 1;
   let publishedQuotes = [];
   let queryStatus     = status.loading;
   let selectedQuoteId = -1;
@@ -52,7 +53,7 @@
     try {
       const response = await client.query({
         query: PUBLISHED_QUOTES_ADMIN,
-        variables: { lang: settings.getValue('lang'), limit, skip },
+        variables: { lang: settings.getValue('lang'), limit, order, skip },
         fetchPolicy: 'network-only',
       });
 
@@ -124,7 +125,7 @@
 
       const response = await client.query({
         query: PUBLISHED_QUOTES_ADMIN,
-        variables: { lang, limit, skip },
+        variables: { lang, limit, order, skip },
         fetchPolicy: 'network-only',
       });
 
@@ -151,6 +152,11 @@
     selectedQuoteId = id;
   }
 
+  function onToggleOrder() {
+    order = order === 1 ? -1 : 1;
+    onRefresh();
+  }
+
   function onClickAuthor(id) {
     navigate(`/author/${id}`);
   }
@@ -163,7 +169,7 @@
     align-items: center;
   }
 
- .content__buttons-container {
+  .content__buttons-container {
     margin: 25px 0;
   }
 
@@ -211,6 +217,13 @@
   .quote__header__icons__slot {
     display: flex;
   }
+
+  .row-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
 </style>
 
 <div class="published-quotes-page">
@@ -227,6 +240,36 @@
       </div>
     {:else if queryStatus === status.completed}
       <div class="content__buttons-container">
+        <div class="row-buttons">
+          {#if order === 1}
+            <IconButton
+              on:click={onToggleOrder}>
+              <svg
+                slot="svg"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="#fff"
+                viewBox="0 0 24 24">
+                <path d="M6 21l6-8h-4v-10h-4v10h-4l6 8zm16-12h-8v-2h8v2zm2-6h-10v2h10v-2zm-4 8h-6v2h6v-2zm-2 4h-4v2h4v-2zm-2 4h-2v2h2v-2z"/>
+              </svg>
+            </IconButton>
+          {:else}
+            <IconButton
+              on:click={onToggleOrder}>
+              <svg
+                slot="svg"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="#fff"
+                viewBox="0 0 24 24">
+                <path d="M6 3l-6 8h4v10h4v-10h4l-6-8zm16 6h-8v-2h8v2zm2-6h-10v2h10v-2zm-4 8h-6v2h6v-2zm-2 4h-4v2h4v-2zm-2 4h-2v2h2v-2z"/>
+              </svg>
+            </IconButton>
+          {/if}
+        </div>
+
         <RectButton outlined={true} value="refresh" on:click={onRefresh} />
       </div>
 
