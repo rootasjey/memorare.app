@@ -58,9 +58,10 @@
       quotidians = response.data.quotidians.entries;
 
       const { pagination } = response.data.quotidians;
+
       hasMoreData = pagination.hasNext;
-      limit = pagination.limit;
-      skip = pagination.nextSkip;
+      limit       = pagination.limit;
+      skip        = pagination.nextSkip;
 
       pageStatus = status.completed;
 
@@ -104,7 +105,7 @@
     }
   }
 
-  async function onLoadMore() {
+  async function onFetchMore() {
     try {
       const response = await client.query({
         query: QUOTIDIANS,
@@ -135,33 +136,7 @@
     pageStatus = status.loading;
     skip = 0;
 
-    try {
-      const response = await client.query({
-        query: QUOTIDIANS,
-        variables: { limit, order, skip },
-        fetchPolicy: 'network-only',
-      });
-
-      quotidians = [];
-      quotidians = response.data.quotidians.entries;
-
-      const { pagination } = response.data.quotidians;
-
-      hasMoreData = true;
-      limit       = pagination.limit;
-      pageStatus  = status.completed;
-      skip        = pagination.nextSkip;
-
-    } catch (error) {
-      show({
-        actions: [ {text: 'retry'} ],
-        text: `Couldn't refresh quotidians.`,
-        type: 'error',
-      });
-
-      pageStatus = status.error;
-      handle(error);
-    }
+    fetchQuotidians();
   }
 
   async function onResetDate(quotidian, index) {
@@ -357,7 +332,7 @@
 
         {#if hasMoreData}
           <div class="list-quotidians__footer">
-            <TextLink text="Load more..." on:click={onLoadMore} />
+            <TextLink text="Load more..." on:click={onFetchMore} />
           </div>
         {/if}
       </div>
