@@ -7,17 +7,22 @@
   } from '../utils';
 
   export let defaultLabel = 'Select your language';
-  export let height   = '';
-  export let items    = [];
-  export let margin   = '';
-  export let outlined = false;
-  export let round    = false;
-  export let width    = '';
+  export let height       = '';
+  export let initialIndex = 0;
+  export let items        = [];
+  export let margin       = '';
+  export let outlined     = false;
+  export let round        = false;
+  export let width        = '';
 
-  let active          = false;
-  let activeIndex     = 0;
-  let activeItem      = items.length > 0 ? items[0] : { label: defaultLabel, value: '' };
-  let initialIndex    = 0;
+  let active              = false;
+  let activeIndex         = initialIndex;
+  let activeItem          = items.length > 0 ?
+    items[initialIndex] :
+    { label: defaultLabel, value: '' };
+
+  let domButton;
+  let domListBox;
 
   let heightRule  = height  ? `height: ${height};`  : '';
   let marginRule  = margin  ? `margin: ${margin};`  : '';
@@ -26,16 +31,34 @@
 
   const dispatch = createEventDispatcher();
 
-  function onBlur() {
+  let blurTimeout = 0;
+
+  function onBlur(event) {
     active = false;
     activeIndex = initialIndex;
     activeItem = items[activeIndex];
+
+    domListBox.setAttribute('tabindex', '-1');
+
+    domButton.setAttribute('tabindex', '0');
+    domButton.focus();
+
     enableBodyScroll();
   }
 
-  function onClickComponent() {
+  function onClickComponent(event) {
     active = !active;
-    active ? disableBodyScroll() : enableBodyScroll();
+
+    if (active) {
+      disableBodyScroll();
+      domButton.setAttribute('tabindex', '-1');
+      domListBox.setAttribute('tabindex', '0');
+
+      setTimeout(() => {
+        domListBox.focus();
+      }, 250);
+
+    } else { domListBox.blur(); }
   }
 
   function onClickItem(item, index) {
@@ -45,6 +68,7 @@
 
     dispatch('clickitem', {
       activeItem,
+      index,
     });
   }
 
@@ -56,11 +80,14 @@
     switch (keyboardEvent.keyCode) {
       case 13: // enter
         initialIndex = activeIndex;
+        activeItem = items[activeIndex];
+        onClickItem(activeItem, activeIndex);
+        domListBox.blur();
         break;
       case 27: // escape
-        active = false;
         activeIndex = initialIndex;
         activeItem = items[activeIndex];
+        domListBox.blur();
         break;
       case 37: // left
         activeIndex = 0;
@@ -154,6 +181,7 @@
     background-color: white;
 
     list-style: none;
+    outline: none;
 
     overflow: hidden;
     margin: 0;
@@ -161,6 +189,7 @@
     max-height: 0;
 
     position: absolute;
+    z-index: 2;
 
     -webkit-transform: translateY(-50%);
             transform: translateY(-50%);
@@ -199,16 +228,15 @@
 
 <div
   class="select-component"
-  class:active
-  on:keyup={onKeyUp}
-  on:click={onClickComponent}>
+  class:active>
   <label for="ul-id">
     <button
       type="button"
       class="ng-binding"
       class:outlined
       class:round
-      on:blur={onBlur}
+      bind:this={domButton}
+      on:click={onClickComponent}
       style="{style}">
 
       {activeItem.label}
@@ -218,6 +246,10 @@
   <ul
     role="listbox"
     class="md-whiteframe-z1"
+    on:blur={onBlur}
+    on:keyup={onKeyUp}
+    tabindex="-1"
+    bind:this={domListBox}
     aria-activedescendant="{activeItem.value}"
     name="ul-id">
 
