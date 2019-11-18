@@ -7,11 +7,12 @@
   } from '../utils';
 
   export let defaultLabel = 'Select your language';
+  export let height   = '';
   export let items    = [];
+  export let margin   = '';
   export let outlined = false;
   export let round    = false;
   export let width    = '';
-  export let height   = '';
 
   let active          = false;
   let activeIndex     = 0;
@@ -19,8 +20,9 @@
   let initialIndex    = 0;
 
   let heightRule  = height  ? `height: ${height};`  : '';
+  let marginRule  = margin  ? `margin: ${margin};`  : '';
   let widthRule   = width   ? `width: ${width};`    : '';
-  let style       = `${widthRule}; ${heightRule};`.trim();
+  let style       = `${widthRule} ${heightRule} ${marginRule}`.trim();
 
   const dispatch = createEventDispatcher();
 
@@ -137,6 +139,7 @@
 
   .select-component [type=button].round {
     border-radius: 50%;
+    padding: 0;
   }
 
   .select-component ul[role=listbox] {
@@ -175,7 +178,7 @@
   .select-component ul[role=listbox] li:hover,
   .select-component ul[role=listbox] li.active {
     background: rgba(0, 0, 0, 0.1);
-    /* top: 2px; */
+    top: 2px;
   }
 
   .select-component.active ul {
@@ -207,7 +210,6 @@
   <ul
     role="listbox"
     class="md-whiteframe-z1"
-    style="{widthRule}"
     aria-activedescendant="{activeItem.value}"
     name="ul-id">
 
