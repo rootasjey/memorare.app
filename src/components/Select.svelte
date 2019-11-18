@@ -176,6 +176,10 @@
     padding: 0;
   }
 
+  .select-component [type=button].round:focus {
+    box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+  }
+
   .select-component ul[role=listbox] {
     cursor: pointer;
     background-color: white;
