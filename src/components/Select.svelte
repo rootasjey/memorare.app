@@ -26,6 +26,13 @@
 
   const dispatch = createEventDispatcher();
 
+  function onBlur() {
+    active = false;
+    activeIndex = initialIndex;
+    activeItem = items[activeIndex];
+    enableBodyScroll();
+  }
+
   function onClickComponent() {
     active = !active;
     active ? disableBodyScroll() : enableBodyScroll();
@@ -201,6 +208,7 @@
       class="ng-binding"
       class:outlined
       class:round
+      on:blur={onBlur}
       style="{style}">
 
       {activeItem.label}
