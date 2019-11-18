@@ -2,6 +2,8 @@
   export let backgroundColor = '#706fd3';
   export let elevation = 0;
   export let margin = '0';
+  export let height = '';
+  export let width = '';
 
   const elevationClass = {
     0: '',
@@ -9,8 +11,12 @@
     2: 'elevation-2',
   };
 
-  const classes = `icon-button ${elevationClass[elevation]}`;
-  const styles  = `background-color: ${backgroundColor}; margin: ${margin};`;
+  const classes     = `icon-button ${elevationClass[elevation]}`;
+  const bgColorRule = backgroundColor ? `background-color: ${backgroundColor};` : '';
+  const marginRule  = margin  ? `margin: ${margin};`  : '';
+  const heightRule  = height  ? `height: ${height};`  : '';
+  const widthRule   = width   ? `width: ${width};`    : '';
+  const style       = `${bgColorRule} ${marginRule}; ${widthRule} ${heightRule}`.trim();
 </script>
 
 <style>
@@ -71,7 +77,7 @@
   }
 </style>
 
-<div class="{classes}" style={styles} on:click>
+<div class="{classes}" style={style} on:click>
   <slot name="txt"><!-- optional fallback --></slot>
 
   <div class="svg-container">
