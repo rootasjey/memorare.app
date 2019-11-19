@@ -361,8 +361,8 @@ export const TEMP_QUOTE_ADMIN = gql`
 `;
 
 export const TEMP_QUOTES_ADMIN = gql`
-  query ($limit: Float, $order: Float, $skip: Float) {
-    tempQuotesAdmin(limit: $limit, order: $order, skip: $skip) {
+  query ($lang: String, $limit: Float, $order: Float, $skip: Float) {
+    tempQuotesAdmin(lang: $lang, limit: $limit, order: $order, skip: $skip) {
       entries {
         id
         name

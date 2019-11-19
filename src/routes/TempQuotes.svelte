@@ -5,6 +5,7 @@
   import QuoteCard  from '../components/QuoteCard.svelte';
   import RectButton from '../components/RectButton.svelte';
   import { show }   from '../components/Snackbar.svelte';
+  import Select     from '../components/Select.svelte';
   import Spinner    from '../components/Spinner.svelte';
   import TextLink   from '../components/TextLink.svelte';
 
@@ -18,16 +19,23 @@
   } from '../data';
 
   import { handle } from '../errors';
-  import { canI }   from '../settings';
+  import { canI, settings } from '../settings';
   import { status } from '../utils';
 
   let hasMoreData     = true;
+  let lang            = settings.getValue('lang');
+  let langInitIndex   = 0;
   let limit           = 10;
   let order           = 1;
   let pageStatus      = status.loading;
   let selectedQuoteId = -1;
   let skip            = 0;
   let tempQuotes      = [];
+
+  const selectItems = [
+    { label: 'EN', value: 'en' },
+    { label: 'FR', value: 'fr' },
+  ];
 
   main();
 
@@ -51,7 +59,8 @@
     try {
       const response = await client.query({
         query: TEMP_QUOTES_ADMIN,
-        variables: { limit, order, skip },
+        variables: { lang, limit, order, skip },
+        fetchPolicy: 'network-only',
       });
 
       tempQuotes = response.data.tempQuotesAdmin.entries;
@@ -102,7 +111,7 @@
     try {
       const response = await client.query({
         query: TEMP_QUOTES_ADMIN,
-        variables: { limit, order, skip },
+        variables: { lang, limit, order, skip },
         fetchPolicy: 'network-only',
       });
 
@@ -128,6 +137,18 @@
   async function onRefresh() {
     skip = 0;
     main();
+  }
+
+  function onSelectLang(event) {
+    const { activeItem, index } = event.detail;
+    const { value } = activeItem;
+
+    if (lang === value) { return; }
+
+    lang = value;
+    langInitIndex = index;
+
+    onRefresh();
   }
 
   function onSelectQuote(id) {
@@ -309,6 +330,7 @@
           <div class="row-buttons">
             {#if order === 1}
               <IconButton
+                elevation={2}
                 on:click={onToggleOrder}>
                 <svg
                   slot="svg"
@@ -322,6 +344,7 @@
               </IconButton>
             {:else}
               <IconButton
+                elevation={2}
                 on:click={onToggleOrder}>
                 <svg
                   slot="svg"
@@ -334,6 +357,15 @@
                 </svg>
               </IconButton>
             {/if}
+
+            <Select
+              width="50px"
+              height="50px"
+              margin="0 10px"
+              round={true}
+              items={selectItems}
+              initialIndex={langInitIndex}
+              on:clickitem={onSelectLang} />
           </div>
 
           <RectButton outlined={true} value="refresh" on:click={onRefresh} />
