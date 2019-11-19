@@ -22,8 +22,6 @@
 
   const dispatch = createEventDispatcher();
 
-  content = content.length > 90 ? `${content.substr(0, 90)}...`: content;
-
   function onClickAuthor(event) {
     dispatch('clickauthor', { event });
   }
@@ -210,7 +208,7 @@
   </header>
 
   <div class="quote__content">
-    {content}
+    {content.length > 90 ? `${content.substr(0, 90)}...` : content}
   </div>
 
   <div class="quote__footer">
