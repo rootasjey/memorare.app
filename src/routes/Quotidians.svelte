@@ -24,7 +24,7 @@
   let domQuotidians;
   let hasMoreData     = true;
   let lang            = settings.getValue('lang');
-  let langInitIndex = 0;
+  let langInitIndex   = 0;
   let limit           = 5;
   let order           = 1;
   let quotidians      = [];

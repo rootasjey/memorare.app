@@ -6,9 +6,9 @@
   import QuoteCard    from '../components/QuoteCard.svelte';
   import { show }     from '../components/Snackbar.svelte';
   import RectButton   from '../components/RectButton.svelte';
+  import Select       from '../components/Select.svelte';
   import Spinner      from '../components/Spinner.svelte';
   import TextLink     from '../components/TextLink.svelte';
-  import { settings } from '../settings';
 
   import {
     client,
@@ -18,16 +18,23 @@
   } from '../data';
 
   import { handle } from '../errors';
-  import { canI }   from '../settings';
+  import { canI, settings } from '../settings';
   import { status } from '../utils';
 
   let hasMoreData     = true;
+  let lang            = settings.getValue('lang');
+  let langInitIndex   = 0;
   let limit           = 10;
   let order           = 1;
   let publishedQuotes = [];
   let queryStatus     = status.loading;
   let selectedQuoteId = -1;
   let skip            = 0;
+
+  const selectItems = [
+    { label: 'EN', value: 'en' },
+    { label: 'FR', value: 'fr' },
+  ];
 
   $: spinnerVisibility = queryStatus === status.loading ? 'visible' : 'hidden';
 
@@ -53,7 +60,7 @@
     try {
       const response = await client.query({
         query: PUBLISHED_QUOTES_ADMIN,
-        variables: { lang: settings.getValue('lang'), limit, order, skip },
+        variables: { lang, limit, order, skip },
         fetchPolicy: 'network-only',
       });
 
@@ -121,8 +128,6 @@
 
   async function onFetchMore() {
     try {
-      const lang = settings.getValue('lang');
-
       const response = await client.query({
         query: PUBLISHED_QUOTES_ADMIN,
         variables: { lang, limit, order, skip },
@@ -146,6 +151,18 @@
 
       handle(error);
     }
+  }
+
+  function onSelectLang(event) {
+    const { activeItem, index } = event.detail;
+    const { value } = activeItem;
+
+    if (lang === value) { return; }
+
+    lang = value;
+    langInitIndex = index;
+
+    onRefresh();
   }
 
   function onSelectQuote(id) {
@@ -243,6 +260,7 @@
         <div class="row-buttons">
           {#if order === 1}
             <IconButton
+              elevation={2}
               on:click={onToggleOrder}>
               <svg
                 slot="svg"
@@ -256,6 +274,7 @@
             </IconButton>
           {:else}
             <IconButton
+              elevation={2}
               on:click={onToggleOrder}>
               <svg
                 slot="svg"
@@ -268,6 +287,15 @@
               </svg>
             </IconButton>
           {/if}
+
+          <Select
+            width="50px"
+            height="50px"
+            margin="0 10px"
+            round={true}
+            items={selectItems}
+            initialIndex={langInitIndex}
+            on:clickitem={onSelectLang} />
         </div>
 
         <RectButton outlined={true} value="refresh" on:click={onRefresh} />
