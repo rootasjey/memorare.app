@@ -45,6 +45,11 @@
     settings,
   } from '../settings';
 
+  import {
+    disableBodyScroll,
+    enableBodyScroll,
+  } from '../utils';
+
   let username = settings.getValue('name');
 
   let userBgImg = `background-image: url("${getUserAvatar()}");`;
@@ -53,25 +58,99 @@
   $: if ($isAvatarUpdated) { userBgImg = `background-image: url("${getUserAvatar()}");`; }
 
   let active = false;
+  let activeIndex = 0;
+  let domUserAvatar;
+  let domUserNav;
   let isTinyNavVisible = false;
   let isUserMenuOpened = false;
 
-  function gotoTop() {
-    window.scrollTo(0, 0);
+  const menuItems = [
+    {
+      type: 'multiline',
+      header: username,
+      subheader: 'Account settings',
+      action: () => goAndClose('/accountsettings'),
+    },
+    {
+      type: 'oneline',
+      header: 'Welcome',
+      action: () => goAndClose('/welcome'),
+    },
+    {
+      type: 'oneline',
+      header: 'Add quote',
+      action: () => goAndClose('/add/quote'),
+    },
+    {
+      type: 'oneline',
+      header: 'Sign out',
+      action: () => signOut(),
+    },
+  ]
+
+  function goAndClose(route) {
+    onGoTo(route);
+    isUserMenuOpened = false;
   }
 
-  function goTo(route) {
+  function onGoTo(route = '') {
     navigate(route);
     isTinyNavVisible = false;
   }
 
-  function toggleNav() {
-    isTinyNavVisible = !isTinyNavVisible;
+  function onBlurUserNav() {
+    domUserNav.setAttribute('tabindex', '-1');
+    domUserAvatar.setAttribute('tabindex', '0');
+    isUserMenuOpened = false;
+    enableBodyScroll();
   }
 
-  function goAndClose(route) {
-    goTo(route);
-    isUserMenuOpened = false;
+  function onKeyUpUserAvatar(keyboardEvent) {
+    const { keyCode } = keyboardEvent;
+
+    switch (keyCode) {
+      case 13: // enter
+        onToggleUserMenu();
+        break;
+      case 27: // escape
+        onBlurUserNav();
+        break;
+      default:
+        break;
+    }
+  }
+
+  function onKeyUpUserNav(keyboardEvent) {
+    const { keyCode } = keyboardEvent;
+
+    switch (keyCode) {
+      case 13: // enter
+        const item = menuItems[activeIndex];
+        if (item && item.action) { item.action(); }
+        break;
+      case 27: // escape
+        onBlurUserNav();
+        break;
+      case 37: // left
+        activeIndex = 0;
+        break;
+      case 38: // up
+        activeIndex = (activeIndex - 1) % menuItems.length;
+        if (activeIndex < 0) { activeIndex = menuItems.length - 1; }
+        break;
+      case 39: // right
+        activeIndex = menuItems.length - 1;
+        break;
+      case 40: // down
+        activeIndex = (activeIndex + 1) % menuItems.length;
+        break;
+      default:
+        break;
+    }
+  }
+
+  function onScrollToTop() {
+    window.scrollTo(0, 0);
   }
 
   function signOut() {
@@ -81,7 +160,23 @@
     goAndClose('/');
   }
 
-  const toggleUserMenu = () => isUserMenuOpened = !isUserMenuOpened;
+  function onToggleNav() {
+    isTinyNavVisible = !isTinyNavVisible;
+  }
+
+  function onToggleUserMenu() {
+    isUserMenuOpened = !isUserMenuOpened;
+
+    if (isUserMenuOpened) {
+      disableBodyScroll();
+      domUserAvatar.setAttribute('tabindex', '-1');
+
+      setTimeout(() => {
+        domUserNav.setAttribute('tabindex', '0');
+        domUserNav.focus();
+      }, 250);
+    }
+  }
 </script>
 
 <style>
@@ -221,19 +316,19 @@
     margin: 5px;
   }
 
-  .item-multiline {
+  .multiline {
     display: flex;
     flex-direction: column;
   }
 
-  .item-multiline > span:first-child {
+  .multiline > span:first-child {
     max-width: 100px;
     text-overflow: ellipsis;
     overflow: hidden;
     font-weight: 700;
   }
 
-  .item-multiline > span:last-child {
+  .multiline > span:last-child {
     font-size: .8em;
     font-weight: lighter;
   }
@@ -246,6 +341,7 @@
     height: 40px;
     width: 40px;
     background-color: #fff;
+    outline: none;
 
     position: relative;
     top: -10px;
@@ -254,7 +350,8 @@
     transition: .3s;
   }
 
-  .user-avatar:hover {
+  .user-avatar:hover,
+  .user-avatar:focus {
     top: -8px;
     filter: brightness(95%);
     box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
@@ -287,6 +384,7 @@
 
     color: #000;
     background-color: #fff;
+    outline: none;
 
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 
@@ -305,7 +403,8 @@
     transition: .3s;
   }
 
-  .user-nav li:hover {
+  .user-nav li:hover,
+  .user-nav li.focus {
     background: rgb(206, 203, 203);
     transition: .3s;
   }
@@ -361,51 +460,68 @@
 </style>
 
 <header class:hidden bind:this={domHeader}>
-  <div class="header-title" on:click={() => goTo('/')} >
-    <img src="/img/icon.png" alt="memorare icon" width="48" height="48" on:click={gotoTop}>
+  <div class="header-title" on:click={() => onGoTo('/')} >
+    <img src="/img/icon.png" alt="memorare icon" width="48" height="48" on:click={onScrollToTop}>
     <h3>memorare</h3>
   </div>
 
   <nav>
-    <div on:click={() => goTo('/apps')}> Apps </div>
-    <div on:click={() => goTo('/developers')}> Developers </div>
-    <div on:click={() => goTo('/pricing')}> Pricing </div>
+    <div on:click={() => onGoTo('/apps')}> Apps </div>
+    <div on:click={() => onGoTo('/developers')}> Developers </div>
+    <div on:click={() => onGoTo('/pricing')}> Pricing </div>
 
     {#if $isUserAuthenticated}
-      <div class="user-avatar" class:active={isUserMenuOpened} on:click={toggleUserMenu}>
+      <div
+        class="user-avatar"
+        class:active={isUserMenuOpened}
+        tabindex="0"
+        bind:this={domUserAvatar}
+        on:click={onToggleUserMenu}
+        on:keyup={onKeyUpUserAvatar}>
+
         <div class="user-avatar__img" style="{userBgImg}"></div>
       </div>
     {:else}
-      <div on:click={() => goTo('/signin')} class="button-pink-round">Sign  in</div>
+      <div on:click={() => onGoTo('/signin')} class="button-pink-round">Sign  in</div>
     {/if}
   </nav>
 
   {#if isUserMenuOpened}
-    <nav class="user-nav" transition:fly={{ y: 10 }}>
+    <nav
+      class="user-nav"
+      bind:this={domUserNav}
+      on:blur={onBlurUserNav}
+      on:keyup={onKeyUpUserNav}
+      transition:fly={{ y: 10 }}>
       <ul>
-        <li class="item-multiline" on:click={() => goAndClose('/accountsettings')}>
-          <span class="header">{username}</span>
-          <span class="subheader">Account settings</span>
-        </li>
-        <li on:click={() => goAndClose('/welcome')}>Welcome</li>
-        <li on:click={() => goAndClose('/add/quote')}>Add quote</li>
-        <li>Favorites</li>
-        <li>Lists</li>
-        <li on:click={signOut}>Sign out</li>
+        {#each menuItems as item, i}
+          <li
+            class:multiline={item.type === 'multiline'}
+            class:focus={activeIndex === i}
+            on:click={() => item.action()}>
+
+            {#if item.type === 'multiline'}
+              <span class="header">{item.header}</span>
+              <span class="subheader">{item.subheader}</span>
+            {:else}
+              {item.header}
+            {/if}
+          </li>
+        {/each}
       </ul>
     </nav>
   {/if}
 
   {#if isTinyNavVisible}
     <nav class="tinyNav" transition:fly="{{ y: 200, duration: 1000 }}">
-      <div on:click={() => goTo('/apps')}> Apps </div>
-      <div on:click={() => goTo('/developers')}> Developers </div>
-      <div on:click={() => goTo('/pricing')}> Pricing </div>
-      <div on:click={() => goTo('/signin')} class="button-pink-round"> Sign  in</div>
+      <div on:click={() => onGoTo('/apps')}> Apps </div>
+      <div on:click={() => onGoTo('/developers')}> Developers </div>
+      <div on:click={() => onGoTo('/pricing')}> Pricing </div>
+      <div on:click={() => onGoTo('/signin')} class="button-pink-round"> Sign  in</div>
     </nav>
   {/if}
 
-  <div class="amburger-menu" on:click={toggleNav}>
+  <div class="amburger-menu" on:click={onToggleNav}>
     <div class="amburger-menu__line line-1"></div>
     <div class="amburger-menu__line line-2"></div>
     <div class="amburger-menu__line line-3"></div>
