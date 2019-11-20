@@ -20,9 +20,9 @@
   export let refLang      = '';
   export let refName      = '';
   export let refPromoUrl  = '';
+  export let refSubType   = '';
   export let refSummary   = '';
   export let refType      = '';
-  export let refSubType   = '';
   export let refUrl       = '';
 
   let canIManageQuote = false;
