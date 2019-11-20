@@ -25,7 +25,7 @@
   let lang            = settings.getValue('lang');
   let langInitIndex   = 0;
   let limit           = 10;
-  let order           = 1;
+  let order           = parseFloat(settings.getValue('order')) || 1;
   let publishedQuotes = [];
   let queryStatus     = status.loading;
   let selectedQuoteId = -1;
@@ -171,6 +171,7 @@
 
   function onToggleOrder() {
     order = order === 1 ? -1 : 1;
+    settings.setValue('order', order);
     onRefresh();
   }
 
