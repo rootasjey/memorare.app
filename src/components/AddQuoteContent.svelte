@@ -4,21 +4,18 @@
     onMount,
   } from 'svelte';
 
-  import Select           from '../components/Select.svelte';
-  import { settings }     from '../settings';
-  import { scrollToTop }  from '../utils';
+  import Select from '../components/Select.svelte';
+  import { LANG_ITEMS, settings } from '../settings';
+  import { scrollToTop } from '../utils';
 
   export let autofocus    = false;
   export let defaultLabel = '';
-  export let placeholder  = "With great power comes great responsibility...";
+  export let placeholder  = 'With great power comes great responsibility...';
   export let quoteName    = '';
   export let lang         = '';
   export let initialIndex = 0;
 
-  const selectItems = [
-    { label: 'EN', value: 'en' },
-    { label: 'FR', value: 'fr' },
-  ];
+  const langItems = LANG_ITEMS;
 
   let domInput;
   let show = false;
@@ -195,7 +192,7 @@
         defaultLabel={defaultLabel}
         width="70px"
         height="70px"
-        items={selectItems}
+        items={langItems}
         outlined={true}
         initialIndex={initialIndex}
         on:clickitem={onSelectLang} />
