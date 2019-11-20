@@ -9,7 +9,7 @@
   import FlatInputIcon    from '../components/FlatInputIcon.svelte';
   import Select           from '../components/Select.svelte';
   import Spinner          from '../components/Spinner.svelte';
-  import Tags             from '../components/Tags.svelte';
+  import AddTags          from '../components/AddTags.svelte';
   import TextLink         from '../components/TextLink.svelte';
 
   import { hideHeaderAsync, showHeader } from '../components/Header.svelte';
@@ -582,7 +582,7 @@
 
     {#if step === 3}
       <div class="add-quote__topics">
-        <Tags
+        <AddTags
           autofocus
           big={true}
           margin="0 0 100px 0"
