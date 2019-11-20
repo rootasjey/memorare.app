@@ -6,10 +6,10 @@
   import AddComment       from '../components/AddComment.svelte';
   import AddQuoteContent  from '../components/AddQuoteContent.svelte';
   import AddReference     from '../components/AddReference.svelte';
+  import AddTags          from '../components/AddTags.svelte';
   import FlatInputIcon    from '../components/FlatInputIcon.svelte';
   import Select           from '../components/Select.svelte';
   import Spinner          from '../components/Spinner.svelte';
-  import AddTags          from '../components/AddTags.svelte';
   import TextLink         from '../components/TextLink.svelte';
 
   import { hideHeaderAsync, showHeader } from '../components/Header.svelte';
