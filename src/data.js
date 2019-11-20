@@ -262,6 +262,17 @@ export const QUOTES_BY_AUTHOR_ID = gql`
   }
 `;
 
+export const QUOTE_OWN_PROPS = gql`
+  query($id: String!) {
+    quote(id: $id) {
+      date
+      name
+      lang
+      topics
+    }
+  }
+`;
+
 export const QUOTIDIAN = gql`
   query {
     quotidian {
@@ -502,6 +513,29 @@ export const UPDATE_PASSWORD = gql`
   mutation($oldPassword: String!, $newPassword: String!) {
     updatePassword(oldPassword: $oldPassword, newPassword: $newPassword) {
       token
+    }
+  }
+`;
+
+export const UPDATE_QUOTE_CONTENT = gql`
+  mutation (
+    $date: DateTime
+    $id: String!
+    $lang: String
+    $name: String!
+    $origin: String
+    $topics: [String!]
+  ) {
+
+    updateQuoteContent(
+      date: $date
+      id: $id
+      lang: $lang
+      name: $name
+      origin: $origin
+      topics: $topics
+    ) {
+      id
     }
   }
 `;
