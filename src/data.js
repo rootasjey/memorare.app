@@ -66,9 +66,14 @@ export const CREATE_TEMP_QUOTE = gql`
     $lang: String,
     $name: String!
     $origin: String,
-    $refName: String,
-    $refLang: String,
-    $refUrl: String,
+    $refImgUrl: String
+    $refLang: String
+    $refName: String
+    $refPromoUrl: String
+    $refSubType: String
+    $refSummary: String
+    $refType: String
+    $refUrl: String
     $topics: [String!],
   ) {
 
@@ -83,8 +88,13 @@ export const CREATE_TEMP_QUOTE = gql`
       lang: $lang
       name: $name
       origin: $origin
-      refName: $refName
+      refImgUrl: $refImgUrl
       refLang: $refLang
+      refName: $refName
+      refPromoUrl: $refPromoUrl
+      refSubType: $refSubType
+      refSummary: $refSummary
+      refType: $refType
       refUrl: $refUrl
       topics: $topics
     ) {
