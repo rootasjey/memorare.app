@@ -261,6 +261,8 @@
           {#if order === 1}
             <IconButton
               elevation={2}
+              width="50px"
+              height="50px"
               on:click={onToggleOrder}>
               <svg
                 slot="svg"
@@ -275,6 +277,8 @@
           {:else}
             <IconButton
               elevation={2}
+              width="50px"
+              height="50px"
               on:click={onToggleOrder}>
               <svg
                 slot="svg"
