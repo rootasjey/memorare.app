@@ -141,7 +141,7 @@
   header {
     background-color: #706fd3;
 
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
   }
 
@@ -177,8 +177,8 @@
     flex-direction: column;
     align-items: center;
 
-    position: relative;
-    top: 200px;
+    margin-top: 200px;
+    padding-bottom: 50px;
   }
 
   .square-icon {
