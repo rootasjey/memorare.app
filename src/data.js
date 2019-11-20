@@ -235,8 +235,20 @@ export const PUBLISHED_QUOTES_ADMIN = gql`
 `;
 
 export const QUOTES_BY_AUTHOR_ID = gql`
-  query ($authorId: String!) {
-    quotesByAuthorId(authorId: $authorId) {
+  query (
+    $authorId: String!
+    $lang: String
+    $limit: Float
+    $order: Float
+    $skip: Float
+  ) {
+    quotesByAuthorId(
+      authorId: $authorId
+      lang: $lang
+      limit: $limit
+      order: $order
+      skip: $skip
+    ) {
       entries {
         name
       }
