@@ -37,7 +37,7 @@
 
 
   function setGhostAreaHeight() {
-    domInput.style.height = `${400 * Math.floor(quoteName.length / 84)}px`;
+    domInput.style.height = `${300 * Math.floor(quoteName.length / 60)}px`;
   }
 
   function onClearInput() {

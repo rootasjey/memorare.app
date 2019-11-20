@@ -49,6 +49,7 @@
 
   function main() {
     canIManageQuote = canI('manageQuote');
+    setGhostAreaHeight();
   }
 
   function onCancelEditRefImg() {
@@ -112,6 +113,10 @@
     const { activeItem } = event.detail;
     const { value } = activeItem;
     refLang = value;
+  }
+
+  function setGhostAreaHeight() {
+    domRefSummary.style.height = `${200 * Math.floor(refSummary.length / 100)}px`;
   }
 </script>
 
