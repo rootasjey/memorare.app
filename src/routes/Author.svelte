@@ -1,8 +1,10 @@
 <script>
   import { navigate } from 'svelte-routing';
 
-  import { hideHeader, showHeader } from '../components/Header.svelte';
-  import ProfileCircle from '../components/ProfileCircle.svelte';
+  import { hideHeaderAsync, showHeader } from '../components/Header.svelte';
+  import ProfileCircle  from '../components/ProfileCircle.svelte';
+  import Select         from '../components/Select.svelte';
+  import Spinner        from '../components/Spinner.svelte';
 
   import {
     client,
@@ -10,38 +12,78 @@
     QUOTES_BY_AUTHOR_ID,
   } from '../data';
 
-  import { canI } from '../settings';
-
-  import { scrollToTop } from '../utils';
+  import { handle } from '../errors';
+  import { canI, LANG_ITEMS, settings } from '../settings';
+  import { scrollToTop, status } from '../utils';
 
   export let id = '';
 
   let author = {};
   let quotes = [];
 
+  const langItems = LANG_ITEMS;
+  let lang = settings.getValue('lang');
+  let langInitIndex = 0;
+  let quotesStatus = status.idle;
+
   const canIEditAuthor = canI('editAuthor');
 
-  fetchAuthor();
-  fetchAuthorQuotes();
+  main();
+
+  function main() {
+    hideHeaderAsync();
+    fetchAuthor();
+    fetchAuthorQuotes();
+    langInitIndex = findLangInitIndex(langItems, lang);
+  }
 
   async function fetchAuthor() {
-    const response = await client.query({
-      query: AUTHOR,
-      variables: { id },
-    });
+    try {
+      const response = await client.query({
+        query: AUTHOR,
+        variables: { id },
+      });
 
-    author = response.data.author;
-    hideHeader();
-    scrollToTop();
+      author = response.data.author;
+      scrollToTop();
+
+    } catch (error) {
+      handle(error);
+    }
   }
 
   async function fetchAuthorQuotes() {
-    const response = await client.query({
-      query: QUOTES_BY_AUTHOR_ID,
-      variables: { authorId: id },
+    quotesStatus = status.loading;
+
+    try {
+      const response = await client.query({
+        query: QUOTES_BY_AUTHOR_ID,
+        variables: { authorId: id, lang },
+        fetchPolicy: 'network-only',
+      });
+
+      quotes = response.data.quotesByAuthorId.entries;
+      quotesStatus = status.completed;
+
+    } catch (error) {
+      handle(error);
+      quotesStatus = status.error;
+    }
+  }
+
+  function findLangInitIndex(items = [], target) {
+    let index = 0;
+
+    items.some((item, i) => {
+      if (item.value === target) {
+        index = i;
+        return true;
+      }
+
+      return false;
     });
 
-    quotes = response.data.quotesByAuthorId.entries;
+    return index;
   }
 
   function goBack() {
@@ -51,6 +93,18 @@
 
   function onEditAuthor() {
     navigate(`/edit/author/${id}`);
+  }
+
+  function onSelectLang(event) {
+    const { activeItem, index } = event.detail;
+    const { value } = activeItem;
+
+    if (lang === value) { return; }
+
+    lang = value;
+    langInitIndex = index;
+
+    fetchAuthorQuotes();
   }
 </script>
 
@@ -63,12 +117,25 @@
 
   body {
     display: flex;
+    flex-direction: column;
+  }
+
+  .body__actions {
+    display: flex;
+    flex-direction: row-reverse;
+
+    padding: 20px;
+  }
+
+  .quotes-list {
+    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
 
-    padding: 100px 0;
+    padding-top: 50px;
+    padding-bottom: 100px;
   }
 
   header {
@@ -100,8 +167,9 @@
   }
 
   .header__summary {
-    font-size: 1.5em;
+    font-size: 1.3em;
     font-weight: 200;
+    text-align: justify;
   }
 
   .header__content {
@@ -209,13 +277,41 @@
   </header>
 
   <body>
-    {#each quotes as quote}
-      <div class="quote-card-compact">
-        <div class="quote-card-compact__content">{quote.name}</div>
-      </div>
-    {:else}
-       <h2>No quotes for this author.</h2>
-    {/each}
+    <div class="body__actions">
+      <Select
+        width="50px"
+        height="50px"
+        margin="0 10px"
+        round={true}
+        items={langItems}
+        initialIndex={langInitIndex}
+        on:clickitem={onSelectLang} />
+    </div>
+
+    <div class="quotes-list">
+      {#if quotesStatus === status.loading}
+        <div>
+          <Spinner visibility="visible" />
+          <span>Loading author's quotes...</span>
+        </div>
+      {:else if quotesStatus === status.completed}
+        {#each quotes as quote}
+          <div class="quote-card-compact">
+            <div class="quote-card-compact__content">{quote.name}</div>
+          </div>
+        {:else}
+          <h2>
+            It seems that there's no quotes for this author. <br>
+            Try a different language.
+          </h2>
+        {/each}
+      {:else}
+        <h2>
+            A bug slipped through. <br>
+            Check your network and try to reload the page.
+          </h2>
+      {/if}
+    </div>
   </body>
 
 </div>
