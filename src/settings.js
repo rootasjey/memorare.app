@@ -112,3 +112,8 @@ export function canI(action = '') {
 
   return RIGHTS.some((right) => right === matchRight);
 }
+
+export const LANG_ITEMS = [
+  { label: 'EN', value: 'en' },
+  { label: 'FR', value: 'fr' },
+];
