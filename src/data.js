@@ -355,6 +355,16 @@ export const TEMP_QUOTE_ADMIN = gql`
       lang
       name
       origin
+      references {
+        imgUrl
+        lang
+        name
+        promoUrl
+        subType
+        summary
+        type
+        url
+      }
       topics
     }
   }
@@ -497,8 +507,13 @@ export const UPDATE_TEMP_QUOTE_ADMIN = gql`
     $lang: String
     $name: String!
     $origin: String
-    $refName: String
+    $refImgUrl: String
     $refLang: String
+    $refName: String
+    $refPromoUrl: String
+    $refSubType: String
+    $refSummary: String
+    $refType: String
     $refUrl: String
     $topics: [String!]
   ) {
@@ -514,8 +529,13 @@ export const UPDATE_TEMP_QUOTE_ADMIN = gql`
       lang: $lang
       name: $name
       origin: $origin
-      refName: $refName
+      refImgUrl: $refImgUrl
       refLang: $refLang
+      refName: $refName
+      refPromoUrl: $refPromoUrl
+      refSubType: $refSubType
+      refSummary: $refSummary
+      refType: $refType
       refUrl: $refUrl
       topics: $topics
     ) {

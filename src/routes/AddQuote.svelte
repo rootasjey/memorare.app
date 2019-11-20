@@ -109,7 +109,7 @@
 
       const { tempQuoteAdmin: quote } = response.data;
 
-      const { author: tqAuthor } = quote;
+      const { author: tqAuthor, references: tqRefs } = quote;
 
       if (tqAuthor) {
         authorImgUrl  = tqAuthor.imgUrl ? tqAuthor.imgUrl : authorImgUrl;
@@ -120,14 +120,22 @@
         authorWikiUrl = tqAuthor.wikiUrl ? tqAuthor.wikiUrl : authorWikiUrl;
       }
 
+      if (tqRefs && tqRefs.length > 0) {
+        const ref = tqRefs[0];
+
+        refImgUrl     = ref.imgUrl   ? ref.imgUrl   : refImgUrl;
+        refLang       = ref.lang     ? ref.lang     : refLang;
+        refName       = ref.name     ? ref.name     : refName;
+        refPromoUrl   = ref.promoUrl ? ref.promoUrl : refPromoUrl;
+        refSubType    = ref.subType  ? ref.subType  : refSubType;
+        refSummary    = ref.summary  ? ref.summary  : refSummary;
+        refType       = ref.type     ? ref.type     : refType;
+        refUrl        = ref.url      ? ref.url      : refUrl;
+      }
+
       comment       = quote.comment     ? quote.comment     : comment;
       lang          = quote.lang        ? quote.lang        : lang;
       quoteName     = quote.name        ? quote.name        : quoteName;
-      refImgUrl     = quote.refImgUrl   ? quote.refImgUrl   : refImgUrl;
-      refLang       = quote.refLang     ? quote.refLang     : refLang;
-      refName       = quote.refName     ? quote.refName     : refName;
-      refPromoUrl   = quote.refPromoUrl ? quote.refPromoUrl : refPromoUrl;
-      refUrl        = quote.refUrl      ? quote.refUrl      : refUrl;
 
       topics        = quote.topics.length > 0 ? quote.topics : topics;
 
@@ -540,8 +548,12 @@
           autofocus
           defaultLabel={defaultLabel}
           bind:refImgUrl={refImgUrl}
+          bind:refLang={refLang}
           bind:refName={refName}
           bind:refPromoUrl={refPromoUrl}
+          bind:refSubType={refSubType}
+          bind:refSummary={refSummary}
+          bind:refType={refType}
           bind:refUrl={refUrl}
           on:enter={onGoToNextStep}
           on:escape={onGoToPreviousStep}
