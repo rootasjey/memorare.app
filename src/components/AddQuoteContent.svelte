@@ -13,6 +13,7 @@
   export let placeholder  = "With great power comes great responsibility...";
   export let quoteName    = '';
   export let lang         = '';
+  export let initialIndex = 0;
 
   const selectItems = [
     { label: 'EN', value: 'en' },
@@ -34,7 +35,6 @@
       show = true;
     }
   });
-
 
   function setGhostAreaHeight() {
     domInput.style.height = `${300 * Math.floor(quoteName.length / 60)}px`;
@@ -67,9 +67,11 @@
   }
 
   function onSelectLang(event) {
-    const { activeItem } = event.detail;
+    const { activeItem, index } = event.detail;
     const { value } = activeItem;
+
     lang = value;
+    initialIndex = index;
   }
 
 </script>
@@ -195,6 +197,7 @@
         height="70px"
         items={selectItems}
         outlined={true}
+        initialIndex={initialIndex}
         on:clickitem={onSelectLang} />
   </div>
 </div>
