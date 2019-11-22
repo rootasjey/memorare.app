@@ -1,5 +1,11 @@
 /*Google Fonts*/
-@import url('https://fonts.googleapis.com/css?family=Arapey|Cantarell|Comfortaa|Khand|Russo+One|Ubuntu');
+@import url('https://fonts.googleapis.com/css?family=Comfortaa:300,400,500,600,700&display=swap&subset=latin-ext');
+/* @import url('https://fonts.googleapis.com/css?family=Comfortaa:300,400,500,600,700|Pacifico&display=swap'); */
+
+@font-face {
+	font-family: 'Introscript';
+	src: url('./IntroScriptDemo-Medium.otf');
+}
 
 html, body {
 	position: relative;
@@ -15,7 +21,7 @@ body {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	font-family: 'Comfortaa', cursive;
+	font-family: 'Comfortaa', cursive, -apple-system, "Segoe UI", Roboto, Ubuntu;
 	/* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; */
 }
 
