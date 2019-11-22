@@ -211,7 +211,7 @@
 
   .header-title img {
     position: relative;
-    top: 5px;
+    top: 0;
 
     border-radius: 50%;
 
@@ -222,7 +222,7 @@
   }
 
   .header-title img:hover {
-    top: 7px;
+    top: 2px;
     filter: brightness(95%);
     box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
 
@@ -230,7 +230,7 @@
   }
 
   .header-title img:active {
-    top: 9px;
+    top: 4px;
     filter: brightness(90%);
     box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
 
@@ -273,9 +273,6 @@
     padding: 10px 15px;
     border-radius: 30px;
 
-    position: relative;
-    top: -10px;
-    left: 5px;
     transition: .3s;
   }
 
