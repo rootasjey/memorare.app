@@ -192,9 +192,17 @@
 
   .header-title {
     display: flex;
-
+    align-items: center;
     cursor: pointer;
+
     transition:.3s;
+  }
+
+  .header-title h3 {
+    font-family: 'Introscript';
+    font-size: 2em;
+    margin: 0;
+    opacity: .7;
   }
 
   .header-title img {
@@ -233,6 +241,7 @@
   nav {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     position: relative;
     top: 5px;
@@ -241,8 +250,6 @@
   nav > div {
     color: #000;
     display: inline-block;
-    margin-top: 16px;
-    margin-bottom: 16px;
     margin-right: 25px;
 
     cursor: pointer;
@@ -344,7 +351,7 @@
     outline: none;
 
     position: relative;
-    top: -10px;
+    top: 0px;
 
     box-shadow: 4px 4px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
     transition: .3s;
@@ -352,7 +359,7 @@
 
   .user-avatar:hover,
   .user-avatar:focus {
-    top: -8px;
+    top: 2px;
     filter: brightness(95%);
     box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
     transition: .3s;
@@ -360,7 +367,7 @@
 
   .user-avatar:active,
   .user-avatar.active {
-    top: -6px;
+    top: 4px;
     filter: brightness(90%);
     box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
     transition: .3s;
