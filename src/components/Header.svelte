@@ -100,7 +100,11 @@
 
   function onBlurUserNav() {
     domUserNav.setAttribute('tabindex', '-1');
-    domUserAvatar.setAttribute('tabindex', '0');
+
+   if (domUserAvatar) {
+      domUserAvatar.setAttribute('tabindex', '0');
+    }
+
     isUserMenuOpened = false;
     enableBodyScroll();
   }
