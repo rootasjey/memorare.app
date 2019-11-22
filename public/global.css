@@ -2,11 +2,6 @@
 @import url('https://fonts.googleapis.com/css?family=Comfortaa:300,400,500,600,700&display=swap&subset=latin-ext');
 /* @import url('https://fonts.googleapis.com/css?family=Comfortaa:300,400,500,600,700|Pacifico&display=swap'); */
 
-@font-face {
-	font-family: 'Introscript';
-	src: url('./IntroScriptDemo-Medium.otf');
-}
-
 html, body {
 	position: relative;
 	width: 100%;

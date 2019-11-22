@@ -131,8 +131,7 @@
   }
 
   .quotidian__name {
-    font-family: 'Introscript';
-    font-size: 3em;
+    font-size: 2.5em;
     font-weight: 600;
   }
 
