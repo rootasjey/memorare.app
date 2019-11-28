@@ -13,12 +13,15 @@
   import IconButton   from './IconButton.svelte';
   import { show }     from './Snackbar.svelte'
 
+  export let top = '0';
+
+  let authorImgUrl = '';
+  let baseFontSize = 2;
+  let bgImg = '';
   let pageStatus = status.idle;
   let quotidian = {};
-  let authorImgUrl = '';
-  let bgImg = '';
 
-  export let top = '0';
+  let fontSize = '';
 
   let style = `
     top: ${top};
@@ -47,6 +50,13 @@
         '/img/monk.png';
 
       bgImg = `background-image: url('${authorImgUrl}');`;
+
+      let computedFontSize = 470 / quotidian.quote.name.length;
+      if (computedFontSize < 1.5) { computedFontSize = 1.5; }
+      if (computedFontSize > 2.5) { computedFontSize = 2.5; }
+      computedFontSize = parseFloat(computedFontSize).toPrecision(2);
+
+      fontSize = `font-size: ${computedFontSize}em;`;
 
     } catch (error) {
       pageStatus = status.error;
@@ -131,7 +141,7 @@
   }
 
   .quotidian__name {
-    font-size: 2.5em;
+    font-size: 2.5em; /* dynamic font size */
     font-weight: 600;
   }
 
@@ -219,7 +229,9 @@
         </IconButton>
       </header>
 
-      <div class="quotidian__name"> {quotidian.quote.name} </div>
+      <div class="quotidian__name" style="{fontSize}">
+        {quotidian.quote.name}
+      </div>
 
       <footer class="quotidian__footer">
         <div class="author" on:click={onClickAuthor}>
