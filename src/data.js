@@ -284,6 +284,7 @@ export const QUOTIDIAN = gql`
           imgUrl
           name
         }
+        id
         name
         references { name }
       }
@@ -372,6 +373,25 @@ export const SIGNIN = gql`
   }
 `;
 
+export const STAR = gql`
+  mutation ($quoteId: String!) {
+    star (quoteId: $quoteId) {
+      id
+    }
+  }
+`;
+
+export const STARRED = gql`
+  query ($limit: Float, $skip: Float) {
+    userData {
+      starred (limit: $limit, skip: $skip) {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const TEMP_QUOTE_ADMIN = gql`
   query($id: String!) {
     tempQuoteAdmin(id: $id) {
@@ -437,6 +457,14 @@ export const TINY_LIST_AUTHORS = gql`
           name
         }
       }
+    }
+  }
+`;
+
+export const UNSTAR = gql`
+  mutation ($quoteId: String!) {
+    unstar (quoteId: $quoteId) {
+      id
     }
   }
 `;

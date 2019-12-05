@@ -4,6 +4,7 @@
   import {
     client,
     QUOTIDIAN,
+    STAR,
   } from '../data';
 
   import { handle }   from '../errors'
@@ -64,7 +65,7 @@
     }
   };
 
-  async function onLike(quote) {
+  async function onLike(quotidian) {
     if (!settings.getValue('id')) {
       show({
         text: 'You must be logged in to like a quote.',
@@ -78,7 +79,24 @@
       return;
     }
 
-    // console.log(`like quote ${quote}`);
+    const { quote } = quotidian;
+
+    console.log(`like quote ${quote.id}`);
+
+    try {
+      const response = await client.mutate({
+        mutation: STAR,
+        variables: { quoteId: quote.id },
+      });
+
+      show({
+        text: 'The quote has successfully been added to your favorites.',
+        type: 'success',
+      });
+
+    } catch (error) {
+      handle(error);
+    }
   }
 
   async function onShare(quote) {
