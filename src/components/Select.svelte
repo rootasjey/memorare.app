@@ -33,7 +33,7 @@
 
   let blurTimeout = 0;
 
-  function onBlur(event) {
+  function onBlur() {
     active = false;
     activeIndex = initialIndex;
     activeItem = items[activeIndex];
@@ -43,7 +43,13 @@
     domButton.setAttribute('tabindex', '0');
     domButton.focus();
 
+    document.removeEventListener('click', onClickDocument);
+
     enableBodyScroll();
+  }
+
+  function onClickDocument() {
+    onBlur();
   }
 
   function onClickComponent(event) {
@@ -54,8 +60,10 @@
       domButton.setAttribute('tabindex', '-1');
       domListBox.setAttribute('tabindex', '0');
 
+
       setTimeout(() => {
         domListBox.focus();
+        document.addEventListener('click', onClickDocument);
       }, 250);
 
     } else { domListBox.blur(); }
@@ -65,6 +73,7 @@
     activeItem = item;
     activeIndex = index;
     initialIndex = activeIndex;
+    onBlur();
 
     dispatch('clickitem', {
       activeItem,
@@ -82,12 +91,12 @@
         initialIndex = activeIndex;
         activeItem = items[activeIndex];
         onClickItem(activeItem, activeIndex);
-        domListBox.blur();
+        onBlur();
         break;
       case 27: // escape
         activeIndex = initialIndex;
         activeItem = items[activeIndex];
-        domListBox.blur();
+        onBlur();
         break;
       case 37: // left
         activeIndex = 0;
@@ -250,7 +259,6 @@
   <ul
     role="listbox"
     class="md-whiteframe-z1"
-    on:blur={onBlur}
     on:keyup={onKeyUp}
     tabindex="-1"
     bind:this={domListBox}
