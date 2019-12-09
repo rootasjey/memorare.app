@@ -150,6 +150,9 @@
   function onAddAnotherQuote() {
     pageStatus = status.idle;
     quoteName = '';
+    id = '';
+    sendButtonContent = 'Propose';
+    sendingMsg = 'Sending your new quote...';
   }
 
   function onGoBack() {
