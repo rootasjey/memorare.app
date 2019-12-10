@@ -28,8 +28,6 @@
 	import UpdateEmail 			from './routes/UpdateEmail.svelte';
 	import VerifyEmail 			from './routes/VerifyEmail.svelte';
 	import Welcome					from './routes/Welcome.svelte';
-
-	export let url = '';
 </script>
 
 <style>
