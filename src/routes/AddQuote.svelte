@@ -150,6 +150,8 @@
   }
 
   function onAddAnotherQuote() {
+    if (timerId !== -1) { clearTimeout(timerId); timerId = -1; }
+
     pageStatus = status.idle;
     quoteName = '';
     id = '';
