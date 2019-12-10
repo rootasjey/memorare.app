@@ -67,6 +67,8 @@
   let sendButtonContent = id ? 'Save' : 'Propose';
   let sendingMsg = id ? 'Saving your changes...' : 'Sending your new quote...';
 
+  let timerId = -1;
+
   main();
 
   function main() {
@@ -153,6 +155,7 @@
     id = '';
     sendButtonContent = 'Propose';
     sendingMsg = 'Sending your new quote...';
+    step = 0;
   }
 
   function onGoBack() {
@@ -216,6 +219,10 @@
 
       pageStatus = status.completed;
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      timerId = setTimeout(() => {
+        onAddAnotherQuote();
+      }, 3000);
 
     } catch (error) {
       handle(error);
