@@ -18,11 +18,11 @@
   } from '../data';
 
   import { handle } from '../errors';
-  import { canI, settings } from '../settings';
+  import { canI, LANG_PREF_KEY, settings } from '../settings';
   import { status } from '../utils';
 
   let hasMoreData     = true;
-  let lang            = settings.getValue('lang');
+  let lang            = settings.getPrefLang(LANG_PREF_KEY.publishedquotes);
   let langInitIndex   = 0;
   let limit           = 10;
   let order           = parseFloat(settings.getValue('order')) || 1;
@@ -50,6 +50,15 @@
 
       return;
     }
+
+    selectItems.some((item, index) => {
+      if (item.value.toLowerCase() === lang) {
+        langInitIndex = index;
+        return true;
+      }
+
+      return false;
+    });
 
     fetchPublishedQuotes();
   }
@@ -161,6 +170,8 @@
 
     lang = value;
     langInitIndex = index;
+
+    settings.setPrefLang(LANG_PREF_KEY.publishedquotes, value);
 
     onRefresh();
   }

@@ -12,6 +12,8 @@ class Settings {
   }
 
   getValue(name = '') {
+    if (!name) { throw new Error('No name provided. Please provide a valid string.'); }
+
     const value = localStorage.getItem(name);
 
     if (name === 'lang') {
@@ -25,8 +27,23 @@ class Settings {
     return value;
   }
 
+  getPrefLang(name = '') {
+    if (!name) { throw new Error('No name provided. Please provide a valid string.'); }
+
+    const _name = `${name}lang`;
+    const value = localStorage.getItem(_name);
+    return value || 'en';
+  }
+
+  setPrefLang(name = '', value = '') {
+    if (!name) { throw new Error('No name provided. Please provide a valid string.'); }
+
+    const _name = `${name}lang`;
+    localStorage.setItem(_name, value);
+  }
+
   setValue(name = '', value = '') {
-    if (!name) { return; }
+    if (!name) { throw new Error('No name provided. Please provide a valid string.'); }
 
     if (Array.isArray(value)) {
       localStorage.setItem(name, JSON.stringify(value));
@@ -117,3 +134,8 @@ export const LANG_ITEMS = [
   { label: 'EN', value: 'en' },
   { label: 'FR', value: 'fr' },
 ];
+
+export const LANG_PREF_KEY = {
+  publishedquotes: 'publishedquotes',
+  tempquotes: 'tempquotes',
+};
