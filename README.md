@@ -4,7 +4,7 @@
 
 <h1 align="middle">memorare.app</h1>
 
-<p align="middle">Read an inspirational quote each day.</p>
+<p align="middle">Explore the greatest quotes of History.</p>
 
 <p align="middle">
   <img src="./public/img/tablet_screenshot.png" title="memorare screenshot" />
@@ -40,17 +40,8 @@ You can freely contribute to this project by opening an issue, proposing a pull 
 
 # Licence
 
-Custom licence. Please read the [LICENSE](./LICENSE) for more information.
+Mozilla Public License 2.0.
 
-Allowed:
+Please read the [LICENSE](./LICENSE) for more information.
 
-* Install, Copy, Modify the program or source code
-* Share the app or the source code with others
-* Hack, Improve the software
-
-NOT Allowed:
-
-* Commercialize this app, this source code or a part of it under the same name [i.e. Memorare] or another brand name
-* Copy a part of the source code into another paid software
-
-Please [ask](mailto:jeremiecorpinot@outlook.com) if you have any doubt.
+Please [ask](mailto:github@memorare.app) if you have any doubt.
