@@ -22,6 +22,17 @@
 
   const dispatch = createEventDispatcher();
 
+  if (lang) {
+    langItems.some((item, index) => {
+      if (item.value.toLowerCase() === lang) {
+        initialIndex = index;
+        return true;
+      }
+
+      return false;
+    });
+  }
+
   onMount(() => {
     if (autofocus && domInput) {
       domInput.focus();

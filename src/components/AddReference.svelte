@@ -10,7 +10,7 @@
   import Select           from '../components/Select.svelte';
 
   import { primaryAlt }   from '../colors';
-  import { canI }         from '../settings';
+  import { canI, LANG_ITEMS } from '../settings';
   import { scrollToTop }  from '../utils';
 
   export let defaultLabel = '';
@@ -28,16 +28,25 @@
   let canIManageQuote = false;
   let domRefSummary;
   let domRefTitle;
+  let initialIndex = 0;
   let isRefImgDialogActive = false;
   let refInitialImgUrl = '';
   let show = false;
 
-  const selectItems = [
-    { label: 'EN', value: 'en' },
-    { label: 'FR', value: 'fr' },
-  ];
+  const selectItems = LANG_ITEMS
 
   const dispatch = createEventDispatcher();
+
+  if (refLang) {
+    selectItems.some((item, index) => {
+      if (item.value.toLowerCase() === refLang) {
+        initialIndex = index;
+        return true;
+      }
+
+      return false;
+    });
+  }
 
   onMount(() => {
     if (autofocus && domRefTitle) {
@@ -110,9 +119,11 @@
   }
 
   function onSelectRefLang(event) {
-    const { activeItem } = event.detail;
+    const { activeItem, index } = event.detail;
     const { value } = activeItem;
+
     refLang = value;
+    initialIndex = index;
   }
 
   function setGhostAreaHeight() {
@@ -452,6 +463,7 @@
           defaultLabel={defaultLabel}
           items={selectItems}
           outlined={true}
+          initialIndex={initialIndex}
           on:clickitem={onSelectRefLang} />
     </div>
   </div>
