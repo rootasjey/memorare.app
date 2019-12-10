@@ -10,7 +10,7 @@
   import Select           from '../components/Select.svelte';
 
   import { primaryAlt }   from '../colors';
-  import { canI, LANG_ITEMS } from '../settings';
+  import { canI, LANG }   from '../settings';
   import { scrollToTop }  from '../utils';
 
   export let defaultLabel = '';
@@ -33,7 +33,7 @@
   let refInitialImgUrl = '';
   let show = false;
 
-  const selectItems = LANG_ITEMS
+  const selectItems = LANG
 
   const dispatch = createEventDispatcher();
 

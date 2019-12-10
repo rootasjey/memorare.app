@@ -5,7 +5,7 @@
   } from 'svelte';
 
   import Select from '../components/Select.svelte';
-  import { LANG_ITEMS, settings } from '../settings';
+  import { LANG, settings } from '../settings';
   import { scrollToTop } from '../utils';
 
   export let autofocus    = false;
@@ -15,7 +15,7 @@
   export let lang         = '';
   export let initialIndex = 0;
 
-  const langItems = LANG_ITEMS;
+  const langItems = LANG;
 
   let domInput;
   let show = false;

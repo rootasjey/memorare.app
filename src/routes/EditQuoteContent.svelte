@@ -16,7 +16,7 @@
 
   import { handle }       from '../errors';
   import { scrollToTop, status } from '../utils';
-  import { LANG_ITEMS } from '../settings';
+  import { LANG } from '../settings';
 
   /** Qutoe's id */
   export let id = '';
@@ -64,7 +64,7 @@
       topics  = quote.topics  ? quote.topics  : topics;
 
       defaultLabel = lang;
-      initialIndex = findLangInitIndex(LANG_ITEMS, lang);
+      initialIndex = findLangInitIndex(LANG, lang);
 
       pageStatus = status.idle;
 

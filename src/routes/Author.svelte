@@ -13,7 +13,7 @@
   } from '../data';
 
   import { handle } from '../errors';
-  import { canI, LANG_ITEMS, settings } from '../settings';
+  import { canI, LANG, settings } from '../settings';
   import { scrollToTop, status } from '../utils';
 
   export let id = '';
@@ -21,7 +21,7 @@
   let author = {};
   let quotes = [];
 
-  const langItems = LANG_ITEMS;
+  const langItems = LANG;
   let lang = settings.getValue('lang');
   let langInitIndex = 0;
   let quotesStatus = status.idle;
