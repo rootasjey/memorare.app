@@ -32,6 +32,22 @@
 
   function main() {
     fetchQuotidian();
+
+    window.addEventListener('resize', adaptFontSize);
+  }
+
+  function adaptFontSize() {
+    if (window.innerWidth < 670) {
+        fontSize = fontSize === '1.5em' ? fontSize : '1.5em';
+        return;
+    }
+
+    if (window.innerWidth < 310) {
+      fontSize = fontSize === '1em' ? fontSize : '1em';
+      return;
+    }
+
+    fontSize = fontSize === '2.5em' ? fontSize : '2.5em';
   }
 
   async function fetchQuotidian() {
@@ -58,6 +74,7 @@
       computedFontSize = parseFloat(computedFontSize).toPrecision(2);
 
       fontSize = `font-size: ${computedFontSize}em;`;
+      adaptFontSize();
 
     } catch (error) {
       pageStatus = status.error;
