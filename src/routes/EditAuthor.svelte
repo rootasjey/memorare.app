@@ -476,9 +476,10 @@
         <div class="author-metadata">
           <input type="text" class="big" value="{name}" placeholder="Add or edit the author's name...">
           <input type="text" bind:value="{job}" placeholder="Add a job...">
+
           <textarea name="author-summary"
             cols="40" rows="7"
-            placeholder="Add a cool summary...">{summary}</textarea>
+            placeholder="Add a cool summary..." bind:value={summary}></textarea>
 
           <div class="input-list">
             <FlatInputIcon
