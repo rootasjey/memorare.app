@@ -26,7 +26,7 @@
   let lang            = settings.getPrefLang(PREF_KEY.tempquotes);
   let langInitIndex   = 0;
   let limit           = 10;
-  let order           = 1;
+  let order           = parseInt(settings.getPrefOrder(PREF_KEY.tempquotes)) || 1;
   let pageStatus      = status.loading;
   let selectedQuoteId = -1;
   let skip            = 0;
@@ -191,6 +191,8 @@
 
   function onToggleOrder() {
     order = order === 1 ? -1 : 1;
+
+    settings.setPrefOrder(PREF_KEY.tempquotes, order);
     onRefresh();
   }
 

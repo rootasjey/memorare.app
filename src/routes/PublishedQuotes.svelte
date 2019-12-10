@@ -25,7 +25,7 @@
   let lang            = settings.getPrefLang(PREF_KEY.publishedquotes);
   let langInitIndex   = 0;
   let limit           = 10;
-  let order           = parseFloat(settings.getValue('order')) || 1;
+  let order           = parseInt(settings.getPrefOrder(PREF_KEY.publishedquotes)) || 1;
   let publishedQuotes = [];
   let queryStatus     = status.loading;
   let selectedQuoteId = -1;
@@ -182,7 +182,8 @@
 
   function onToggleOrder() {
     order = order === 1 ? -1 : 1;
-    settings.setValue('order', order);
+
+    settings.setPrefOrder(PREF_KEY.publishedquotes, order);
     onRefresh();
   }
 

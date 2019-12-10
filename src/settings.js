@@ -42,6 +42,21 @@ class Settings {
     localStorage.setItem(_name, value);
   }
 
+  getPrefOrder(name = '') {
+    if (!name) { throw new Error('No name provided. Please provide a valid string.'); }
+
+    const _name = `${name}order`;
+    const value = localStorage.getItem(_name);
+    return value || 'en';
+  }
+
+  setPrefOrder(name = '', value = '') {
+    if (!name) { throw new Error('No name provided. Please provide a valid string.'); }
+
+    const _name = `${name}order`;
+    localStorage.setItem(_name, value);
+  }
+
   setValue(name = '', value = '') {
     if (!name) { throw new Error('No name provided. Please provide a valid string.'); }
 
