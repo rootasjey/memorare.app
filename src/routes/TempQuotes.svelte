@@ -19,11 +19,11 @@
   } from '../data';
 
   import { handle } from '../errors';
-  import { canI,LANG_PREF_KEY, settings } from '../settings';
+  import { canI, PREF_KEY, settings } from '../settings';
   import { status } from '../utils';
 
   let hasMoreData     = true;
-  let lang            = settings.getPrefLang(LANG_PREF_KEY.tempquotes);
+  let lang            = settings.getPrefLang(PREF_KEY.tempquotes);
   let langInitIndex   = 0;
   let limit           = 10;
   let order           = 1;
@@ -157,7 +157,7 @@
     lang = value;
     langInitIndex = index;
 
-    settings.setPrefLang(LANG_PREF_KEY.tempquotes, value);
+    settings.setPrefLang(PREF_KEY.tempquotes, value);
 
     onRefresh();
   }

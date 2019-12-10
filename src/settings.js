@@ -135,7 +135,7 @@ export const LANG_ITEMS = [
   { label: 'FR', value: 'fr' },
 ];
 
-export const LANG_PREF_KEY = {
+export const PREF_KEY = {
   publishedquotes: 'publishedquotes',
   tempquotes: 'tempquotes',
 };
