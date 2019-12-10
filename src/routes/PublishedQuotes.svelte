@@ -18,7 +18,7 @@
   } from '../data';
 
   import { handle } from '../errors';
-  import { canI, PREF_KEY, settings } from '../settings';
+  import { canI, LANG, PREF_KEY, settings } from '../settings';
   import { status } from '../utils';
 
   let hasMoreData     = true;
@@ -31,10 +31,7 @@
   let selectedQuoteId = -1;
   let skip            = 0;
 
-  const selectItems = [
-    { label: 'EN', value: 'en' },
-    { label: 'FR', value: 'fr' },
-  ];
+  const selectItems = LANG;
 
   $: spinnerVisibility = queryStatus === status.loading ? 'visible' : 'hidden';
 

@@ -19,7 +19,7 @@
   } from '../data';
 
   import { handle } from '../errors';
-  import { canI, PREF_KEY, settings } from '../settings';
+  import { canI, LANG, PREF_KEY, settings } from '../settings';
   import { status } from '../utils';
 
   let hasMoreData     = true;
@@ -32,10 +32,7 @@
   let skip            = 0;
   let tempQuotes      = [];
 
-  const selectItems = [
-    { label: 'EN', value: 'en' },
-    { label: 'FR', value: 'fr' },
-  ];
+  const selectItems = LANG;
 
   main();
 
