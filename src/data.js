@@ -69,11 +69,11 @@ export const CREATE_TEMP_QUOTE = gql`
     $refImgUrl: String
     $refLang: String
     $refName: String
-    $refPromoUrl: String
     $refSubType: String
     $refSummary: String
     $refType: String
     $refUrl: String
+    $refWikiUrl: String
     $topics: [String!],
   ) {
 
@@ -91,11 +91,11 @@ export const CREATE_TEMP_QUOTE = gql`
       refImgUrl: $refImgUrl
       refLang: $refLang
       refName: $refName
-      refPromoUrl: $refPromoUrl
       refSubType: $refSubType
       refSummary: $refSummary
       refType: $refType
       refUrl: $refUrl
+      refWikiUrl: $refWikiUrl
       topics: $topics
     ) {
       id
@@ -250,6 +250,7 @@ export const QUOTES_BY_AUTHOR_ID = gql`
       skip: $skip
     ) {
       entries {
+        id
         name
       }
       pagination {
@@ -594,10 +595,10 @@ export const UPDATE_TEMP_QUOTE_ADMIN = gql`
     $refImgUrl: String
     $refLang: String
     $refName: String
-    $refPromoUrl: String
     $refSubType: String
     $refSummary: String
     $refType: String
+    $refWikiUrl: String
     $refUrl: String
     $topics: [String!]
   ) {
@@ -616,10 +617,10 @@ export const UPDATE_TEMP_QUOTE_ADMIN = gql`
       refImgUrl: $refImgUrl
       refLang: $refLang
       refName: $refName
-      refPromoUrl: $refPromoUrl
       refSubType: $refSubType
       refSummary: $refSummary
       refType: $refType
+      refWikiUrl: $refWikiUrl
       refUrl: $refUrl
       topics: $topics
     ) {

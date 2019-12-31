@@ -52,11 +52,11 @@
   let refImgUrl     = '';
   let refLang       = lang;
   let refName       = '';
-  let refPromoUrl   = '';
   let refType       = '';
   let refSubType    = '';
   let refSummary    = '';
   let refUrl        = '';
+  let refWikiUrl    = '';
   let topics        = [];
 
   let autofocus = true;
@@ -128,11 +128,11 @@
         refImgUrl     = ref.imgUrl   ? ref.imgUrl   : refImgUrl;
         refLang       = ref.lang     ? ref.lang     : refLang;
         refName       = ref.name     ? ref.name     : refName;
-        refPromoUrl   = ref.promoUrl ? ref.promoUrl : refPromoUrl;
         refSubType    = ref.subType  ? ref.subType  : refSubType;
         refSummary    = ref.summary  ? ref.summary  : refSummary;
         refType       = ref.type     ? ref.type     : refType;
         refUrl        = ref.url      ? ref.url      : refUrl;
+        refWikiUrl    = ref.promoUrl ? ref.promoUrl : refWikiUrl;
       }
 
       comment       = quote.comment     ? quote.comment     : comment;
@@ -198,11 +198,11 @@
       refImgUrl,
       refLang,
       refName,
-      refPromoUrl,
       refType,
       refSubType,
       refSummary,
       refUrl,
+      refWikiUrl,
       topics,
     };
 
@@ -562,11 +562,11 @@
           bind:refImgUrl={refImgUrl}
           bind:refLang={refLang}
           bind:refName={refName}
-          bind:refPromoUrl={refPromoUrl}
           bind:refSubType={refSubType}
           bind:refSummary={refSummary}
           bind:refType={refType}
           bind:refUrl={refUrl}
+          bind:refWikiUrl={refWikiUrl}
           on:enter={onGoToNextStep}
           on:escape={onGoToPreviousStep}
         />
