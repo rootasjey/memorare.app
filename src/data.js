@@ -413,11 +413,11 @@ export const TEMP_QUOTE_ADMIN = gql`
         imgUrl
         lang
         name
-        promoUrl
         subType
         summary
         type
         url
+        wikiUrl
       }
       topics
     }

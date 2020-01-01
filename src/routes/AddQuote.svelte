@@ -132,7 +132,7 @@
         refSummary    = ref.summary  ? ref.summary  : refSummary;
         refType       = ref.type     ? ref.type     : refType;
         refUrl        = ref.url      ? ref.url      : refUrl;
-        refWikiUrl    = ref.promoUrl ? ref.promoUrl : refWikiUrl;
+        refWikiUrl    = ref.wikiUrl  ? ref.wikiUrl  : refWikiUrl;
       }
 
       comment       = quote.comment     ? quote.comment     : comment;
