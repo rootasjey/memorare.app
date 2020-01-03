@@ -295,7 +295,7 @@ export const QUOTIDIAN = gql`
 
 export const QUOTIDIANS = gql`
   query ($lang: String, $limit: Float, $order: Float, $skip: Float) {
-    quotidians(lang: $lang, limit: $limit, order: $order, skip: $skip) {
+    quotidiansAdmin(lang: $lang, limit: $limit, order: $order, skip: $skip) {
       entries {
         id
         date

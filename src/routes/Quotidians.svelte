@@ -63,9 +63,9 @@
         fetchPolicy: 'network-only',
       });
 
-      quotidians = response.data.quotidians.entries;
+      quotidians = response.data.quotidiansAdmin.entries;
 
-      const { pagination } = response.data.quotidians;
+      const { pagination } = response.data.quotidiansAdmin;
 
       hasMoreData = pagination.hasNext;
       limit       = pagination.limit;
@@ -89,7 +89,9 @@
     navigate(`/author/${id}`);
   }
 
-  async function onDelete(id) {
+  async function onDelete(quotidian) {
+    const { id } = quotidian;
+
     try {
       const response = await client.mutate({
         mutation: DELETE_QUOTIDIAN,
@@ -121,7 +123,7 @@
         fetchPolicy: 'network-only',
       });
 
-      const { entries, pagination } = response.data.quotidians;
+      const { entries, pagination } = response.data.quotidiansAdmin;
 
       hasMoreData = pagination.hasNext;
       limit       = pagination.limit;
@@ -348,7 +350,7 @@
 
                 <div slot="quoteHeaderIcons" class="quote__header__icons__slot">
                   <IconButton margin="5px"
-                    on:click={() => onDelete(quotidian.id)}
+                    on:click={() => onDelete(quotidian)}
                     backgroundColor="#f56498"
                     elevation={1} >
                     <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
