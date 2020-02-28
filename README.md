@@ -1,4 +1,4 @@
-> ⚠️ The project has migrated at https://github.com/memorare/app
+> ⚠️ The project has migrated to https://github.com/memorare/app
 
 <p align="middle">
   <img src="./public/img/icon.png" title="memorare icon" width="254"/>
