@@ -1,4 +1,4 @@
-> ⚠️ The project has migrated to https://github.com/rootasjey/fig.style
+> ⚠️ The project has migrated to https://github.com/rootasjey/kwotes
 
 <p align="middle">
   <img src="./public/img/icon.png" title="memorare icon" width="254"/>
